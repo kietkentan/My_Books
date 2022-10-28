@@ -1,4 +1,6 @@
 # My_Books
+
+APK file into app/release/app-release.apk
 Test account
   phone: 0352335288
   pass: DayLaMatKhau
