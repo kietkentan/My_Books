@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
+    private ImageView ig;
     private ShapeableImageView ivGoUserPage;
     private RecyclerView rcPublisher;
     private RecyclerView rcBestSellerBooks;
@@ -52,12 +54,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private List<PublisherItem> publisherList;
     private List<BookItem> bookList;
 
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
     private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
 
     private boolean isBackPressedOnce = false;
-    public int chat = 0;
+    private String idPublisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
 
         init();
-        ImageView ig = (ImageView) findViewById(R.id.imageView);
         ig.setOnClickListener(this);
 
         publisherList = new ArrayList<>();
@@ -78,12 +79,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             loadData();
             setRecyclerViewPublisher();
             setRecyclerViewBook();
-            if (chat == 0){
-                edtNoticeChat.setVisibility(View.INVISIBLE);
-            } else {
-                edtNoticeChat.setVisibility(View.VISIBLE);
-                edtNoticeChat.setText("" + chat);
-            }
         } else {
             progressBarLoadData.setVisibility(View.VISIBLE);
             Toast.makeText(HomeActivity.this, R.string.network_not_available, Toast.LENGTH_SHORT).show();
@@ -109,8 +104,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void init(){
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
-        databaseReference = FirebaseDatabase.getInstance().getReference("nhaxuatban");
+        database = FirebaseDatabase.getInstance();
 
+        ig = (ImageView) findViewById(R.id.imageView);
         ivGoUserPage = (ShapeableImageView) findViewById(R.id.iv_go_user_page);
         rcPublisher = (RecyclerView) findViewById(R.id.rec_publishers);
         rcBestSellerBooks = (RecyclerView) findViewById(R.id.rec_bestSellers);
@@ -144,30 +140,32 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void loadData(){
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        database.getReference("publisher").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    PublisherItem publisherItem = dataSnapshot.getValue(PublisherItem.class);
-                    publisherList.add(publisherItem);
-                    dataSnapshot.child("sach").getRef().addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
-                                BookItem bookItem = dataSnapshot1.getValue(BookItem.class);
-                                bookList.add(bookItem);
-                            }
-                            bookItemAdapter.notifyDataSetChanged();
-                            bookItemAdapter2.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()) {
+                    PublisherItem item = dataSnapshot.getValue(PublisherItem.class);
+                    publisherList.add(item);
                 }
+                idPublisher = publisherList.get(1).getId();
                 publisherItemAdapter.notifyDataSetChanged();
+
+                database.getReference("book").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                            BookItem item = dataSnapshot.getValue(BookItem.class);
+                            bookList.add(item);
+                        }
+                        bookItemAdapter.notifyDataSetChanged();
+                        bookItemAdapter2.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override

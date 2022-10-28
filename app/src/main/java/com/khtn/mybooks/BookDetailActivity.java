@@ -17,6 +17,7 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -32,7 +33,6 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.adapter.BookDetailAdapter;
@@ -67,77 +67,73 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private ImageButton ibBack;
     private RatingBar barRatingBook;
     private ShapeableImageView ivLogoPublisher;
-    private RecyclerView listDetails;
+    private RecyclerView viewListDetails;
     private FrameLayout layoutUpcoming;
 
     private ListImageAdapter imageAdapter;
     private BookDetailAdapter detailAdapter;
 
     public String id;
-    public String nhaxuatban;
-    private Book book;
-    private Publisher publisher;
-    private List<List<String>> lists; // list details
+    public String publisher;
+    private Book dataBook;
+    private Publisher dataPublisher;
+    private List<List<String>> listDetails;
     private String describe;
 
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_detail);
         init();
+
         getData();
         ivMenu.setOnClickListener(this);
         ibBack.setOnClickListener(this);
     }
 
     public void getData(){
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("publisher").child(publisher).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    if (dataSnapshot.getKey().equals(nhaxuatban)) {
-                        publisher = dataSnapshot.getValue(Publisher.class);
-                        dataSnapshot.child("sach").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()){
-                                    if (dataSnapshot1.getKey().equals(id)){
-                                        book = dataSnapshot1.getValue(Book.class);
-                                        dataSnapshot1.child("detail").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                for (DataSnapshot dataSnapshot2:snapshot.getChildren()) {
-                                                    if (dataSnapshot2.getKey().equals("describe")){
-                                                        describe = dataSnapshot2.getValue(String.class);
-                                                    } else {
-                                                        List<String> list = new ArrayList<>();
-                                                        list.add(dataSnapshot2.getKey());
-                                                        list.add(dataSnapshot2.getValue(String.class));
-                                                        lists.add(list);
-                                                    }
-                                                }
-                                                setAboutDetails();
-                                            }
-
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                            }
-                                        });
+                if (snapshot.exists())
+                    dataPublisher = snapshot.getValue(Publisher.class);
+                database.getReference("book").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            dataBook = snapshot.getValue(Book.class);
+                            snapshot.getRef().child("detail").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot dataSnapshot2:snapshot.getChildren()) {
+                                        if (dataSnapshot2.getKey().equals("describe")){
+                                            describe = dataSnapshot2.getValue(String.class);
+                                        } else {
+                                            List<String> list = new ArrayList<>();
+                                            list.add(dataSnapshot2.getKey());
+                                            list.add(dataSnapshot2.getValue(String.class));
+                                            listDetails.add(list);
+                                        }
                                     }
+                                    setAboutDetails();
                                 }
-                                setDetails();
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
+                        setDetails();
                     }
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
@@ -148,11 +144,11 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void init(){
-        databaseReference = FirebaseDatabase.getInstance().getReference("nhaxuatban");
+        database = FirebaseDatabase.getInstance();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
-        nhaxuatban = intent.getStringExtra("nhaxuatban");
-        lists = new ArrayList<>();
+        publisher = intent.getStringExtra("publisher");
+        listDetails = new ArrayList<>();
 
         ivMenu = (ImageView) findViewById(R.id.iv_menu_in_detail);
         rcImages = (ViewPager2) findViewById(R.id.list_img);
@@ -176,66 +172,66 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         ibAddFavorite = (ImageButton) findViewById(R.id.ib_add_favorite);
         ibBack = (ImageButton) findViewById(R.id.ib_exit_detail);
         ivLogoPublisher = (ShapeableImageView) findViewById(R.id.iv_avatar_publisher);
-        listDetails = (RecyclerView) findViewById(R.id.list_details);
+        viewListDetails = (RecyclerView) findViewById(R.id.list_details);
         layoutUpcoming = (FrameLayout) findViewById(R.id.layout_upcoming);
     }
 
     public void setDetails(){
-        imageAdapter = new ListImageAdapter(book.getImage());
+        imageAdapter = new ListImageAdapter(dataBook.getImage());
         rcImages.setAdapter(imageAdapter);
         rcImages.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tvPosition.setText(String.format("%d/%d", position + 1, book.getImage().size()));
+                tvPosition.setText(String.format("%d/%d", position + 1, dataBook.getImage().size()));
             }
         });
-        if (book.getDiscountPercentage() == 0){
-            tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(book.getOriginalPrice())));
+        if (dataBook.getDiscountPercentage() == 0){
+            tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvPrice.setTextColor(Color.parseColor("#FF000000"));
             tvOriginalPrice.setVisibility(View.INVISIBLE);
             tvDiscount.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(book.getReducedPrice())));
-            tvOriginalPrice.setText(String.format("%sđ", AppUtil.convertNumber(book.getOriginalPrice())));
+            tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getReducedPrice())));
+            tvOriginalPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            tvDiscount.setText(String.format("-%d%%", book.getDiscountPercentage()));
+            tvDiscount.setText(String.format("-%d%%", dataBook.getDiscountPercentage()));
         }
-        tvNameBook.setText(book.getName());
-        barRatingBook.setRating(book.getTotalRatingScore());
-        tvTotalRating.setText(String.format("%.1f", book.getTotalRatingScore()));
-        tvTotalNumberPeopleRating.setText(String.format("(%s)", book.getTotalRatings()));
-        tvQuantitySold.setText(String.format("%d %s", book.getSold(), getString(R.string.sold)));
-        if (book.getAmount() == 0){
+        tvNameBook.setText(dataBook.getName());
+        barRatingBook.setRating(dataBook.getTotalRatingScore());
+        tvTotalRating.setText(String.format("%.1f", dataBook.getTotalRatingScore()));
+        tvTotalNumberPeopleRating.setText(String.format("(%s)", dataBook.getTotalRatings()));
+        tvQuantitySold.setText(String.format("%d %s", dataBook.getSold(), getString(R.string.sold)));
+        if (dataBook.getAmount() == 0){
             tvInStockOrNot.setText(getString(R.string.out_of_stock));
             tvInStockOrNot.setTextColor(Color.parseColor("#BDBDBD"));
         } else {
             tvInStockOrNot.setText(getString(R.string.in_stock));
         }
-        Picasso.get().load(publisher.getLogo()).into(ivLogoPublisher);
-        tvShopName.setText(publisher.getName());
-        tvShopLocation.setText(publisher.getLocation());
-        if (publisher.getReply() < 60)
-            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), publisher.getReply(), getString(R.string.minute)));
+        Picasso.get().load(dataPublisher.getLogo()).into(ivLogoPublisher);
+        tvShopName.setText(dataPublisher.getName());
+        tvShopLocation.setText(dataPublisher.getLocation());
+        if (dataPublisher.getReply() < 60)
+            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
         else
-            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), (int) publisher.getReply() / 60, getString(R.string.minute)));
-        tvShopRating.setText(String.format("%.1f", publisher.getRating()));
-        if (AppUtil.numDays(publisher.getWorked()) < 30)
-            tvShopWorked.setText(String.format("%d %s", publisher.getWorked(), getString(R.string.day)));
-        else if (AppUtil.numDays(publisher.getWorked()) < 365)
-            tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(publisher.getWorked())/30, getString(R.string.month)));
+            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), (int) dataPublisher.getReply() / 60, getString(R.string.minute)));
+        tvShopRating.setText(String.format("%.1f", dataPublisher.getRating()));
+        if (AppUtil.numDays(dataPublisher.getWorked()) < 30)
+            tvShopWorked.setText(String.format("%d %s", dataPublisher.getWorked(), getString(R.string.day)));
+        else if (AppUtil.numDays(dataPublisher.getWorked()) < 365)
+            tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked())/30, getString(R.string.month)));
         else
-            tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(publisher.getWorked()) / 365, getString(R.string.year)));
-        if (AppUtil.numDays(book.getDatePosted()) < 30) {
-            tvDatePosted.setText(String.format("%d %s", AppUtil.numDays(book.getDatePosted()), getString(R.string.day)));
+            tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked()) / 365, getString(R.string.year)));
+        if (AppUtil.numDays(dataBook.getDatePosted()) < 30) {
+            tvDatePosted.setText(String.format("%d %s", AppUtil.numDays(dataBook.getDatePosted()), getString(R.string.day)));
             layoutUpcoming.setVisibility(View.VISIBLE);
         }
-        else if (AppUtil.numDays(book.getDatePosted()) < 365) {
-            tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(book.getDatePosted()) / 30, getString(R.string.month)));
+        else if (AppUtil.numDays(dataBook.getDatePosted()) < 365) {
+            tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(dataBook.getDatePosted()) / 30, getString(R.string.month)));
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
         else {
-            tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(book.getDatePosted())/365, getString(R.string.year)));
+            tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(dataBook.getDatePosted())/365, getString(R.string.year)));
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
     }
@@ -243,9 +239,9 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     public void setAboutDetails(){
         tvDescribe.setMovementMethod(LinkMovementMethod.getInstance());
         tvDescribe.setText(Html.fromHtml(describe, new URLImagePaser(BookDetailActivity.this, tvDescribe), null));
-        detailAdapter = new BookDetailAdapter(lists, this);
-        listDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        listDetails.setAdapter(detailAdapter);
+        detailAdapter = new BookDetailAdapter(listDetails, this);
+        viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        viewListDetails.setAdapter(detailAdapter);
     }
 
     @Override

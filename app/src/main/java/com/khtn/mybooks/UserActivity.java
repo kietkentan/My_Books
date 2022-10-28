@@ -69,10 +69,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         if (Common.currentUser.getBackground() != null)
             Picasso.get().load(Common.currentUser.getBackground()).into(ivBackground);
-        else {
+        else
             ivBackground.setBackgroundResource(R.drawable.default_background);
-            ivBackground.setAlpha(0.7F);
-        }
+        ivBackground.setAlpha(0.7F);
         tvName.setText(Common.currentUser.getName());
         tvName.setTextColor(Color.parseColor("#FFFFFFFF"));
     }

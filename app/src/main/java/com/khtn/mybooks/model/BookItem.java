@@ -10,11 +10,11 @@ public class BookItem {
     private String name; // tên sách
     private String datePosted;
     private String id;
-    private String nhaxuatban;
+    private String publisher;
 
     public BookItem() {}
 
-    public BookItem(List<String> images, int originalPrice, int discountPercentage, int amount, String name, String datePosted, String id, String nhaxuatban) {
+    public BookItem(List<String> images, int originalPrice, int discountPercentage, int amount, String name, String datePosted, String id, String publisher) {
         this.images = images;
         this.originalPrice = originalPrice;
         this.discountPercentage = discountPercentage;
@@ -22,7 +22,7 @@ public class BookItem {
         this.name = name;
         this.datePosted = datePosted;
         this.id = id;
-        this.nhaxuatban = nhaxuatban;
+        this.publisher = publisher;
     }
 
     public List<String> getImage() {
@@ -90,11 +90,11 @@ public class BookItem {
         this.id = id;
     }
 
-    public String getNhaxuatban() {
-        return nhaxuatban;
+    public String getPublisher() {
+        return publisher;
     }
 
-    public void setNhaxuatban(String nhaxuatban) {
-        this.nhaxuatban = nhaxuatban;
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 }
