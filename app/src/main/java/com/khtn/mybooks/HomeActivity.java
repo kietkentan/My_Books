@@ -185,10 +185,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     // because the user page is incomplete, it should be placed here temporarily
     public void signOut(){
+        Common.clearUser(HomeActivity.this);
         if (Common.modeLogin == 1){
             Common.currentUser = null;
             Common.modeLogin = 0;
-            Toast.makeText(HomeActivity.this, "SignOut", Toast.LENGTH_SHORT).show();
         } else if (Common.modeLogin == 2) {
             gsc.signOut()
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -196,14 +196,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         public void onComplete(@NonNull Task<Void> task) {
                             Common.currentUser = null;
                             Common.modeLogin = 0;
-                            Toast.makeText(HomeActivity.this, "SignOut", Toast.LENGTH_SHORT).show();
                         }
                     });
         } else if (Common.modeLogin == 3) {
             FirebaseAuth.getInstance().signOut();
             Common.currentUser = null;
             Common.modeLogin = 0;
-            Toast.makeText(HomeActivity.this, "SignOut", Toast.LENGTH_SHORT).show();
         }
     }
 }

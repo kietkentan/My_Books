@@ -153,6 +153,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                         if (user.getPassword().equals(edtPassword.getText().toString())) {
                             Common.currentUser = user;
                             Common.modeLogin = 1;
+                            Common.saveUser(SignInActivity.this);
+                            Common.currentUser.setPassword(null);
                             Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);

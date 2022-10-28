@@ -15,4 +15,9 @@
         <item name="cornerSize">50%</item>
         <item name="cornerFamily">rounded</item>
     </style>
+
+    <style name="Item_My_Order">
+        <item name="cornerSize">30%</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
 </resources>

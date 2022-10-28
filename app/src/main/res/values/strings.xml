@@ -101,12 +101,24 @@
     <string name="type">Loại</string>
     <string name="describe">Mô tả</string>
     <string name="position">0/0</string>
+    <string name="num_default">0</string>
     <string name="setting">Cài đặt</string>
     <string name="language">Ngôn ngữ</string>
     <string name="policy">Chính sách</string>
     <string name="wellcome">Chào mừng bạn đến với My Books!</string>
     <string name="press_back_again_to_exit">Nhấn Back một lần nữa để thoát</string>
     <string name="hotline">0352335288</string>
+    <string name="my_order">Đơn hàng của tôi</string>
+    <string name="view_history_order">Xem lịch sử</string>
+    <string name="wait_confirm">Chờ xác nhận</string>
+    <string name="wait_for_shipping">Chờ vận chuyển</string>
+    <string name="in_transit">Đang vận chuyển</string>
+    <string name="delivered">Đã vận chuyển</string>
+    <string name="package_return">Đổi trả</string>
+    <string name="recently_viewed">Xem gần đây</string>
+    <string name="my_review">Đánh giá của tôi</string>
+    <string name="shop_followed">Shop theo dõi</string>
+    <string name="my_information">Thông tin của tôi</string>
     <string-array name="lists_language">
         <item>Tiếng Việt</item>
         <item>Tiếng Anh</item>

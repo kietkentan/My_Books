@@ -311,7 +311,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
-                User user = new User(personPhoto.toString(), personName, null, personId, personEmail, null);
+                User user = new User(personPhoto.toString(), null, personName, null, personId, personEmail, null);
 
                 databaseReference.child("google").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -320,6 +320,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                             databaseReference.child("google").child(personId).getRef().setValue(user);
                         Common.currentUser = user;
                         Common.modeLogin = 2;
+                        Common.saveUser(SignInSignUpActivity.this);
                         Intent intent = new Intent(SignInSignUpActivity.this, HomeActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
@@ -354,7 +355,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                             String personId = user.getUid();
                             Uri personPhoto = user.getPhotoUrl();
                             String personPhone = user.getPhoneNumber();
-                            User user_fb = new User(personPhoto.toString(), personName, null, personId, personEmail, personPhone);
+                            User user_fb = new User(personPhoto.toString(), null, personName, null, personId, personEmail, personPhone);
                             databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -362,6 +363,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                                         databaseReference.child("facebook").child(personId).getRef().setValue(user_fb);
                                     Common.currentUser = user_fb;
                                     Common.modeLogin = 3;
+                                    Common.saveUser(SignInSignUpActivity.this);
                                     Intent intent = new Intent(SignInSignUpActivity.this, HomeActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                     startActivity(intent);

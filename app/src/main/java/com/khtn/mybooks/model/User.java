@@ -2,6 +2,7 @@ package com.khtn.mybooks.model;
 
 public class User {
     private String avatar;
+    private String background;
     private String name;
     private String password;
     private String id;
@@ -10,8 +11,9 @@ public class User {
 
     public User() {}
 
-    public User(String avatar, String name, String password, String id, String email, String phone) {
+    public User(String avatar, String background, String name, String password, String id, String email, String phone) {
         this.avatar = avatar;
+        this.background = background;
         this.name = name;
         this.password = password;
         this.id = id;
@@ -25,6 +27,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getBackground() {
+        return background;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
     }
 
     public String getName() {

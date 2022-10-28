@@ -77,7 +77,7 @@ public class CompleteRegistrationActivity extends AppCompatActivity implements V
 
     private void createAccount(){
         String uniqueID = UUID.randomUUID().toString();
-        User user = new User(null, edtEnterName.getText().toString(), edtEnterPassword.getText().toString(),
+        User user = new User(null, null, edtEnterName.getText().toString(), edtEnterPassword.getText().toString(),
                     uniqueID, email, phoneNumber);
         databaseReference.child("mybooks").child(uniqueID).getRef().setValue(user);
 
