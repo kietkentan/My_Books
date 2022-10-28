@@ -1,0 +1,48 @@
+package com.khtn.mybooks.adapter;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.khtn.mybooks.R;
+import com.khtn.mybooks.model.PublisherItem;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+public class PublisherItemAdapter extends RecyclerView.Adapter<PublisherItemAdapter.ViewHolder> {
+    private List<PublisherItem> publisherList;
+
+    public PublisherItemAdapter(List<PublisherItem> publisherList) {
+        this.publisherList = publisherList;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.publisher_item, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Picasso.get().load(publisherList.get(position).getLogo()).into(holder.img);
+    }
+
+    @Override
+    public int getItemCount() {
+        return publisherList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView img;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            img = itemView.findViewById(R.id.img_publisher);
+        }
+    }
+}

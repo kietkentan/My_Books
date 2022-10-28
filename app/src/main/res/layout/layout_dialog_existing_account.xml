@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:layout_constraintCircleRadius="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/existing_account_for_number_phone"
+        android:textSize="17sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold|normal"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login_with_phone_number"
+        android:gravity="center"
+        android:textSize="15sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_close_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Đóng"
+            android:textAllCaps="false"
+            android:textColor="@color/reduced_price"
+            android:textSize="17sp"
+            android:background="@drawable/custom_button_continue_hidden"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_accept_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/accept"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="17sp"
+            android:background="@drawable/custom_button_continue_appear"/>
+    </LinearLayout>
+</LinearLayout>

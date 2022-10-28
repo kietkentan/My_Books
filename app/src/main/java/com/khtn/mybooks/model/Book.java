@@ -1,0 +1,120 @@
+package com.khtn.mybooks.model;
+
+import java.util.List;
+
+public class Book {
+    private List<String> images; // ảnh review
+    private int originalPrice; // giá gốc
+    private int discountPercentage; // % giảm
+    private int amount; // số lượng tồn kho
+    private int sold;
+    private int totalRatings;
+    private float totalRatingScore;
+    private String datePosted;
+    private String name; // tên sách
+    private String id;
+
+    public Book() {}
+
+    public Book(List<String> images, int originalPrice, int discountPercentage, int amount, int sold, int totalRatings, float totalRatingScore, String name, String datePosted, String id) {
+        this.images = images;
+        this.originalPrice = originalPrice;
+        this.discountPercentage = discountPercentage;
+        this.amount = amount;
+        this.sold = sold;
+        this.totalRatings = totalRatings;
+        this.totalRatingScore = totalRatingScore;
+        this.datePosted = datePosted;
+        this.name = name;
+        this.id = id;
+    }
+
+    public List<String> getImage() {
+        return images;
+    }
+
+    public void setImage(List<String> images) {
+        this.images = images;
+    }
+
+    public int getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(int originalPrice) {
+        this.originalPrice = originalPrice;
+    }
+
+    public int getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(int discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
+    }
+
+    public int getTotalRatings() {
+        return totalRatings;
+    }
+
+    public void setTotalRatings(int totalRatings) {
+        this.totalRatings = totalRatings;
+    }
+
+    public float getTotalRatingScore() {
+        return totalRatingScore;
+    }
+
+    public void setTotalRatingScore(float totalRatingScore) {
+        this.totalRatingScore = totalRatingScore;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(String datePosted) {
+        this.datePosted = datePosted;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getReducedPrice() {
+        if (this.discountPercentage == 0)
+            return 0;
+        else {
+            return this.originalPrice - this.originalPrice*this.discountPercentage/100;
+
+        }
+    }
+}

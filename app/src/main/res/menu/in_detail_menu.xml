@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/m_login_logout"
+        android:title="@string/login"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/m_home_page"
+        android:title="@string/home"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/m_share"
+        android:title="@string/share"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/m_my_account"
+        android:title="@string/my_account"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/m_help"
+        android:title="@string/help"
+        app:showAsAction="never"/>
+</menu>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:entries="@array/lists_language"
+        android:entryValues="@array/lists_language"
+        android:title="@string/language"
+        android:key="setting_language"
+        android:summary="Vietnamese"/>
+
+    <Preference
+        android:title="@string/policy"
+        android:key="setting_policy"/>
+
+    <Preference
+        android:title="@string/help"
+        android:key="setting_help"/>
+</PreferenceScreen>
