@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +44,12 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         holder.tvName.setText(bookItemList.get(position).getName());
         Picasso.get().load(bookItemList.get(position).getImage().get(0)).into(holder.ivItemReview);
 
-        if (bookItemList.get(position).getDiscountPercentage() == 0){
+        if (bookItemList.get(position).getDiscount() == 0){
             holder.tvOriginalPrice.setText(AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice()) + "đ");
             holder.layoutDiscount.setVisibility(View.INVISIBLE);
             holder.tvReducedPrice.setVisibility(View.INVISIBLE);
         } else {
-            holder.tvDiscount.setText("-" + bookItemList.get(position).getDiscountPercentage() + "%");
+            holder.tvDiscount.setText("-" + bookItemList.get(position).getDiscount() + "%");
             holder.tvOriginalPrice.setText(AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice()) + "đ");
             holder.tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.tvOriginalPrice.setTextColor(Color.parseColor("#BDBDBD"));

@@ -6,16 +6,18 @@ public class Publisher {
     private String location;
     private Float rating;
     private String worked;
+    private String id;
     private int reply;
 
     public Publisher() {}
 
-    public Publisher(String logo, String name, String location, Float rating, String worked, int reply) {
+    public Publisher(String logo, String name, String location, Float rating, String worked, String id, int reply) {
         this.logo = logo;
         this.name = name;
         this.location = location;
         this.rating = rating;
         this.worked = worked;
+        this.id = id;
         this.reply = reply;
     }
 
@@ -57,6 +59,14 @@ public class Publisher {
 
     public void setWorked(String worked) {
         this.worked = worked;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getReply() {

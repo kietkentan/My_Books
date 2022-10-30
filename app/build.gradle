@@ -55,7 +55,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.3.0'
     // Login Facebook
     implementation 'com.facebook.android:facebook-android-sdk:[8,9)'
-
+    // Save information login
     implementation 'androidx.preference:preference:1.2.0'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
+    // SQLiteDatabase
+    implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 }

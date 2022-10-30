@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.Interface.RecyclerViewClickInterface;
 import com.khtn.mybooks.adapter.BookItemAdapter;
 import com.khtn.mybooks.adapter.PublisherItemAdapter;
 import com.khtn.mybooks.common.Common;
@@ -36,9 +37,11 @@ import com.khtn.mybooks.model.BookItem;
 import com.khtn.mybooks.model.PublisherItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener{
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, RecyclerViewClickInterface {
     private ImageView ig;
     private ShapeableImageView ivGoUserPage;
     private RecyclerView rcPublisher;
@@ -52,14 +55,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private BookItemAdapter bookItemAdapter2;
 
     private List<PublisherItem> publisherList;
-    private List<BookItem> bookList;
+    private Map<String, List<BookItem>> bookList;
+    private List<BookItem> listBookItem;
 
     private FirebaseDatabase database;
     private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
 
     private boolean isBackPressedOnce = false;
-    private String idPublisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ig.setOnClickListener(this);
 
         publisherList = new ArrayList<>();
-        bookList = new ArrayList<>();
+        bookList = new HashMap<>();
+        listBookItem = new ArrayList<>();
 
         ivGoUserPage.setOnClickListener(this);
 
@@ -117,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setRecyclerViewPublisher(){
         rcPublisher.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        publisherItemAdapter = new PublisherItemAdapter(publisherList);
+        publisherItemAdapter = new PublisherItemAdapter(publisherList, this);
         rcPublisher.setAdapter(publisherItemAdapter);
     }
 
@@ -125,10 +129,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         rcBestSellerBooks.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         rcNewBooks.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
-        bookItemAdapter = new BookItemAdapter(this, bookList);
-        rcBestSellerBooks.setAdapter(bookItemAdapter);
-        bookItemAdapter2 = new BookItemAdapter(this, bookList);
-        rcNewBooks.setAdapter(bookItemAdapter2);
+
     }
 
     @Override
@@ -139,7 +140,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             signOut();
     }
 
-    public void loadData(){
+    private void loadData(){
         database.getReference("publisher").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -147,25 +148,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     PublisherItem item = dataSnapshot.getValue(PublisherItem.class);
                     publisherList.add(item);
                 }
-                idPublisher = publisherList.get(1).getId();
                 publisherItemAdapter.notifyDataSetChanged();
-
-                database.getReference("book").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                            BookItem item = dataSnapshot.getValue(BookItem.class);
-                            bookList.add(item);
-                        }
-                        bookItemAdapter.notifyDataSetChanged();
-                        bookItemAdapter2.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                loadBook(publisherList.get(0).getId());
             }
 
             @Override
@@ -175,6 +159,38 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void loadBook(String idPublisher){
+        if (bookList.containsKey(idPublisher))
+            changeData(idPublisher);
+        else {
+            database.getReference("book").orderByChild("publisher").equalTo(idPublisher).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<BookItem> newList = new ArrayList<>();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        BookItem item = dataSnapshot.getValue(BookItem.class);
+                        newList.add(item);
+                    }
+                    bookList.put(idPublisher, newList);
+                    changeData(idPublisher);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    private void changeData(String idPublisher){
+        listBookItem = bookList.get(idPublisher);
+        bookItemAdapter = new BookItemAdapter(this, listBookItem);
+        rcBestSellerBooks.setAdapter(bookItemAdapter);
+        bookItemAdapter2 = new BookItemAdapter(this, listBookItem);
+        rcNewBooks.setAdapter(bookItemAdapter2);
+    }
+
     private void startUserPage(){
         Intent intent = new Intent(HomeActivity.this, UserActivity.class);
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(HomeActivity.this, ivGoUserPage, ViewCompat.getTransitionName(ivGoUserPage));
@@ -182,7 +198,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // because the user page is incomplete, it should be placed here temporarily
-    public void signOut(){
+    private void signOut(){
         Common.clearUser(HomeActivity.this);
         if (Common.modeLogin == 1){
             Common.currentUser = null;
@@ -201,5 +217,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Common.currentUser = null;
             Common.modeLogin = 0;
         }
+    }
+
+    @Override
+    public void OnItemClick(String idPublisher) {
+        loadBook(idPublisher);
     }
 }

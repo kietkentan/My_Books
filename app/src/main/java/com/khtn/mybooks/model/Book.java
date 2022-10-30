@@ -5,7 +5,7 @@ import java.util.List;
 public class Book {
     private List<String> images; // ảnh review
     private int originalPrice; // giá gốc
-    private int discountPercentage; // % giảm
+    private int discount; // % giảm
     private int amount; // số lượng tồn kho
     private int sold;
     private int totalRatings;
@@ -19,7 +19,7 @@ public class Book {
     public Book(List<String> images, int originalPrice, int discountPercentage, int amount, int sold, int totalRatings, float totalRatingScore, String name, String datePosted, String id) {
         this.images = images;
         this.originalPrice = originalPrice;
-        this.discountPercentage = discountPercentage;
+        this.discount = discountPercentage;
         this.amount = amount;
         this.sold = sold;
         this.totalRatings = totalRatings;
@@ -45,12 +45,12 @@ public class Book {
         this.originalPrice = originalPrice;
     }
 
-    public int getDiscountPercentage() {
-        return discountPercentage;
+    public int getDiscount() {
+        return discount;
     }
 
-    public void setDiscountPercentage(int discountPercentage) {
-        this.discountPercentage = discountPercentage;
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 
     public int getAmount() {
@@ -110,10 +110,10 @@ public class Book {
     }
 
     public int getReducedPrice() {
-        if (this.discountPercentage == 0)
+        if (this.discount == 0)
             return 0;
         else {
-            return this.originalPrice - this.originalPrice*this.discountPercentage/100;
+            return this.originalPrice - this.originalPrice*this.discount /100;
 
         }
     }

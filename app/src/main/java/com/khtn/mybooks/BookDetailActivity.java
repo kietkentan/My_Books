@@ -2,6 +2,7 @@ package com.khtn.mybooks;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -26,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -37,7 +39,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.adapter.BookDetailAdapter;
 import com.khtn.mybooks.adapter.ListImageAdapter;
+import com.khtn.mybooks.databases.DataBase;
 import com.khtn.mybooks.model.Book;
+import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Publisher;
 import com.squareup.picasso.Picasso;
 
@@ -46,6 +50,7 @@ import java.util.List;
 
 public class BookDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageView ivMenu;
+    private ImageView ivCart;
     private ViewPager2 rcImages;
     private TextView tvPrice;
     private TextView tvOriginalPrice;
@@ -69,6 +74,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private ShapeableImageView ivLogoPublisher;
     private RecyclerView viewListDetails;
     private FrameLayout layoutUpcoming;
+    private AppCompatButton btnAddCart;
 
     private ListImageAdapter imageAdapter;
     private BookDetailAdapter detailAdapter;
@@ -89,8 +95,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         init();
 
         getData();
-        ivMenu.setOnClickListener(this);
-        ibBack.setOnClickListener(this);
+        ivMenu.setOnClickListener(BookDetailActivity.this);
+        ivCart.setOnClickListener(BookDetailActivity.this);
+        ibBack.setOnClickListener(BookDetailActivity.this);
+        btnAddCart.setOnClickListener(BookDetailActivity.this);
     }
 
     public void getData(){
@@ -151,6 +159,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         listDetails = new ArrayList<>();
 
         ivMenu = (ImageView) findViewById(R.id.iv_menu_in_detail);
+        ivCart = (ImageView) findViewById(R.id.iv_shopping_cart);
         rcImages = (ViewPager2) findViewById(R.id.list_img);
         tvPrice = (TextView) findViewById(R.id.tv_price_book);
         tvOriginalPrice = (TextView) findViewById(R.id.tv_original_price_book);
@@ -174,6 +183,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         ivLogoPublisher = (ShapeableImageView) findViewById(R.id.iv_avatar_publisher);
         viewListDetails = (RecyclerView) findViewById(R.id.list_details);
         layoutUpcoming = (FrameLayout) findViewById(R.id.layout_upcoming);
+        btnAddCart = (AppCompatButton) findViewById(R.id.btn_add_cart);
     }
 
     public void setDetails(){
@@ -186,7 +196,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                 tvPosition.setText(String.format("%d/%d", position + 1, dataBook.getImage().size()));
             }
         });
-        if (dataBook.getDiscountPercentage() == 0){
+        if (dataBook.getDiscount() == 0){
             tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvPrice.setTextColor(Color.parseColor("#FF000000"));
             tvOriginalPrice.setVisibility(View.INVISIBLE);
@@ -195,7 +205,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getReducedPrice())));
             tvOriginalPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            tvDiscount.setText(String.format("-%d%%", dataBook.getDiscountPercentage()));
+            tvDiscount.setText(String.format("-%d%%", dataBook.getDiscount()));
         }
         tvNameBook.setText(dataBook.getName());
         barRatingBook.setRating(dataBook.getTotalRatingScore());
@@ -248,8 +258,17 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         if (view.getId() == R.id.iv_menu_in_detail)
             showMenuPopup();
+        if (view.getId() == R.id.iv_shopping_cart)
+            startCart();
         if (view.getId() == R.id.ib_exit_detail)
             finish();
+        if (view.getId() == R.id.btn_add_cart)
+            addCart();
+    }
+
+    public void startCart(){
+        Intent intent = new Intent(BookDetailActivity.this, CartActivity.class);
+        startActivity(intent);
     }
 
     public void showMenuPopup(){
@@ -262,6 +281,19 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                 return false;
             }
         });
+    }
+
+    public void addCart(){
+        new DataBase(BookDetailActivity.this).addCart(new Order(
+                dataBook.getId(),
+                dataBook.getName(),
+                dataBook.getImage().get(0),
+                dataPublisher.getId(),
+                1,
+                dataBook.getOriginalPrice(),
+                dataBook.getDiscount()
+        ));
+        Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
     }
 
     public class URLImagePaser implements Html.ImageGetter {
