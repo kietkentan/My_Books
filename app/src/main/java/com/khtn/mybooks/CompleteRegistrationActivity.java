@@ -3,6 +3,7 @@ package com.khtn.mybooks;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -61,10 +62,11 @@ public class CompleteRegistrationActivity extends AppCompatActivity implements V
 
     public void countdownBackToLogin(){
         CountDownTimer countDownTimer = new CountDownTimer(3*1000, 1000) {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onTick(long l) {
                 long remindSec = l/1000;
-                tvComplete.setText(getString(R.string.return_login_page) + " " + remindSec%60 + "s");
+                tvComplete.setText(String.format("%s %ds", getString(R.string.return_login_page), remindSec % 60));
             }
 
             @Override

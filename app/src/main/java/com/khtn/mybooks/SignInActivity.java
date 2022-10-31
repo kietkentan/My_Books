@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.User;
 
+import java.util.Objects;
+
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
     private TextView tvPleaseEnterPassword;
     private TextView tvEmailOrPhoneNumber;
@@ -147,10 +149,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                    if (dataSnapshot.child("phone").getValue(String.class).equals(strUser)
-                            || dataSnapshot.child("email").getValue(String.class).equals(strUser)) {
+                    if (Objects.requireNonNull(dataSnapshot.child("phone").getValue(String.class)).equals(strUser)
+                            || Objects.requireNonNull(dataSnapshot.child("email").getValue(String.class)).equals(strUser)) {
                         User user = dataSnapshot.getValue(User.class);
-                        if (user.getPassword().equals(edtPassword.getText().toString())) {
+                        if (Objects.requireNonNull(user).getPassword().equals(edtPassword.getText().toString())) {
                             Common.currentUser = user;
                             Common.modeLogin = 1;
                             Common.saveUser(SignInActivity.this);

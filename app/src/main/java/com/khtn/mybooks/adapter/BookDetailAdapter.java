@@ -15,8 +15,8 @@ import com.khtn.mybooks.R;
 import java.util.List;
 
 public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.ViewHolder> {
-    private List<List<String>> list;
-    private Context context;
+    private final List<List<String>> list;
+    private final Context context;
 
     public BookDetailAdapter(List<List<String>> list, Context context) {
         this.list = list;
@@ -26,7 +26,7 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
     @NonNull
     @Override
     public BookDetailAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new BookDetailAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_view_detail, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_view_detail, parent, false));
     }
 
     @Override
@@ -57,14 +57,14 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDetailName;
         TextView tvDetailAbout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvDetailName = (TextView) itemView.findViewById(R.id.tv_detail_name);
-            tvDetailAbout = (TextView) itemView.findViewById(R.id.tv_detail_about);
+            tvDetailName = itemView.findViewById(R.id.tv_detail_name);
+            tvDetailAbout = itemView.findViewById(R.id.tv_detail_about);
         }
     }
 }

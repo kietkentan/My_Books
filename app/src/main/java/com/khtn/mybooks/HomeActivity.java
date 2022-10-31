@@ -7,13 +7,14 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,10 +27,9 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.Interface.RecyclerViewClickInterface;
+import com.khtn.mybooks.Interface.ViewPublisherClickInterface;
 import com.khtn.mybooks.adapter.BookItemAdapter;
 import com.khtn.mybooks.adapter.PublisherItemAdapter;
 import com.khtn.mybooks.common.Common;
@@ -41,12 +41,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, RecyclerViewClickInterface {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ViewPublisherClickInterface {
     private ImageView ig;
     private ShapeableImageView ivGoUserPage;
     private RecyclerView rcPublisher;
     private RecyclerView rcBestSellerBooks;
     private RecyclerView rcNewBooks;
+    private LinearLayout layoutCart;
     private ProgressBar progressBarLoadData;
     private EditText edtNoticeChat;
 
@@ -59,7 +60,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private List<BookItem> listBookItem;
 
     private FirebaseDatabase database;
-    private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
 
     private boolean isBackPressedOnce = false;
@@ -70,13 +70,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_home);
 
         init();
-        ig.setOnClickListener(this);
 
         publisherList = new ArrayList<>();
         bookList = new HashMap<>();
         listBookItem = new ArrayList<>();
 
-        ivGoUserPage.setOnClickListener(this);
+        ivGoUserPage.setOnClickListener(HomeActivity.this);
+        layoutCart.setOnClickListener(HomeActivity.this);
+        ig.setOnClickListener(HomeActivity.this);
 
         // checking network
         if (AppUtil.isNetworkAvailable(HomeActivity.this)) {
@@ -97,16 +98,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
         isBackPressedOnce = true;
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isBackPressedOnce = false;
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> isBackPressedOnce = false, 2000);
     }
 
     public void init(){
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
         database = FirebaseDatabase.getInstance();
 
@@ -115,6 +111,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         rcPublisher = (RecyclerView) findViewById(R.id.rec_publishers);
         rcBestSellerBooks = (RecyclerView) findViewById(R.id.rec_bestSellers);
         rcNewBooks = (RecyclerView) findViewById(R.id.rec_news);
+        layoutCart = (LinearLayout) findViewById(R.id.layout_cart_page);
         progressBarLoadData = (ProgressBar) findViewById(R.id.progress_home);
         edtNoticeChat = (EditText) findViewById(R.id.notice_chat);
     }
@@ -138,10 +135,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startUserPage();
         if (view.getId() == R.id.imageView)
             signOut();
+        if (view.getId() == R.id.layout_cart_page)
+            startCart();
     }
 
     private void loadData(){
         database.getReference("publisher").addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()) {
@@ -205,18 +205,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Common.modeLogin = 0;
         } else if (Common.modeLogin == 2) {
             gsc.signOut()
-                    .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Common.currentUser = null;
-                            Common.modeLogin = 0;
-                        }
+                    .addOnCompleteListener(this, task -> {
+                        Common.currentUser = null;
+                        Common.modeLogin = 0;
                     });
         } else if (Common.modeLogin == 3) {
             FirebaseAuth.getInstance().signOut();
             Common.currentUser = null;
             Common.modeLogin = 0;
         }
+    }
+
+    private void startCart(){
+        Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+        startActivity(intent);
     }
 
     @Override

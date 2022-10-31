@@ -123,7 +123,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
                             .setPhoneNumber("+84" + edtEnterUser.getText().toString())
                             .setTimeout(60L, TimeUnit.SECONDS)
                             .setActivity(ForgetPasswordActivity.this)
-                            .setForceResendingToken(AppUtil.mforceResendingToken)
+                            .setForceResendingToken(AppUtil.mForceResendingToken)
                             .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                                 @Override
                                 public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -142,7 +142,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
                                 public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                                     progressBar.setVisibility(View.GONE);
                                     btnGetPassword.setVisibility(View.VISIBLE);
-                                    AppUtil.mforceResendingToken = forceResendingToken;
+                                    AppUtil.mForceResendingToken = forceResendingToken;
 
                                     Intent intent = new Intent(ForgetPasswordActivity.this, OTPVerificationActivity.class);
                                     Bundle bundle = new Bundle();

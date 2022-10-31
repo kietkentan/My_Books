@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +24,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHolder>{
-    private List<BookItem> bookItemList;
-    private Context context;
+    private final List<BookItem> bookItemList;
+    private final Context context;
 
     public BookItemAdapter(Context context, List<BookItem> bookItemList) {
         this.context = context;
@@ -39,21 +38,22 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item, parent, false));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull BookItemAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tvName.setText(bookItemList.get(position).getName());
         Picasso.get().load(bookItemList.get(position).getImage().get(0)).into(holder.ivItemReview);
 
         if (bookItemList.get(position).getDiscount() == 0){
-            holder.tvOriginalPrice.setText(AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice()) + "đ");
+            holder.tvOriginalPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
             holder.layoutDiscount.setVisibility(View.INVISIBLE);
             holder.tvReducedPrice.setVisibility(View.INVISIBLE);
         } else {
-            holder.tvDiscount.setText("-" + bookItemList.get(position).getDiscount() + "%");
-            holder.tvOriginalPrice.setText(AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice()) + "đ");
+            holder.tvDiscount.setText(String.format("-%d%%", bookItemList.get(position).getDiscount()));
+            holder.tvOriginalPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
             holder.tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.tvOriginalPrice.setTextColor(Color.parseColor("#BDBDBD"));
-            holder.tvReducedPrice.setText(AppUtil.convertNumber(bookItemList.get(position).getReducedPrice()) + "đ");
+            holder.tvReducedPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getReducedPrice())));
         }
         if (!(bookItemList.get(position).getAmount() == 0))
             holder.layoutOutOfStock.setVisibility(View.INVISIBLE);
@@ -61,14 +61,11 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         if (AppUtil.numDays(bookItemList.get(position).getDatePosted()) >= 30)
             holder.layoutUpcoming.setVisibility(View.INVISIBLE);
         else holder.layoutUpcoming.setVisibility(View.VISIBLE);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, BookDetailActivity.class);
-                intent.putExtra("publisher", bookItemList.get(position).getPublisher());
-                intent.putExtra("id", bookItemList.get(position).getId());
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, BookDetailActivity.class);
+            intent.putExtra("publisher", bookItemList.get(position).getPublisher());
+            intent.putExtra("id", bookItemList.get(position).getId());
+            context.startActivity(intent);
         });
     }
 
@@ -77,7 +74,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         return bookItemList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivItemReview;
         TextView tvName;
         TextView tvOriginalPrice;

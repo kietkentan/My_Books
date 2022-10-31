@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;

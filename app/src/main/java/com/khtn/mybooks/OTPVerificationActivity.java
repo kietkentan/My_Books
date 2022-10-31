@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,8 +24,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -138,7 +135,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
                 .setPhoneNumber("+84" + phoneNumber.replaceFirst("0", ""))
                 .setTimeout(60L, TimeUnit.SECONDS)
                 .setActivity(OTPVerificationActivity.this)
-                .setForceResendingToken(AppUtil.mforceResendingToken)
+                .setForceResendingToken(AppUtil.mForceResendingToken)
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
@@ -156,7 +153,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
                         super.onCodeSent(s, forceResendingToken);
                         progressBar.setVisibility(View.GONE);
                         verificationId = s;
-                        AppUtil.mforceResendingToken = forceResendingToken;
+                        AppUtil.mForceResendingToken = forceResendingToken;
 
                         Toast.makeText(OTPVerificationActivity.this, R.string.resending, Toast.LENGTH_SHORT).show();
                         resetOTPInputs();
@@ -253,7 +250,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()){
-                        AppUtil.mforceResendingToken = null;
+                        AppUtil.mForceResendingToken = null;
                         if (isRegister)
                             startCreateUser();
                         else

@@ -1,5 +1,6 @@
 package com.khtn.mybooks;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -14,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AppUtil {
-    public static PhoneAuthProvider.ForceResendingToken mforceResendingToken;
+    public static PhoneAuthProvider.ForceResendingToken mForceResendingToken;
 
     public static boolean isNetworkAvailable(Context context){
         if (context == null) return false;
@@ -71,7 +72,7 @@ public class AppUtil {
     // number of days from "date" to present
     public static long numDays(String date){
         if (date == null) return 0;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date dateNow = new Date();
         Date datePosted = null;
         try {
@@ -79,7 +80,7 @@ public class AppUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        long days = dateNow.getTime() - datePosted.getTime();
+        long days = dateNow.getTime() - (datePosted != null ? datePosted.getTime() : 0);
         return days/(3600*1000*24);
     }
 

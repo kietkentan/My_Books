@@ -49,7 +49,7 @@ public class DataBase extends SQLiteAssetHelper {
 
     public void addCart(Order order){
         SQLiteDatabase database = getReadableDatabase();
-        String query = String.format("INSERT INTO OrderDetail(BookId, BookName, BookImage, PublisherId, BookQuantity, BookPrice, BookDiscount)" +
+        @SuppressLint("DefaultLocale") String query = String.format("INSERT INTO OrderDetail(BookId, BookName, BookImage, PublisherId, BookQuantity, BookPrice, BookDiscount)" +
                         " VALUES('%s', '%s', '%s', '%s', %d, %d, %d)",
                         order.getBookId(),
                         order.getBookName(),
@@ -67,10 +67,9 @@ public class DataBase extends SQLiteAssetHelper {
         database.execSQL(query);
     }
 
-    public void removeCarts(Order order){
+    public void removeCarts(String bookId){
         SQLiteDatabase database = getReadableDatabase();
-        Log.i("TAG_U", "removeCarts: " + order.getBookId());
-        String query = String.format("DELETE FROM OrderDetail WHERE BookId = '%s'", order.getBookId());
+        String query = String.format("DELETE FROM OrderDetail WHERE BookId = '%s'", bookId);
         database.execSQL(query);
     }
 }

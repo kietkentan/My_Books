@@ -76,9 +76,6 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private FrameLayout layoutUpcoming;
     private AppCompatButton btnAddCart;
 
-    private ListImageAdapter imageAdapter;
-    private BookDetailAdapter detailAdapter;
-
     public String id;
     public String publisher;
     private Book dataBook;
@@ -187,7 +184,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setDetails(){
-        imageAdapter = new ListImageAdapter(dataBook.getImage());
+        ListImageAdapter imageAdapter = new ListImageAdapter(dataBook.getImage());
         rcImages.setAdapter(imageAdapter);
         rcImages.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -249,7 +246,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     public void setAboutDetails(){
         tvDescribe.setMovementMethod(LinkMovementMethod.getInstance());
         tvDescribe.setText(Html.fromHtml(describe, new URLImagePaser(BookDetailActivity.this, tvDescribe), null));
-        detailAdapter = new BookDetailAdapter(listDetails, this);
+        BookDetailAdapter detailAdapter = new BookDetailAdapter(listDetails, this);
         viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         viewListDetails.setAdapter(detailAdapter);
     }

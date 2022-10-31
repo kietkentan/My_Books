@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/shopping_cart"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -144,22 +144,16 @@
                 app:layout_constraintStart_toEndOf="@+id/cb_check_all_cart"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
+            <ImageButton
+                android:id="@+id/ib_remove_cart"
+                android:layout_gravity="center"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:id="@+id/ib_remove_cart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageButton
-                    android:layout_gravity="center"
-                    android:layout_width="16dp"
-                    android:layout_height="20dp"
-                    android:background="@color/white"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_dustbin"/>
-            </FrameLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/white"
+                android:src="@drawable/ic_dustbin"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -191,7 +185,7 @@
                     android:id="@+id/textView7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/total"
                     app:layout_constraintStart_toStartOf="parent"
@@ -201,9 +195,10 @@
                     android:id="@+id/tv_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
+                    android:textSize="14sp"
                     android:textColor="@color/reduced_price"
                     android:text="@string/please_chose_product"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -220,7 +215,7 @@
                 android:textColor="@color/white"
                 android:textAllCaps="false"
                 android:textSize="17sp"
-                android:layout_marginHorizontal="10dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/custom_button_continue_appear"/>
         </LinearLayout>

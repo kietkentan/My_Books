@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ListImageAdapter extends RecyclerView.Adapter<ListImageAdapter.ViewHolder> {
-    private List<String> images;
+    private final List<String> images;
 
     public ListImageAdapter(List<String> images) {
         this.images = images;
@@ -36,7 +36,7 @@ public class ListImageAdapter extends RecyclerView.Adapter<ListImageAdapter.View
         return images.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPhoto;
 
         public ViewHolder(@NonNull View itemView) {

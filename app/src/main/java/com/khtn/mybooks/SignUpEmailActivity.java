@@ -162,24 +162,16 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         AppCompatButton btnClose = (AppCompatButton) dialog.findViewById(R.id.btn_close_dialog);
         AppCompatButton btnAccept = (AppCompatButton) dialog.findViewById(R.id.btn_accept_dialog);
 
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        btnClose.setOnClickListener(view -> dialog.dismiss());
 
-        btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                Intent intent = new Intent(SignUpEmailActivity.this, SignInActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("user", edtEnterPhoneNumber.getText().toString());
-                intent.putExtras(bundle);
-                startActivity(intent);
-                finish();
-            }
+        btnAccept.setOnClickListener(view -> {
+            dialog.dismiss();
+            Intent intent = new Intent(SignUpEmailActivity.this, SignInActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("user", edtEnterPhoneNumber.getText().toString());
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
         });
         dialog.show();
     }

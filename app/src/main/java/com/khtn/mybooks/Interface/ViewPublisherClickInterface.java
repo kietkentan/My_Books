@@ -1,5 +1,5 @@
 package com.khtn.mybooks.Interface;
 
-public interface RecyclerViewClickInterface {
+public interface ViewPublisherClickInterface {
     void OnItemClick(String idPublisher);
 }

@@ -52,6 +52,7 @@ import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.User;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class SignInSignUpActivity extends AppCompatActivity implements View.OnClickListener{
@@ -72,13 +73,10 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
 
     private DatabaseReference databaseReference;
 
-    // Google
-    private GoogleSignInOptions gso;
     private GoogleSignInClient gsc;
 
     // Facebook
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
     private CallbackManager callbackManager;
 
     @Override
@@ -123,7 +121,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void init(){
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        // Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
 
         callbackManager = CallbackManager.Factory.create();
@@ -311,9 +310,9 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
-                User user = new User(personPhoto.toString(), null, personName, null, personId, personEmail, null);
+                User user = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, null);
 
-                databaseReference.child("google").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.child("google").child(Objects.requireNonNull(personId)).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists())
@@ -350,12 +349,12 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            String personName = user.getDisplayName();
+                            String personName = Objects.requireNonNull(user).getDisplayName();
                             String personEmail = user.getEmail();
                             String personId = user.getUid();
                             Uri personPhoto = user.getPhotoUrl();
                             String personPhone = user.getPhoneNumber();
-                            User user_fb = new User(personPhoto.toString(), null, personName, null, personId, personEmail, personPhone);
+                            User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone);
                             databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {

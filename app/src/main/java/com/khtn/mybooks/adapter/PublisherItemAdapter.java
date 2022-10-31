@@ -1,8 +1,6 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.khtn.mybooks.Interface.RecyclerViewClickInterface;
+import com.khtn.mybooks.Interface.ViewPublisherClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.model.PublisherItem;
 import com.squareup.picasso.Picasso;
@@ -19,10 +17,10 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class PublisherItemAdapter extends RecyclerView.Adapter<PublisherItemAdapter.ViewHolder> {
-    private List<PublisherItem> publisherList;
-    private RecyclerViewClickInterface recyclerViewClickInterface;
+    private final List<PublisherItem> publisherList;
+    private final ViewPublisherClickInterface recyclerViewClickInterface;
 
-    public PublisherItemAdapter(List<PublisherItem> publisherList, RecyclerViewClickInterface recyclerViewClickInterface) {
+    public PublisherItemAdapter(List<PublisherItem> publisherList, ViewPublisherClickInterface recyclerViewClickInterface) {
         this.publisherList = publisherList;
         this.recyclerViewClickInterface = recyclerViewClickInterface;
     }
@@ -49,12 +47,7 @@ public class PublisherItemAdapter extends RecyclerView.Adapter<PublisherItemAdap
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.img_publisher);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    recyclerViewClickInterface.OnItemClick(publisherList.get(getAdapterPosition()).getId());
-                }
-            });
+            itemView.setOnClickListener(view -> recyclerViewClickInterface.OnItemClick(publisherList.get(getAdapterPosition()).getId()));
         }
     }
 }
