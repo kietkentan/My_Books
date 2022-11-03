@@ -3,10 +3,12 @@ package com.khtn.mybooks;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,16 +20,16 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -75,6 +77,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView viewListDetails;
     private FrameLayout layoutUpcoming;
     private AppCompatButton btnAddCart;
+    private AppCompatButton btnBuyNow;
 
     public String id;
     public String publisher;
@@ -181,6 +184,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         viewListDetails = (RecyclerView) findViewById(R.id.list_details);
         layoutUpcoming = (FrameLayout) findViewById(R.id.layout_upcoming);
         btnAddCart = (AppCompatButton) findViewById(R.id.btn_add_cart);
+        btnBuyNow = (AppCompatButton) findViewById(R.id.btn_buy_now);
     }
 
     public void setDetails(){
@@ -241,6 +245,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(dataBook.getDatePosted())/365, getString(R.string.year)));
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
+        setButton();
     }
 
     public void setAboutDetails(){
@@ -249,6 +254,27 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         BookDetailAdapter detailAdapter = new BookDetailAdapter(listDetails, this);
         viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         viewListDetails.setAdapter(detailAdapter);
+    }
+
+    public void setButton(){
+        if (dataBook.getAmount() > 0){
+            btnAddCart.setEnabled(true);
+            btnAddCart.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+            btnAddCart.setBackgroundResource(R.drawable.custom_button_add_shopping_cart);
+
+            btnBuyNow.setEnabled(true);
+            btnBuyNow.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+            btnBuyNow.setBackgroundResource(R.drawable.custom_button_buy_now);
+        } else {
+            btnAddCart.setEnabled(false);
+            btnAddCart.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
+            btnAddCart.setBackgroundResource(R.drawable.custom_button_hidden);
+
+            btnBuyNow.setEnabled(false);
+            btnBuyNow.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
+            btnBuyNow.setBackgroundResource(R.drawable.custom_button_hidden);
+
+        }
     }
 
     @Override
@@ -264,7 +290,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void startCart(){
-        Intent intent = new Intent(BookDetailActivity.this, CartActivity.class);
+        Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fm", false);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -290,10 +319,36 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                 dataBook.getOriginalPrice(),
                 dataBook.getDiscount()
         ));
-        Toast.makeText(this, "Added", Toast.LENGTH_SHORT).show();
+        openDialog();
     }
 
-    public class URLImagePaser implements Html.ImageGetter {
+    public void openDialog(){
+        Dialog dialog = new Dialog(this, R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.layout_dialog_done_add_cart);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setAttributes(layoutParams);
+
+        ImageView ivImage = dialog.findViewById(R.id.iv_dialog_book_review);
+        TextView tvBookName = dialog.findViewById(R.id.tv_dialog_book_name);
+        TextView tvPublisherName = dialog.findViewById(R.id.tv_dialog_publisher_name);
+        TextView tvBookPrice = dialog.findViewById(R.id.tv_dialog_book_price);
+        AppCompatButton btnCartPage = dialog.findViewById(R.id.btn_view_cart);
+
+        Picasso.get().load(dataBook.getImage().get(0)).into(ivImage);
+        tvBookName.setText(dataBook.getName());
+        tvPublisherName.setText(dataPublisher.getName());
+        tvBookPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getReducedPrice())));
+
+        btnCartPage.setOnClickListener(view -> {
+            dialog.dismiss();
+            startCart();
+        });
+        dialog.show();
+    }
+
+    public static class URLImagePaser implements Html.ImageGetter {
         Context context;
         TextView mTextView;
 

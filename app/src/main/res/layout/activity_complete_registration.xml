@@ -15,8 +15,9 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back_black"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:tint="@color/black" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -44,12 +45,13 @@
                 android:textColor="@color/black"/>
 
             <TextView
-                android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/please_enter_your_name"
+                android:textColor="@color/background_out_of_stock"
                 android:textSize="15sp"
-                android:textColor="@color/background_outofstock"
-                android:text="@string/please_enter_your_name"/>
+                tools:ignore="TextContrastCheck" />
 
             <EditText
                 android:id="@+id/edt_enter_create_name"
@@ -59,33 +61,38 @@
                 android:hint="@string/name"
                 android:textColorHint="@color/text_hint"
                 android:inputType="text"
-                android:textSize="18sp"/>
-
-          <TextView
-              android:layout_marginTop="10dp"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="15sp"
-              android:textColor="@color/background_outofstock"
-              android:text="@string/please_enter_your_password"/>
-
-          <EditText
-              android:id="@+id/edt_enter_create_password"
-              android:layout_width="match_parent"
-              android:layout_height="55dp"
-              android:paddingBottom="15dp"
-              android:hint="@string/password"
-              android:textColorHint="@color/text_hint"
-              android:inputType="textPassword"
-              android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:importantForAutofill="no" />
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/please_enter_your_password"
+                android:textColor="@color/background_out_of_stock"
                 android:textSize="15sp"
-                android:textColor="@color/background_outofstock"
-                android:text="@string/please_reenter_your_password"/>
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/edt_enter_create_password"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:paddingBottom="15dp"
+                android:textColorHint="@color/text_hint"
+                android:textSize="18sp"
+                tools:ignore="DuplicateSpeakableTextCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/please_reenter_your_password"
+                android:textColor="@color/background_out_of_stock"
+                android:textSize="15sp"
+                tools:ignore="TextContrastCheck" />
 
             <EditText
                 android:id="@+id/edt_reenter_create_password"
@@ -95,7 +102,8 @@
                 android:hint="@string/password"
                 android:textColorHint="@color/text_hint"
                 android:inputType="textPassword"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:importantForAutofill="no" />
 
             <FrameLayout
                 android:layout_width="match_parent"

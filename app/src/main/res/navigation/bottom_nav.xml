@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav"
+    app:startDestination="@id/homeActivity">
+
+    <navigation android:id="@+id/navigation2"
+        app:startDestination="@id/homeActivity">
+        <activity
+            android:id="@+id/homeActivity"
+            android:name="com.khtn.mybooks.HomeFragment"
+            android:label="activity_home"
+            tools:layout="@layout/activity_home" />
+        <action
+            android:id="@+id/action_global_navigation4"
+            app:destination="@id/navigation4" />
+        <action
+            android:id="@+id/action_global_navigation3"
+            app:destination="@id/navigation3" />
+    </navigation>
+    <navigation android:id="@+id/navigation3"
+        app:startDestination="@id/cartActivity">
+        <activity
+            android:id="@+id/cartActivity"
+            android:name="com.khtn.mybooks.CartFragment"
+            android:label="activity_cart"
+            tools:layout="@layout/fragment_cart" />
+        <action
+            android:id="@+id/action_global_navigation22"
+            app:destination="@id/navigation2" />
+    </navigation>
+    <navigation android:id="@+id/navigation4"
+        app:startDestination="@id/userActivity">
+        <activity
+            android:id="@+id/userActivity"
+            android:name="com.khtn.mybooks.UserFragment"
+            android:label="activity_user"
+            tools:layout="@layout/fragment_user" />
+        <action
+            android:id="@+id/action_global_navigation2"
+            app:destination="@id/navigation2" />
+    </navigation>
+</navigation>

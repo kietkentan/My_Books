@@ -14,8 +14,9 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back_black"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:tint="@color/black" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -44,20 +45,23 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/not_account_using_email"
+                android:textColor="@color/background_out_of_stock"
                 android:textSize="15sp"
-                android:textColor="@color/background_outofstock"
-                android:text="@string/not_account_using_email"/>
+                tools:ignore="TextContrastCheck" />
 
             <EditText
                 android:id="@+id/edt_enter_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:hint="@string/enter_your_number_phone"
                 android:layout_marginTop="10dp"
+                android:hint="@string/enter_your_number_phone"
+                android:importantForAutofill="no"
+                android:inputType="number"
                 android:paddingBottom="15dp"
                 android:textColorHint="@color/text_hint"
-                android:inputType="number"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                tools:ignore="TextFields,TextContrastCheck" />
 
             <FrameLayout
                 android:layout_width="match_parent"

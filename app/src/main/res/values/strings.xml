@@ -1,6 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">My Books</string>
-    <string name="hint_findBooks">Tìm kiếm sách của bạn...</string>
+    <string name="hint_findBooks" tools:ignore="TypographyEllipsis">Tìm kiếm sách của bạn...</string>
     <string name="slogan">Tìm kiếm và lựa chọn sách bạn cần.</string>
     <string name="aboutInfo">From HCMC VNU</string>
     <string name="network_not_working">Không thể kết nối mạng</string>
@@ -60,7 +60,7 @@
     <string name="return_login_page"><![CDATA[Đã tạo tài khoản, quay lại trang đăng nhập sau:]]></string>
     <string name="not_have_account_for_phone_number">Không có tài khoản ứng với số điện thoại đã cung cấp</string>
     <string name="not_have_account_for_email">Không có tài khoản ứng với email đã cung cấp</string>
-    <string name="please_re_entter">Vui lòng nhập lại</string>
+    <string name="please_re_enter">Vui lòng nhập lại</string>
     <string name="resending">Đã gửi lại mã OTP</string>
     <string name="share">Chia sẽ</string>
     <string name="my_account">Tài khoản của tôi</string>
@@ -72,7 +72,7 @@
     <string name="sold">đã bán</string>
     <string name="in_stock">Còn hàng</string>
     <string name="provider_information">Thông tin nhà cung cấp</string>
-    <string name="HoChiMinhcity">TP Hồ Chí Minh</string>
+    <string name="HoChiMinhCity">TP Hồ Chí Minh</string>
     <string name="reply_within">Trả lời trong</string>
     <string name="shop_reply">Shop phản hồi</string>
     <string name="rating_score">0.0</string>
@@ -88,10 +88,10 @@
     <string name="stand">Gian hàng</string>
     <string name="chat">Tin nhắn</string>
     <string name="information">Thông tin sản phẩm</string>
-    <string name="kindergarten">Nhà trẻ - Mẫu giáo (0-6 tuổi)</string>
-    <string name="children">Thiếu nhi (6-11 tuổi)</string>
-    <string name="teenager">Thiếu niên (11-15 tuổi)</string>
-    <string name="awkward_age">Tuổi mới lớn (15-18 tuổi)</string>
+    <string name="kindergarten" tools:ignore="TypographyDashes">Nhà trẻ – Mẫu giáo (0-6 tuổi)</string>
+    <string name="children" tools:ignore="TypographyDashes">Thiếu nhi (6-11 tuổi)</string>
+    <string name="teenager" tools:ignore="TypographyDashes">Thiếu niên (11-15 tuổi)</string>
+    <string name="awkward_age" tools:ignore="TypographyDashes">Tuổi mới lớn (15-18 tuổi)</string>
     <string name="youth">Thanh niên (Trên 18 tuổi)</string>
     <string name="author">Tác giả</string>
     <string name="size">Kích thước</string>
@@ -105,7 +105,7 @@
     <string name="setting">Cài đặt</string>
     <string name="language">Ngôn ngữ</string>
     <string name="policy">Chính sách</string>
-    <string name="wellcome">Chào mừng bạn đến với My Books!</string>
+    <string name="well_come">Chào mừng bạn đến với My Books!</string>
     <string name="press_back_again_to_exit">Nhấn Back một lần nữa để thoát</string>
     <string name="hotline">0352335288</string>
     <string name="my_order">Đơn hàng của tôi</string>
@@ -120,13 +120,23 @@
     <string name="shop_followed">Shop theo dõi</string>
     <string name="my_information">Thông tin của tôi</string>
     <string name="continue_shopping">Tiếp tục mua sắm</string>
-    <string name="dont_have_order_cart">Bạn chưa có sản phẩm nào trong giỏ hàng</string>
+    <string name="do_not_have_order_cart">Bạn chưa có sản phẩm nào trong giỏ hàng</string>
     <string name="add_address">Thêm địa chỉ</string>
     <string name="all">Tất cả</string>
     <string name="total">Tổng cộng</string>
     <string name="please_chose_product">Vui lòng chọn sản phẩm</string>
     <string name="default_buy">Mua hàng (0)</string>
     <string name="buy">Mua hàng</string>
+    <string name="added_cart">Sản phẩm đã được thêm vào giỏ hàng</string>
+    <string name="view_cart">Xem Giỏ Hàng</string>
+    <string name="provided_by">Cung cấp bởi:</string>
+    <string name="close">Đóng</string>
+    <string name="me">Tôi</string>
+    <string name="sub">-</string>
+    <string name="num_one">1</string>
+    <string name="add">+</string>
+    <string name="phone_default">000000000</string>
+    <string name="seconds_default">30s</string>
     <string-array name="lists_language">
         <item>Tiếng Việt</item>
         <item>Tiếng Anh</item>

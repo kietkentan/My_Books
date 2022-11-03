@@ -9,12 +9,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -127,7 +125,11 @@ public class SplashActivity extends AppCompatActivity {
 
     public void startHome(){
         handler.postDelayed(() -> {
-            startActivity(new Intent(thisContext, HomeActivity.class));
+            Intent intent = new Intent(thisContext, MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("fm", true);
+            intent.putExtras(bundle);
+            startActivity(intent);
             overridePendingTransition(R.anim.alpha_appear_100, R.anim.alpha_hidden_100);
             finish();
         }, SPLASH_TIME_OUT);

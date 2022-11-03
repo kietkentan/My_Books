@@ -5,10 +5,6 @@
         android:title="@string/login"
         app:showAsAction="never"/>
 
-    <item android:id="@+id/m_home_page"
-        android:title="@string/home"
-        app:showAsAction="never"/>
-
     <item android:id="@+id/m_share"
         android:title="@string/share"
         app:showAsAction="never"/>

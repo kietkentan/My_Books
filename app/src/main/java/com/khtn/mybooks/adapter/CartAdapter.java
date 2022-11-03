@@ -3,12 +3,10 @@ package com.khtn.mybooks.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,19 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.khtn.mybooks.AppUtil;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
+import com.khtn.mybooks.databases.DataBase;
 import com.khtn.mybooks.model.Order;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
+public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
     private final List<Order> orders;
     private final ViewCartClickInterface viewCartClickInterface;
+    private final Context context;
 
-    public CartAdapter(List<Order> orders, ViewCartClickInterface viewCartClickInterface) {
+    public CartAdapter(List<Order> orders, ViewCartClickInterface viewCartClickInterface, Context context) {
         this.orders = orders;
         this.viewCartClickInterface = viewCartClickInterface;
+        this.context = context;
     }
 
     @NonNull
@@ -40,6 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false));
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull CartAdapter.ViewHolder holder, int position) {
         Picasso.get().load(orders.get(position).getBookImage()).into(holder.ivLogo);
@@ -52,14 +54,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             holder.tvReducedPrice.setText(String.format("%s₫", AppUtil.convertNumber(orders.get(position).getBookPrice())));
             holder.tvOriginalPrice.setVisibility(View.GONE);
         }
-        setChecked(holder, position);
+        holder.tvQuantity.setText(String.format("%d", orders.get(position).getBookQuantity()));
+        setOnClick(holder, position);
     }
 
-    public void setChecked(CartAdapter.ViewHolder holder, int position){
+    @SuppressLint("NotifyDataSetChanged")
+    public void setOnClick(CartAdapter.ViewHolder holder, int position){
         holder.cbSelected.setChecked(orders.get(position).isSelected());
         holder.cbSelected.setOnClickListener(view -> {
             orders.get(position).setSelected(holder.cbSelected.isChecked());
             viewCartClickInterface.OnCheckedChanged(getSelectedCart());
+        });
+        holder.btnAdd.setOnClickListener(view -> {
+            orders.get(position).setBookQuantity(orders.get(position).getBookQuantity() + 1);
+            new DataBase(context).updateCart(orders.get(position).getBookId(), orders.get(position).getBookQuantity());
+            notifyDataSetChanged();
+        });
+        holder.btnSub.setOnClickListener(view -> {
+            int quantity = orders.get(position).getBookQuantity();
+            if (quantity == 1) {
+                new DataBase(context).removeCarts(orders.get(position).getBookId());
+                orders.remove(position);
+                notifyItemRemoved(position);
+                viewCartClickInterface.OnRemoveCart();
+            }
+            else {
+                orders.get(position).setBookQuantity(quantity - 1);
+                new DataBase(context).updateCart(orders.get(position).getBookId(), quantity - 1);
+                notifyDataSetChanged();
+            }
         });
     }
 

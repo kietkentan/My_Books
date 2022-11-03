@@ -3,6 +3,7 @@ package com.khtn.mybooks;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -115,6 +116,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void setupOTPInputs(){
         for (int i = 0; i < inputCodes.length; i++){
             inputCodes[i].addTextChangedListener(new PinTextWatcher(i));
@@ -165,12 +167,13 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
 
     // check the action onTouch the OTP input box
     public class PinOnTouchListener implements View.OnTouchListener{
-        private int currentIndex;
+        private final int currentIndex;
 
         PinOnTouchListener(int currentIndex) {
             this.currentIndex = currentIndex;
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             inputCodes[currentIndex].getText().clear();
@@ -181,7 +184,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
     // check the action of entering each input box and move to the next box
     // if at the end, then start checking the code
     public class PinTextWatcher implements TextWatcher {
-        private int currentIndex;
+        private final int currentIndex;
         private boolean isLast = false;
         private String newTypedString = "";
 
@@ -285,7 +288,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
     }
 
     public class PinOnKeyListener implements View.OnKeyListener {
-        private int currentIndex;
+        private final int currentIndex;
 
         PinOnKeyListener(int currentIndex) {
             this.currentIndex = currentIndex;

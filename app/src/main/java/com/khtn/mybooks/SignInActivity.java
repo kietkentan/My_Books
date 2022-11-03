@@ -157,7 +157,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             Common.modeLogin = 1;
                             Common.saveUser(SignInActivity.this);
                             Common.currentUser.setPassword(null);
-                            Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(intent);
                             finish();

@@ -310,17 +310,18 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
-                User user = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, null);
+                User user = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, null, null);
 
                 databaseReference.child("google").child(Objects.requireNonNull(personId)).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists())
                             databaseReference.child("google").child(personId).getRef().setValue(user);
-                        Common.currentUser = user;
+                        else
+                            Common.currentUser = snapshot.getValue(User.class);
                         Common.modeLogin = 2;
                         Common.saveUser(SignInSignUpActivity.this);
-                        Intent intent = new Intent(SignInSignUpActivity.this, HomeActivity.class);
+                        Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         finish();
@@ -354,16 +355,17 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                             String personId = user.getUid();
                             Uri personPhoto = user.getPhotoUrl();
                             String personPhone = user.getPhoneNumber();
-                            User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone);
+                            User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone, null);
                             databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (!snapshot.exists())
                                         databaseReference.child("facebook").child(personId).getRef().setValue(user_fb);
-                                    Common.currentUser = user_fb;
+                                    else
+                                        Common.currentUser = snapshot.getValue(User.class);
                                     Common.modeLogin = 3;
                                     Common.saveUser(SignInSignUpActivity.this);
-                                    Intent intent = new Intent(SignInSignUpActivity.this, HomeActivity.class);
+                                    Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                     startActivity(intent);
                                     finish();

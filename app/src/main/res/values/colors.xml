@@ -14,9 +14,10 @@
     <color name="original_price">#707070</color>
     <color name="reduced_price">#E32127</color>
     <color name="background_discount">#FFDDDD</color>
-    <color name="background_outofstock">#7E7E7E</color>
+    <color name="background_out_of_stock">#7E7E7E</color>
     <color name="prominent">#7369FE</color>
     <color name="button_hidden">#EEEEEE</color>
     <color name="background">#F7F7F7</color>
     <color name="active">#37CB4B</color>
+    <color name="done">#008000</color>
 </resources>

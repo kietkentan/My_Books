@@ -107,7 +107,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
         else if (AppUtil.isEmail(edtEnterUser.getText().toString()))
             resetPasswordByEmail();
         else
-            edtEnterUser.setError(getString(R.string.please_re_entter));
+            edtEnterUser.setError(getString(R.string.please_re_enter));
     }
 
     private void resetPasswordByPhone(){

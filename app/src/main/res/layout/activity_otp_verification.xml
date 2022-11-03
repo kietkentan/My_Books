@@ -14,8 +14,9 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back_black"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:tint="@color/black" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -44,9 +45,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/please_enter_opt_code"
+                android:textColor="@color/background_out_of_stock"
                 android:textSize="15sp"
-                android:textColor="@color/background_outofstock"
-                android:text="@string/please_enter_opt_code"/>
+                tools:ignore="TextContrastCheck" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,7 +63,7 @@
                     android:layout_height="50dp"
                     android:cursorVisible="false"
                     android:gravity="center"
-                    android:hint="0"
+                    android:hint="@string/num_default"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -69,7 +71,7 @@
                     android:textColorHint="@color/text_hint"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor,TouchTargetSizeCheck" />
+                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextContrastCheck,DuplicateSpeakableTextCheck" />
 
                 <EditText
                     android:id="@+id/inputOTPCode2"
@@ -78,7 +80,7 @@
                     android:layout_marginStart="10dp"
                     android:cursorVisible="false"
                     android:gravity="center"
-                    android:hint="0"
+                    android:hint="@string/num_default"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -86,7 +88,7 @@
                     android:textColorHint="@color/text_hint"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor,TouchTargetSizeCheck" />
+                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextContrastCheck" />
 
                 <EditText
                     android:id="@+id/inputOTPCode3"
@@ -95,7 +97,7 @@
                     android:layout_marginStart="10dp"
                     android:cursorVisible="false"
                     android:gravity="center"
-                    android:hint="0"
+                    android:hint="@string/num_default"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -103,7 +105,7 @@
                     android:textColorHint="@color/text_hint"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor,TouchTargetSizeCheck" />
+                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextContrastCheck" />
 
                 <EditText
                     android:id="@+id/inputOTPCode4"
@@ -112,7 +114,7 @@
                     android:layout_marginStart="10dp"
                     android:cursorVisible="false"
                     android:gravity="center"
-                    android:hint="0"
+                    android:hint="@string/num_default"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -120,7 +122,7 @@
                     android:textColorHint="@color/text_hint"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor,TouchTargetSizeCheck" />
+                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextContrastCheck" />
 
                 <EditText
                     android:id="@+id/inputOTPCode5"
@@ -129,7 +131,7 @@
                     android:layout_marginStart="10dp"
                     android:cursorVisible="false"
                     android:gravity="center"
-                    android:hint="0"
+                    android:hint="@string/num_default"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -137,7 +139,7 @@
                     android:textColorHint="@color/text_hint"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor,TouchTargetSizeCheck" />
+                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextContrastCheck" />
 
                 <EditText
                     android:id="@+id/inputOTPCode6"
@@ -146,7 +148,7 @@
                     android:layout_marginStart="10dp"
                     android:cursorVisible="false"
                     android:gravity="center"
-                    android:hint="0"
+                    android:hint="@string/num_default"
                     android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -154,7 +156,7 @@
                     android:textColorHint="@color/text_hint"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    tools:ignore="LabelFor,TouchTargetSizeCheck" />
+                    tools:ignore="LabelFor,TouchTargetSizeCheck,TextContrastCheck" />
             </LinearLayout>
 
             <ProgressBar
@@ -175,17 +177,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/resend_otp"
+                    android:textColor="@color/prominent"
                     android:textSize="15sp"
-                    android:textColor="@color/prominent"/>
+                    tools:ignore="TextContrastCheck" />
 
                 <TextView
                     android:id="@+id/tv_resend_OTP"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30s"
                     android:layout_marginStart="5dp"
+                    android:text="@string/seconds_default"
+                    android:textColor="@color/prominent"
                     android:textSize="15sp"
-                    android:textColor="@color/prominent"/>
+                    tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
         </LinearLayout>

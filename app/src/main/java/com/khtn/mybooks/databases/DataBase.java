@@ -13,6 +13,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("MalformedFormatString")
 public class DataBase extends SQLiteAssetHelper {
     private static final String DB_NAME = "MyBooksDB.db";
     private static final int DB_VERSION = 1;
@@ -47,18 +48,34 @@ public class DataBase extends SQLiteAssetHelper {
         return result;
     }
 
+    @SuppressLint("Range")
     public void addCart(Order order){
         SQLiteDatabase database = getReadableDatabase();
-        @SuppressLint("DefaultLocale") String query = String.format("INSERT INTO OrderDetail(BookId, BookName, BookImage, PublisherId, BookQuantity, BookPrice, BookDiscount)" +
-                        " VALUES('%s', '%s', '%s', '%s', %d, %d, %d)",
-                        order.getBookId(),
-                        order.getBookName(),
-                        order.getBookImage(),
-                        order.getPublisherId(),
-                        order.getBookQuantity(),
-                        order.getBookPrice(),
-                        order.getBookDiscount());
-        database.execSQL(query);
+        String queryFind = String.format("SELECT BookQuantity FROM OrderDetail WHERE BookId = '%s'", order.getBookId());
+        @SuppressLint("Recycle") Cursor cursor = database.rawQuery(queryFind, null);
+        if (cursor.moveToFirst())
+            updateCart(order.getBookId(), cursor.getInt(cursor.getColumnIndex("BookQuantity")) + 1);
+        else {
+            @SuppressLint("DefaultLocale") String query = String.format("INSERT INTO OrderDetail(BookId, BookName, BookImage, PublisherId, BookQuantity, BookPrice, BookDiscount)" +
+                            " VALUES('%s', '%s', '%s', '%s', %d, %d, %d)",
+                    order.getBookId(),
+                    order.getBookName(),
+                    order.getBookImage(),
+                    order.getPublisherId(),
+                    order.getBookQuantity(),
+                    order.getBookPrice(),
+                    order.getBookDiscount());
+            database.execSQL(query);
+        }
+    }
+
+    public void updateCart(String BookId, int BookQuantity){
+        SQLiteDatabase database = getReadableDatabase();
+        @SuppressLint("DefaultLocale") String queryUpdate = String.format("UPDATE OrderDetail SET BookQuantity = %d WHERE BookId = '%s'",
+                BookQuantity,
+                BookId);
+        database.execSQL(queryUpdate);
+        database.close();
     }
 
     public void cleanCarts(){
