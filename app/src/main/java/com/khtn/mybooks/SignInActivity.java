@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -27,8 +28,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.model.Address;
 import com.khtn.mybooks.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity implements View.OnClickListener{
@@ -153,14 +157,33 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             || Objects.requireNonNull(dataSnapshot.child("email").getValue(String.class)).equals(strUser)) {
                         User user = dataSnapshot.getValue(User.class);
                         if (Objects.requireNonNull(user).getPassword().equals(edtPassword.getText().toString())) {
-                            Common.currentUser = user;
-                            Common.modeLogin = 1;
-                            Common.saveUser(SignInActivity.this);
-                            Common.currentUser.setPassword(null);
-                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                            startActivity(intent);
-                            finish();
+                            dataSnapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    List<Address> addressList = new ArrayList<>();
+                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                        Address address = snapshot1.getValue(Address.class);
+                                        addressList.add(address);
+                                    }
+                                    Common.addressLists = addressList;
+                                    Common.currentUser = user;
+                                    Common.modeLogin = 1;
+                                    Common.saveUser(SignInActivity.this);
+                                    Common.currentUser.setPassword(null);
+                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putBoolean("fm", true);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         } else {
                             Toast.makeText(thisContext, R.string.incorrect_password, Toast.LENGTH_SHORT).show();
                         }

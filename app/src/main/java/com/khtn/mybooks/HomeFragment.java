@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -153,20 +155,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     // because the user page is incomplete, it should be placed here temporarily
     private void signOut(){
         Common.clearUser(requireActivity());
-        if (Common.modeLogin == 1){
-            Common.currentUser = null;
-            Common.modeLogin = 0;
-        } else if (Common.modeLogin == 2) {
-            gsc.signOut()
-                    .addOnCompleteListener(requireActivity(), task -> {
-                        Common.currentUser = null;
-                        Common.modeLogin = 0;
-                    });
-        } else if (Common.modeLogin == 3) {
+        if (Common.modeLogin == 2)
+            gsc.signOut().addOnCompleteListener(requireActivity(), task -> {});
+        else if (Common.modeLogin == 3)
             FirebaseAuth.getInstance().signOut();
-            Common.currentUser = null;
-            Common.modeLogin = 0;
-        }
+        Common.currentUser = null;
+        Common.modeLogin = 0;
+        Common.addressLists = null;
     }
 
     @Override

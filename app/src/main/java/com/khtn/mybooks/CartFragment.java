@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,22 +19,21 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khtn.mybooks.Interface.CartFragmentClickInterface;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.adapter.CartAdapter;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DataBase;
+import com.khtn.mybooks.model.Address;
 import com.khtn.mybooks.model.Order;
 
 import java.util.List;
-import java.util.Objects;
 
 public class CartFragment extends Fragment implements View.OnClickListener, ViewCartClickInterface {
     private View view;
     private CheckBox cbAllCart;
     private TextView tvTotalPrice;
-    private TextView tvLocation;
+    private TextView tvAddress;
     private AppCompatButton btnBuy;
     private AppCompatButton btnContinueShopping;
     private ImageButton ibRemoveCart;
@@ -58,11 +58,17 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         init();
         getData();
 
-        tvLocation.setOnClickListener(this);
+        tvAddress.setOnClickListener(this);
         btnContinueShopping.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
     }
 
     public void init(){
@@ -70,7 +76,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
         cbAllCart = (CheckBox) view.findViewById(R.id.cb_check_all_cart);
         tvTotalPrice = (TextView) view.findViewById(R.id.tv_total_price);
-        tvLocation = (TextView) view.findViewById(R.id.tv_location);
+        tvAddress = (TextView) view.findViewById(R.id.tv_address);
         btnBuy = (AppCompatButton) view.findViewById(R.id.btn_buy);
         btnContinueShopping = (AppCompatButton) view.findViewById(R.id.btn_continue_shopping);
         ibRemoveCart = (ImageButton) view.findViewById(R.id.ib_remove_cart);
@@ -96,8 +102,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             layoutNoneCart.setVisibility(View.GONE);
             layoutViewCart.setVisibility(View.VISIBLE);
             ibRemoveCart.setOnClickListener(this);
-            if (Common.currentUser != null)
-                tvLocation.setText(Common.currentUser.getAddress());
+            if (Common.addressLists != null) {
+                String defaultAddress = Common.addressLists.get(Common.addressNow).getAddress();
+                tvAddress.setText(defaultAddress);
+            }
         }
         setupCheckboxAllCart();
     }
@@ -132,8 +140,8 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
-    public void startLocationPage(){
-
+    public void startAddressPage(){
+        startActivity(new Intent(getActivity(), AddressActivity.class));
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -154,8 +162,8 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.tv_location)
-            startLocationPage();
+        if (view.getId() == R.id.tv_address)
+            startAddressPage();
         if (view.getId() == R.id.ib_remove_cart)
             removeCart();
         if (view.getId() == R.id.btn_buy)

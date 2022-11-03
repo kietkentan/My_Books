@@ -70,6 +70,7 @@
                     tools:ignore="ContentDescription" />
 
                 <TextView
+                    android:id="@+id/tv_using_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="17dp"
                     android:layout_gravity="center"

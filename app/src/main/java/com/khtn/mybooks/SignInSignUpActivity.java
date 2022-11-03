@@ -67,6 +67,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     private AppCompatButton btnLoginWithFaceBook;
     private EditText edtEnterPhoneNumberOrEmail;
     private TextView tvLoginChoseUsing;
+    private TextView tvUsingPhone;
     private ProgressBar progressBarContinue;
 
     private String tmpPhone = "";
@@ -154,6 +155,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
         btnLoginWithFaceBook = findViewById(R.id.btn_login_with_facebook);
         edtEnterPhoneNumberOrEmail = findViewById(R.id.edt_enter_phone_number_or_mail);
         tvLoginChoseUsing = findViewById(R.id.tv_login_chose_using);
+        tvUsingPhone = findViewById(R.id.tv_using_phone);
         progressBarContinue = findViewById(R.id.progress_sign_in_sign_up);
     }
 
@@ -179,6 +181,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             edtEnterPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             edtEnterPhoneNumberOrEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_email, 0, 0, 0);
             edtEnterPhoneNumberOrEmail.setHint(R.string.enter_your_email);
+            tvUsingPhone.setText(R.string.login_logout_with_email);
             tvLoginChoseUsing.setText(R.string.login_using_phone_number);
             edtEnterPhoneNumberOrEmail.setFilters(new InputFilter[] {});
             usingPhoneNumber = false;
@@ -188,6 +191,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             edtEnterPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
             edtEnterPhoneNumberOrEmail.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_phone, 0, 0, 0);
             edtEnterPhoneNumberOrEmail.setHint(R.string.enter_your_number_phone);
+            tvUsingPhone.setText(R.string.login_logout_with_phone_number);
             tvLoginChoseUsing.setText(R.string.login_using_email);
             edtEnterPhoneNumberOrEmail.setFilters(new InputFilter[] {new InputFilter.LengthFilter(LENGTH_PHONE_NUMBER)});
             usingPhoneNumber = true;
@@ -311,7 +315,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 String personEmail = acct.getEmail();
                 String personId = acct.getId();
                 Uri personPhoto = acct.getPhotoUrl();
-                User user = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, null, null);
+                User user = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, null);
 
                 databaseReference.child("google").child(Objects.requireNonNull(personId)).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -354,7 +358,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                         String personId = user.getUid();
                         Uri personPhoto = user.getPhotoUrl();
                         String personPhone = user.getPhoneNumber();
-                        User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone, null);
+                        User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone);
                         databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {

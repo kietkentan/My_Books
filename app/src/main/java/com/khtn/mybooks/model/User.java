@@ -1,5 +1,7 @@
 package com.khtn.mybooks.model;
 
+import java.util.List;
+
 public class User {
     private String avatar;
     private String background;
@@ -8,11 +10,10 @@ public class User {
     private String id;
     private String email;
     private String phone;
-    private String address;
 
     public User() {}
 
-    public User(String avatar, String background, String name, String password, String id, String email, String phone, String address) {
+    public User(String avatar, String background, String name, String password, String id, String email, String phone) {
         this.avatar = avatar;
         this.background = background;
         this.name = name;
@@ -20,7 +21,6 @@ public class User {
         this.id = id;
         this.email = email;
         this.phone = phone;
-        this.address = address;
     }
 
     public String getAvatar() {
@@ -77,13 +77,5 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

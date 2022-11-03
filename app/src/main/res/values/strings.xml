@@ -18,6 +18,7 @@
     <string name="news_book">SÁCH MỚI</string>
     <string name="login_logout">Đăng nhập/Đăng kí</string>
     <string name="login_logout_with_phone_number">Đăng nhập hoặc đăng kí bằng số điện thoại</string>
+    <string name="login_logout_with_email">Đăng nhập hoặc đăng kí bằng email</string>
     <string name="enter_your_number_phone">Nhập số điện thoại của bạn</string>
     <string name="enter_your_email">Nhập email của bạn</string>
     <string name="continue_login">Tiếp tục</string>
@@ -137,9 +138,15 @@
     <string name="add">+</string>
     <string name="phone_default">000000000</string>
     <string name="seconds_default">30s</string>
+    <string name="ship_location">Địa chỉ giao hàng</string>
+    <string name="add_new_address">Thêm địa chỉ mới</string>
+    <string name="chose">Chọn</string>
+    <string name="string_default">Mặc định</string>
     <string-array name="lists_language">
         <item>Tiếng Việt</item>
         <item>Tiếng Anh</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

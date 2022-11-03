@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -20,8 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.model.Address;
 import com.khtn.mybooks.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @SuppressLint("CustomSplashScreen")
@@ -80,9 +84,25 @@ public class SplashActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
                             User user = snapshot.getValue(User.class);
-                            if (Objects.requireNonNull(user).getPassword().equals(password)) {
+                            if (user.getPassword().equals(password)) {
                                 user.setPassword(null);
                                 Common.currentUser = user;
+                                snapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        List<Address> addressList = new ArrayList<>();
+                                        for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                            Address address = snapshot1.getValue(Address.class);
+                                            addressList.add(address);
+                                        }
+                                        Common.addressLists = addressList;
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
                             }
                         }
                     }
@@ -96,8 +116,25 @@ public class SplashActivity extends AppCompatActivity {
                 reference.child("google").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists())
+                        if (snapshot.exists()) {
                             Common.currentUser = snapshot.getValue(User.class);
+                            snapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    List<Address> addressList = new ArrayList<>();
+                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                        Address address = snapshot1.getValue(Address.class);
+                                        addressList.add(address);
+                                    }
+                                    Common.addressLists = addressList;
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
                     }
 
                     @Override
@@ -109,8 +146,25 @@ public class SplashActivity extends AppCompatActivity {
                 reference.child("facebook").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists())
+                        if (snapshot.exists()) {
                             Common.currentUser = snapshot.getValue(User.class);
+                            snapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    List<Address> addressList = new ArrayList<>();
+                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                        Address address = snapshot1.getValue(Address.class);
+                                        addressList.add(address);
+                                    }
+                                    Common.addressLists = addressList;
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
                     }
 
                     @Override
