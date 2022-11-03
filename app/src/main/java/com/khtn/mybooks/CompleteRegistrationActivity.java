@@ -51,17 +51,17 @@ public class CompleteRegistrationActivity extends AppCompatActivity implements V
         phoneNumber = bundle.getString("mobile");
         email = bundle.getString("email");
 
-        tvComplete = (TextView) findViewById(R.id.tv_return_login_page);
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_complete_registration);
-        edtEnterName = (EditText) findViewById(R.id.edt_enter_create_name);
-        edtEnterPassword = (EditText) findViewById(R.id.edt_enter_create_password);
-        edtReEnterPassword = (EditText) findViewById(R.id.edt_reenter_create_password);
-        btnComplete = (AppCompatButton) findViewById(R.id.btn_create_account);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar_complete_registration);
+        tvComplete = findViewById(R.id.tv_return_login_page);
+        ibBack = findViewById(R.id.ib_exit_complete_registration);
+        edtEnterName = findViewById(R.id.edt_enter_create_name);
+        edtEnterPassword = findViewById(R.id.edt_enter_create_password);
+        edtReEnterPassword = findViewById(R.id.edt_reenter_create_password);
+        btnComplete = findViewById(R.id.btn_create_account);
+        progressBar = findViewById(R.id.progressbar_complete_registration);
     }
 
     public void countdownBackToLogin(){
-        CountDownTimer countDownTimer = new CountDownTimer(3*1000, 1000) {
+        new CountDownTimer(3*1000, 1000) {
             @SuppressLint("DefaultLocale")
             @Override
             public void onTick(long l) {

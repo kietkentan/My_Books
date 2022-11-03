@@ -63,7 +63,7 @@ public class AppUtil {
         String src = String.valueOf(num);
         int lenght = src.length() - 3;
         while (lenght > 0){
-            src = src.substring(0, lenght) + "." + src.substring(lenght, src.length());
+            src = src.substring(0, lenght) + "." + src.substring(lenght);
             lenght -= 3;
         }
         return src;

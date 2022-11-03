@@ -54,9 +54,9 @@ public class SplashActivity extends AppCompatActivity {
 
     public void init(){
         reference = FirebaseDatabase.getInstance().getReference("user");
-        ivLogo = (ImageView) findViewById(R.id.iv_logo);
-        tvSlogan = (TextView) findViewById(R.id.tv_slogan);
-        tvAboutFrom = (TextView) findViewById(R.id.tv_about_info);
+        ivLogo = findViewById(R.id.iv_logo);
+        tvSlogan = findViewById(R.id.tv_slogan);
+        tvAboutFrom = findViewById(R.id.tv_about_info);
     }
 
     public void setAction(){
@@ -97,7 +97,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists())
-                            Common.currentUser = snapshot.<User>getValue(User.class);
+                            Common.currentUser = snapshot.getValue(User.class);
                     }
 
                     @Override
@@ -110,7 +110,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists())
-                            Common.currentUser = snapshot.<User>getValue(User.class);
+                            Common.currentUser = snapshot.getValue(User.class);
                     }
 
                     @Override

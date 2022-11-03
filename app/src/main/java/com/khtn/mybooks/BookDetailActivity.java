@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -49,6 +50,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BookDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageView ivMenu;
@@ -116,7 +118,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot dataSnapshot2:snapshot.getChildren()) {
-                                        if (dataSnapshot2.getKey().equals("describe")){
+                                        if (Objects.equals(dataSnapshot2.getKey(), "describe")){
                                             describe = dataSnapshot2.getValue(String.class);
                                         } else {
                                             List<String> list = new ArrayList<>();
@@ -158,35 +160,36 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         publisher = intent.getStringExtra("publisher");
         listDetails = new ArrayList<>();
 
-        ivMenu = (ImageView) findViewById(R.id.iv_menu_in_detail);
-        ivCart = (ImageView) findViewById(R.id.iv_shopping_cart);
-        rcImages = (ViewPager2) findViewById(R.id.list_img);
-        tvPrice = (TextView) findViewById(R.id.tv_price_book);
-        tvOriginalPrice = (TextView) findViewById(R.id.tv_original_price_book);
-        tvDiscount = (TextView) findViewById(R.id.tv_discount_book);
-        tvNameBook = (TextView) findViewById(R.id.tv_name_book);
-        tvTotalRating = (TextView) findViewById(R.id.tv_total_rating);
-        tvTotalNumberPeopleRating = (TextView) findViewById(R.id.tv_total_number_people_rating);
-        tvQuantitySold = (TextView) findViewById(R.id.tv_quantity_sold);
-        tvInStockOrNot = (TextView) findViewById(R.id.tv_in_stock_or_not);
-        tvShopName = (TextView) findViewById(R.id.tv_name_publisher);
-        tvShopLocation = (TextView) findViewById(R.id.tv_location_publisher);
-        tvShopReplyWithin = (TextView) findViewById(R.id.tv_reply_within);
-        tvShopRating = (TextView) findViewById(R.id.tv_shop_rating);
-        tvShopWorked = (TextView) findViewById(R.id.tv_worked);
-        tvDatePosted = (TextView) findViewById(R.id.tv_date_posted);
-        tvDescribe = (TextView) findViewById(R.id.tv_describe);
-        tvPosition = (TextView) findViewById(R.id.tv_position);
-        barRatingBook = (RatingBar) findViewById(R.id.bar_rating_book);
-        ibAddFavorite = (ImageButton) findViewById(R.id.ib_add_favorite);
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_detail);
-        ivLogoPublisher = (ShapeableImageView) findViewById(R.id.iv_avatar_publisher);
-        viewListDetails = (RecyclerView) findViewById(R.id.list_details);
-        layoutUpcoming = (FrameLayout) findViewById(R.id.layout_upcoming);
-        btnAddCart = (AppCompatButton) findViewById(R.id.btn_add_cart);
-        btnBuyNow = (AppCompatButton) findViewById(R.id.btn_buy_now);
+        ivMenu = findViewById(R.id.iv_menu_in_detail);
+        ivCart = findViewById(R.id.iv_shopping_cart);
+        rcImages = findViewById(R.id.list_img);
+        tvPrice = findViewById(R.id.tv_price_book);
+        tvOriginalPrice = findViewById(R.id.tv_original_price_book);
+        tvDiscount = findViewById(R.id.tv_discount_book);
+        tvNameBook = findViewById(R.id.tv_name_book);
+        tvTotalRating = findViewById(R.id.tv_total_rating);
+        tvTotalNumberPeopleRating = findViewById(R.id.tv_total_number_people_rating);
+        tvQuantitySold = findViewById(R.id.tv_quantity_sold);
+        tvInStockOrNot = findViewById(R.id.tv_in_stock_or_not);
+        tvShopName = findViewById(R.id.tv_name_publisher);
+        tvShopLocation = findViewById(R.id.tv_location_publisher);
+        tvShopReplyWithin = findViewById(R.id.tv_reply_within);
+        tvShopRating = findViewById(R.id.tv_shop_rating);
+        tvShopWorked = findViewById(R.id.tv_worked);
+        tvDatePosted = findViewById(R.id.tv_date_posted);
+        tvDescribe = findViewById(R.id.tv_describe);
+        tvPosition = findViewById(R.id.tv_position);
+        barRatingBook = findViewById(R.id.bar_rating_book);
+        ibAddFavorite = findViewById(R.id.ib_add_favorite);
+        ibBack = findViewById(R.id.ib_exit_detail);
+        ivLogoPublisher = findViewById(R.id.iv_avatar_publisher);
+        viewListDetails = findViewById(R.id.list_details);
+        layoutUpcoming = findViewById(R.id.layout_upcoming);
+        btnAddCart = findViewById(R.id.btn_add_cart);
+        btnBuyNow = findViewById(R.id.btn_buy_now);
     }
 
+    @SuppressLint("DefaultLocale")
     public void setDetails(){
         ListImageAdapter imageAdapter = new ListImageAdapter(dataBook.getImage());
         rcImages.setAdapter(imageAdapter);
@@ -225,10 +228,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         if (dataPublisher.getReply() < 60)
             tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
         else
-            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), (int) dataPublisher.getReply() / 60, getString(R.string.minute)));
+            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply() / 60, getString(R.string.minute)));
         tvShopRating.setText(String.format("%.1f", dataPublisher.getRating()));
         if (AppUtil.numDays(dataPublisher.getWorked()) < 30)
-            tvShopWorked.setText(String.format("%d %s", dataPublisher.getWorked(), getString(R.string.day)));
+            tvShopWorked.setText(String.format("%d %s", AppUtil.numDays(dataPublisher.getWorked()), getString(R.string.day)));
         else if (AppUtil.numDays(dataPublisher.getWorked()) < 365)
             tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked())/30, getString(R.string.month)));
         else
@@ -301,12 +304,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         PopupMenu popupMenu = new PopupMenu(this, ivMenu);
         popupMenu.getMenuInflater().inflate(R.menu.in_detail_menu, popupMenu.getMenu());
         popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                return false;
-            }
-        });
+        popupMenu.setOnMenuItemClickListener(menuItem -> false);
     }
 
     public void addCart(){

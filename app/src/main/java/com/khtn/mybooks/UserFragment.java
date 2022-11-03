@@ -5,12 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +49,14 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     }
 
     private void init(){
-        ivMenuSetting = (ImageView) view.findViewById(R.id.iv_setting);
-        ivChat = (ImageView) view.findViewById(R.id.iv_chat);
-        tvName = (TextView) view.findViewById(R.id.tv_name_user);
-        tvMyInformation = (TextView) view.findViewById(R.id.tv_my_information);
-        layoutSeeMore = (LinearLayout) view.findViewById(R.id.layout_see_more);
-        ivBackground = (ShapeableImageView) view.findViewById(R.id.iv_background_user);
-        ivAvatar = (ShapeableImageView) view.findViewById(R.id.iv_avatar_user);
-        btnLogin = (AppCompatButton) view.findViewById(R.id.btn_login_user);
+        ivMenuSetting = view.findViewById(R.id.iv_setting);
+        ivChat = view.findViewById(R.id.iv_chat);
+        tvName = view.findViewById(R.id.tv_name_user);
+        tvMyInformation = view.findViewById(R.id.tv_my_information);
+        layoutSeeMore = view.findViewById(R.id.layout_see_more);
+        ivBackground = view.findViewById(R.id.iv_background_user);
+        ivAvatar = view.findViewById(R.id.iv_avatar_user);
+        btnLogin = view.findViewById(R.id.btn_login_user);
     }
 
     private void checkUser(){
@@ -73,8 +71,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
 
     private void loadUser(){
         btnLogin.setVisibility(View.INVISIBLE);
-        ivMenuSetting.setImageResource(R.drawable.ic_setting_white);
-        ivChat.setImageResource(R.drawable.ic_chat);
+        ivMenuSetting.getDrawable().setTint(Color.WHITE);
         ivChat.getDrawable().setTint(Color.WHITE);
         if (Common.currentUser.getAvatar() != null)
             Picasso.get().load(Common.currentUser.getAvatar()).into(ivAvatar);

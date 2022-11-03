@@ -20,10 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
@@ -55,7 +52,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         init();
 
         ibBack.setOnClickListener(OTPVerificationActivity.this);
-        countdownResendOTP(TIME_RESEND_OTP*TICK, TICK);
+        countdownResendOTP(TIME_RESEND_OTP, TICK);
         setupOTPInputs();
     }
 
@@ -64,31 +61,31 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         Bundle bundle = intent.getExtras();
         verificationId = bundle.getString("verificationId");
         phoneNumber = bundle.getString("mobile");
-        if (bundle != null && bundle.containsKey("email"))
+        if (bundle.containsKey("email"))
             email = bundle.getString("email");
-        if (bundle != null && bundle.containsKey("register"))
+        if (bundle.containsKey("register"))
             isRegister = bundle.getBoolean("register");
 
-        inputCode1 = (EditText) findViewById(R.id.inputOTPCode1);
-        inputCode2 = (EditText) findViewById(R.id.inputOTPCode2);
-        inputCode3 = (EditText) findViewById(R.id.inputOTPCode3);
-        inputCode4 = (EditText) findViewById(R.id.inputOTPCode4);
-        inputCode5 = (EditText) findViewById(R.id.inputOTPCode5);
-        inputCode6 = (EditText) findViewById(R.id.inputOTPCode6);
+        inputCode1 = findViewById(R.id.inputOTPCode1);
+        inputCode2 = findViewById(R.id.inputOTPCode2);
+        inputCode3 = findViewById(R.id.inputOTPCode3);
+        inputCode4 = findViewById(R.id.inputOTPCode4);
+        inputCode5 = findViewById(R.id.inputOTPCode5);
+        inputCode6 = findViewById(R.id.inputOTPCode6);
         inputCodes = new EditText[]{inputCode1, inputCode2, inputCode3, inputCode4, inputCode5, inputCode6};
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_opt_verification);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar_enter_verification_otp);
-        tvTextResend = (TextView) findViewById(R.id.tv_text_resend);
-        tvTimeReSend = (TextView) findViewById(R.id.tv_resend_OTP);
+        ibBack = findViewById(R.id.ib_exit_opt_verification);
+        progressBar = findViewById(R.id.progressbar_enter_verification_otp);
+        tvTextResend = findViewById(R.id.tv_text_resend);
+        tvTimeReSend = findViewById(R.id.tv_resend_OTP);
     }
 
-    private void countdownResendOTP(final long finish, long tick) {
-        CountDownTimer countDownTimer;
-        countDownTimer = new CountDownTimer(finish, tick) {
+    private void countdownResendOTP(final long finish, final long tick) {
+        new CountDownTimer(finish, tick) {
+            @SuppressLint("DefaultLocale")
             @Override
             public void onTick(long l) {
                 long remindSec = l/TICK;
-                tvTimeReSend.setText(remindSec%60 + "s");
+                tvTimeReSend.setText(String.format("%ds", remindSec % 60));
             }
 
             @Override
@@ -111,7 +108,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
 
             Toast.makeText(OTPVerificationActivity.this, R.string.resending, Toast.LENGTH_SHORT).show();
             resetOTPInputs();
-            countdownResendOTP(TIME_RESEND_OTP*TICK, TICK);
+            countdownResendOTP(TIME_RESEND_OTP, TICK);
             // resendOTP();
         }
     }
@@ -159,7 +156,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
 
                         Toast.makeText(OTPVerificationActivity.this, R.string.resending, Toast.LENGTH_SHORT).show();
                         resetOTPInputs();
-                        countdownResendOTP(TIME_RESEND_OTP*TICK, TICK);
+                        countdownResendOTP(TIME_RESEND_OTP, TICK);
                     }
                 })
                 .build());
@@ -228,12 +225,9 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
 
             if (isAllEditTextsFilled() && isLast) {
                 inputCodes[currentIndex].clearFocus();
-                inputCodes[currentIndex].postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        InputMethodManager imm = (InputMethodManager)  inputCodes[currentIndex].getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow( inputCodes[currentIndex].getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
+                inputCodes[currentIndex].postDelayed(() -> {
+                    InputMethodManager imm = (InputMethodManager)  inputCodes[currentIndex].getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow( inputCodes[currentIndex].getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }, 100);
 
                 String code = inputCode1.getText().toString() + inputCode2.getText().toString()
@@ -248,17 +242,14 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         private void checkOTP(String code){
             progressBar.setVisibility(View.VISIBLE);
             PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.getCredential(verificationId, code);
-            FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    progressBar.setVisibility(View.GONE);
-                    if (task.isSuccessful()){
-                        AppUtil.mForceResendingToken = null;
-                        if (isRegister)
-                            startCreateUser();
-                        else
-                            startForgetPassword();
-                    }
+            FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(task -> {
+                progressBar.setVisibility(View.GONE);
+                if (task.isSuccessful()){
+                    AppUtil.mForceResendingToken = null;
+                    if (isRegister)
+                        startCreateUser();
+                    else
+                        startForgetPassword();
                 }
             });
         }

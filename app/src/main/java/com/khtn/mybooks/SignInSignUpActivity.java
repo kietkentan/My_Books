@@ -52,6 +52,7 @@ import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.User;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -147,13 +148,13 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
 
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
 
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_sign_in_sign_up);
-        btnContinueLoginPhoneNumber = (AppCompatButton) findViewById(R.id.btn_continue_login_phone_number);
-        btnLoginWithGoogle = (AppCompatButton) findViewById(R.id.btn_login_with_google);
-        btnLoginWithFaceBook = (AppCompatButton) findViewById(R.id.btn_login_with_facebook);
-        edtEnterPhoneNumberOrEmail = (EditText) findViewById(R.id.edt_enter_phone_number_or_mail);
-        tvLoginChoseUsing = (TextView) findViewById(R.id.tv_login_chose_using);
-        progressBarContinue = (ProgressBar) findViewById(R.id.progress_sign_in_sign_up);
+        ibBack = findViewById(R.id.ib_exit_sign_in_sign_up);
+        btnContinueLoginPhoneNumber = findViewById(R.id.btn_continue_login_phone_number);
+        btnLoginWithGoogle = findViewById(R.id.btn_login_with_google);
+        btnLoginWithFaceBook = findViewById(R.id.btn_login_with_facebook);
+        edtEnterPhoneNumberOrEmail = findViewById(R.id.edt_enter_phone_number_or_mail);
+        tvLoginChoseUsing = findViewById(R.id.tv_login_chose_using);
+        progressBarContinue = findViewById(R.id.progress_sign_in_sign_up);
     }
 
     @Override
@@ -284,7 +285,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void loginWithFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(SignInSignUpActivity.this, Arrays.asList("public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(SignInSignUpActivity.this, Collections.singletonList("public_profile"));
     }
 
     @Override
@@ -344,42 +345,39 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            String personName = Objects.requireNonNull(user).getDisplayName();
-                            String personEmail = user.getEmail();
-                            String personId = user.getUid();
-                            Uri personPhoto = user.getPhotoUrl();
-                            String personPhone = user.getPhoneNumber();
-                            User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone, null);
-                            databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (!snapshot.exists())
-                                        databaseReference.child("facebook").child(personId).getRef().setValue(user_fb);
-                                    else
-                                        Common.currentUser = snapshot.getValue(User.class);
-                                    Common.modeLogin = 3;
-                                    Common.saveUser(SignInSignUpActivity.this);
-                                    Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                    startActivity(intent);
-                                    finish();
-                                }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        String personName = Objects.requireNonNull(user).getDisplayName();
+                        String personEmail = user.getEmail();
+                        String personId = user.getUid();
+                        Uri personPhoto = user.getPhotoUrl();
+                        String personPhone = user.getPhoneNumber();
+                        User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone, null);
+                        databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (!snapshot.exists())
+                                    databaseReference.child("facebook").child(personId).getRef().setValue(user_fb);
+                                else
+                                    Common.currentUser = snapshot.getValue(User.class);
+                                Common.modeLogin = 3;
+                                Common.saveUser(SignInSignUpActivity.this);
+                                Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                startActivity(intent);
+                                finish();
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                                }
-                            });
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(SignInSignUpActivity.this, "Fail", Toast.LENGTH_SHORT).show();
-                        }
+                            }
+                        });
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(SignInSignUpActivity.this, "Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

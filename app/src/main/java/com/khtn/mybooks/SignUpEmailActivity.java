@@ -85,10 +85,10 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         Bundle bundle = intent.getExtras();
         strEmail = bundle.getString("user");
 
-        edtEnterPhoneNumber = (EditText) findViewById(R.id.edt_enter_phone_number);
-        btnContinue = (AppCompatButton) findViewById(R.id.btn_continue_sign_up_email);
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_sign_up_email);
-        progressBar = (ProgressBar) findViewById(R.id.progressbar_send_verification_otp);
+        edtEnterPhoneNumber = findViewById(R.id.edt_enter_phone_number);
+        btnContinue = findViewById(R.id.btn_continue_sign_up_email);
+        ibBack = findViewById(R.id.ib_exit_sign_up_email);
+        progressBar = findViewById(R.id.progressbar_send_verification_otp);
     }
 
     @Override
@@ -159,8 +159,8 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
         Dialog dialog = new Dialog(this, R.style.FullScreenDialog);
         dialog.setContentView(R.layout.layout_dialog_existing_account);
         dialog.setCanceledOnTouchOutside(false);
-        AppCompatButton btnClose = (AppCompatButton) dialog.findViewById(R.id.btn_close_dialog);
-        AppCompatButton btnAccept = (AppCompatButton) dialog.findViewById(R.id.btn_accept_dialog);
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnAccept = dialog.findViewById(R.id.btn_accept_dialog);
 
         btnClose.setOnClickListener(view -> dialog.dismiss());
 

@@ -1,6 +1,5 @@
 package com.khtn.mybooks;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -8,12 +7,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.khtn.mybooks.Interface.CartFragmentClickInterface;
 
 import java.util.Stack;
@@ -44,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
         fragmentStack = new Stack<>();
 
         fm = bundle.getBoolean("fm");
-        bottomNav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNav = findViewById(R.id.bottom_navigation);
         createFm();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragment).commit();
     }

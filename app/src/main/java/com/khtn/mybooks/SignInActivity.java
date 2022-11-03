@@ -91,14 +91,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         Bundle bundle = intent.getExtras();
         strUser = bundle.getString("user");
 
-        tvPleaseEnterPassword = (TextView) findViewById(R.id.tv_please_enter_password);
-        tvEmailOrPhoneNumber = (TextView) findViewById(R.id.tv_email_phone_number);
-        tvForgetPassword = (TextView) findViewById(R.id.tv_forget_password);
-        edtPassword = (EditText) findViewById(R.id.edt_enter_password);
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_sign_in);
-        ibHiddenOrShowPassword = (ImageButton) findViewById(R.id.ib_hidden_show_password);
-        btnLogin = (AppCompatButton) findViewById(R.id.btn_login);
-        progressBarLogin = (ProgressBar) findViewById(R.id.progressbar_sign_in);
+        tvPleaseEnterPassword = findViewById(R.id.tv_please_enter_password);
+        tvEmailOrPhoneNumber = findViewById(R.id.tv_email_phone_number);
+        tvForgetPassword = findViewById(R.id.tv_forget_password);
+        edtPassword = findViewById(R.id.edt_enter_password);
+        ibBack = findViewById(R.id.ib_exit_sign_in);
+        ibHiddenOrShowPassword = findViewById(R.id.ib_hidden_show_password);
+        btnLogin = findViewById(R.id.btn_login);
+        progressBarLogin = findViewById(R.id.progressbar_sign_in);
         thisContext = getApplicationContext();
     }
 

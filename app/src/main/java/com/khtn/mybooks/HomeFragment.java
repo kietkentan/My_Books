@@ -7,16 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPublisherClickInterface {
     private View view;
@@ -73,16 +69,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     public void init(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(getActivity(), gso);
+        gsc = GoogleSignIn.getClient(requireActivity(), gso);
         database = FirebaseDatabase.getInstance();
 
         publisherList = new ArrayList<>();
         bookList = new HashMap<>();
 
-        ig = (ImageView) view.findViewById(R.id.imageView);
-        rcPublisher = (RecyclerView) view.findViewById(R.id.rec_publishers);
-        rcBestSellerBooks = (RecyclerView) view.findViewById(R.id.rec_bestSellers);
-        rcNewBooks = (RecyclerView) view.findViewById(R.id.rec_news);
+        ig = view.findViewById(R.id.imageView);
+        rcPublisher = view.findViewById(R.id.rec_publishers);
+        rcBestSellerBooks = view.findViewById(R.id.rec_bestSellers);
+        rcNewBooks = view.findViewById(R.id.rec_news);
     }
 
     public void setRecyclerViewPublisher(){
@@ -156,13 +152,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
     // because the user page is incomplete, it should be placed here temporarily
     private void signOut(){
-        Common.clearUser(getActivity());
+        Common.clearUser(requireActivity());
         if (Common.modeLogin == 1){
             Common.currentUser = null;
             Common.modeLogin = 0;
         } else if (Common.modeLogin == 2) {
             gsc.signOut()
-                    .addOnCompleteListener(getActivity(), task -> {
+                    .addOnCompleteListener(requireActivity(), task -> {
                         Common.currentUser = null;
                         Common.modeLogin = 0;
                     });

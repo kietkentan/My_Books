@@ -264,7 +264,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_wait_confirm"
-                                tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription"
+                                app:tint="@color/reduced_price" />
                         </FrameLayout>
 
                         <TextView
@@ -299,7 +300,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_confirmed"
-                                tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription"
+                                app:tint="@color/reduced_price" />
                         </FrameLayout>
 
                         <TextView
@@ -334,7 +336,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_in_transit"
-                                tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription"
+                                app:tint="@color/reduced_price" />
                         </FrameLayout>
 
                         <TextView
@@ -369,7 +372,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_delivered"
-                                tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription"
+                                app:tint="@color/reduced_price" />
                         </FrameLayout>
 
                         <TextView
@@ -404,7 +408,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_package_return"
-                                tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription"
+                                app:tint="@color/reduced_price" />
                         </FrameLayout>
 
                         <TextView
@@ -478,7 +483,7 @@
             android:id="@+id/iv_setting"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/ic_setting_black"
+            android:src="@drawable/ic_setting"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
             app:layout_constraintTop_toTopOf="parent"

@@ -83,12 +83,12 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     public void init(){
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
 
-        ibBack = (ImageButton) findViewById(R.id.ib_exit_forget_password);
-        edtEnterUser = (EditText) findViewById(R.id.edt_enter_user);
-        btnGetPassword = (AppCompatButton) findViewById(R.id.btn_get_password);
-        tvContact = (TextView) findViewById(R.id.tv_hotline);
-        tvNotAccount = (TextView) findViewById(R.id.tv_not_have_account);
-        progressBar = (ProgressBar) findViewById(R.id.progress_forget_password);
+        ibBack = findViewById(R.id.ib_exit_forget_password);
+        edtEnterUser = findViewById(R.id.edt_enter_user);
+        btnGetPassword = findViewById(R.id.btn_get_password);
+        tvContact = findViewById(R.id.tv_hotline);
+        tvNotAccount = findViewById(R.id.tv_not_have_account);
+        progressBar = findViewById(R.id.progress_forget_password);
     }
 
     @Override

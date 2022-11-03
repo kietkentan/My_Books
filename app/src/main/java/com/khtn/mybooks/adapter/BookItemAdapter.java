@@ -46,7 +46,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
 
         if (bookItemList.get(position).getDiscount() == 0){
             holder.tvOriginalPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
-            holder.layoutDiscount.setVisibility(View.INVISIBLE);
+            holder.tvDiscount.setVisibility(View.INVISIBLE);
             holder.tvReducedPrice.setVisibility(View.INVISIBLE);
         } else {
             holder.tvDiscount.setText(String.format("-%d%%", bookItemList.get(position).getDiscount()));
@@ -56,11 +56,11 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             holder.tvReducedPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getReducedPrice())));
         }
         if (!(bookItemList.get(position).getAmount() == 0))
-            holder.layoutOutOfStock.setVisibility(View.INVISIBLE);
-        else holder.layoutOutOfStock.setVisibility(View.VISIBLE);
+            holder.tvOutOfStock.setVisibility(View.INVISIBLE);
+        else holder.tvOutOfStock.setVisibility(View.VISIBLE);
         if (AppUtil.numDays(bookItemList.get(position).getDatePosted()) >= 30)
-            holder.layoutUpcoming.setVisibility(View.INVISIBLE);
-        else holder.layoutUpcoming.setVisibility(View.VISIBLE);
+            holder.tvUpComing.setVisibility(View.INVISIBLE);
+        else holder.tvUpComing.setVisibility(View.VISIBLE);
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, BookDetailActivity.class);
             intent.putExtra("publisher", bookItemList.get(position).getPublisher());
@@ -80,9 +80,8 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         TextView tvOriginalPrice;
         TextView tvReducedPrice;
         TextView tvDiscount;
-        FrameLayout layoutDiscount;
-        FrameLayout layoutUpcoming;
-        FrameLayout layoutOutOfStock;
+        TextView tvUpComing;
+        TextView tvOutOfStock;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -91,9 +90,8 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             tvOriginalPrice = itemView.findViewById(R.id.tv_original_price);
             tvReducedPrice = itemView.findViewById(R.id.tv_reduced_price);
             tvDiscount = itemView.findViewById(R.id.tv_discount);
-            layoutDiscount = itemView.findViewById(R.id.layout_discount_percentage);
-            layoutUpcoming = itemView.findViewById(R.id.layout_upcoming);
-            layoutOutOfStock = itemView.findViewById(R.id.layout_out_of_stock);
+            tvUpComing = itemView.findViewById(R.id.tv_up_coming);
+            tvOutOfStock = itemView.findViewById(R.id.tv_out_of_stock);
         }
     }
 }

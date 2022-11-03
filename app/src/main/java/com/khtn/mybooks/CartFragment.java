@@ -57,6 +57,8 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
         init();
         getData();
+
+        tvLocation.setOnClickListener(this);
         btnContinueShopping.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
 
@@ -130,6 +132,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
+    public void startLocationPage(){
+
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     public void removeCart(){
         if (cbAllCart.isChecked())
@@ -148,6 +154,8 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.tv_location)
+            startLocationPage();
         if (view.getId() == R.id.ib_remove_cart)
             removeCart();
         if (view.getId() == R.id.btn_buy)
