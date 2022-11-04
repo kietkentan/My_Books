@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,16 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.Interface.CartFragmentClickInterface;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.adapter.CartAdapter;
 import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.databases.DataBase;
-import com.khtn.mybooks.model.Address;
+import com.khtn.mybooks.databases.DataBaseCart;
 import com.khtn.mybooks.model.Order;
 
 import java.util.List;
@@ -43,8 +48,11 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     private CartAdapter adapter;
     private List<Order> orderList;
-    private DataBase dataBaseOrder;
-    CartFragmentClickInterface cartFragmentClickInterface;
+    private DataBaseCart dataBaseOrder;
+    private final String[] mode = {"mybooks", "google", "facebook"};
+    private final CartFragmentClickInterface cartFragmentClickInterface;
+    private DatabaseReference referenceUser;
+    private DatabaseReference referenceBook;
 
     public CartFragment(CartFragmentClickInterface cartFragmentClickInterface) {
         this.cartFragmentClickInterface = cartFragmentClickInterface;
@@ -72,17 +80,20 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     public void init(){
-        dataBaseOrder = new DataBase(getActivity());
+        dataBaseOrder = new DataBaseCart(getActivity());
 
-        cbAllCart = (CheckBox) view.findViewById(R.id.cb_check_all_cart);
-        tvTotalPrice = (TextView) view.findViewById(R.id.tv_total_price);
-        tvAddress = (TextView) view.findViewById(R.id.tv_address);
-        btnBuy = (AppCompatButton) view.findViewById(R.id.btn_buy);
-        btnContinueShopping = (AppCompatButton) view.findViewById(R.id.btn_continue_shopping);
-        ibRemoveCart = (ImageButton) view.findViewById(R.id.ib_remove_cart);
-        rcShowCart = (RecyclerView) view.findViewById(R.id.rec_carts);
-        layoutNoneCart = (ConstraintLayout) view.findViewById(R.id.layout_none_cart);
-        layoutViewCart = (ConstraintLayout) view.findViewById(R.id.layout_view_cart);
+        cbAllCart = view.findViewById(R.id.cb_check_all_cart);
+        tvTotalPrice = view.findViewById(R.id.tv_total_price);
+        tvAddress = view.findViewById(R.id.tv_address);
+        btnBuy = view.findViewById(R.id.btn_buy);
+        btnContinueShopping = view.findViewById(R.id.btn_continue_shopping);
+        ibRemoveCart = view.findViewById(R.id.ib_remove_cart);
+        rcShowCart = view.findViewById(R.id.rec_carts);
+        layoutNoneCart = view.findViewById(R.id.layout_none_cart);
+        layoutViewCart = view.findViewById(R.id.layout_view_cart);
+
+        referenceUser = FirebaseDatabase.getInstance().getReference("user");
+        referenceBook = FirebaseDatabase.getInstance().getReference("book");
     }
 
     public void getData(){
@@ -90,7 +101,6 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         orderList = dataBaseOrder.getCarts();
         adapter = new CartAdapter(orderList, this, getContext());
         rcShowCart.setAdapter(adapter);
-
         setupLayout();
     }
 
@@ -99,11 +109,12 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             layoutNoneCart.setVisibility(View.VISIBLE);
             layoutViewCart.setVisibility(View.GONE);
         } else {
+            cbAllCart.setChecked(false);
             layoutNoneCart.setVisibility(View.GONE);
             layoutViewCart.setVisibility(View.VISIBLE);
             ibRemoveCart.setOnClickListener(this);
             if (Common.addressLists != null) {
-                String defaultAddress = Common.addressLists.get(Common.addressNow).getAddress();
+                String defaultAddress = Common.addressNow.getAddress();
                 tvAddress.setText(defaultAddress);
             }
         }
@@ -158,6 +169,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             setTotal(listRemove);
         }
         getData();
+        OnSaveAllCart(orderList);
     }
 
     @Override
@@ -185,7 +197,38 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     @Override
-    public void OnRemoveCart() {
-        getData();
+    public void OnSaveAllCart(List<Order> orderList) {
+        referenceUser.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId())
+                .child("cartList").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        snapshot.getRef().removeValue();
+                        for (int i = 0; i < orderList.size(); ++i){
+                            snapshot.child(String.valueOf(i)).child("bookId").getRef().setValue(orderList.get(i).getBookId());
+                            snapshot.child(String.valueOf(i)).child("bookQuantity").getRef().setValue(orderList.get(i).getBookQuantity());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void OnChangeDataCart(int position, int quantity) {
+        referenceUser.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId())
+                .child("cartList").child(String.valueOf(position)).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        snapshot.child("bookQuantity").getRef().setValue(quantity);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

@@ -90,10 +90,6 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         if (view.getId() == R.id.iv_setting)
             ;// show menu setting
         if (view.getId() == R.id.btn_login_user)
-            startLoginPage();
-    }
-
-    private void startLoginPage(){
-        startActivity(new Intent(getActivity(), SignInSignUpActivity.class));
+            AppUtil.startLoginPage(getActivity());
     }
 }

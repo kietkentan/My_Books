@@ -157,7 +157,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     // if the account already exists, then a dialog box is displayed
     private void openDialog(){
         Dialog dialog = new Dialog(this, R.style.FullScreenDialog);
-        dialog.setContentView(R.layout.layout_dialog_existing_account);
+        dialog.setContentView(R.layout.dialog_existing_account);
         dialog.setCanceledOnTouchOutside(false);
         AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
         AppCompatButton btnAccept = dialog.findViewById(R.id.btn_accept_dialog);

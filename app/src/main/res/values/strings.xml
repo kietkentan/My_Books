@@ -148,5 +148,36 @@
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="enter_new_address">Nhập địa chỉ mới</string>
+    <string name="recipient_name">Tên người nhận</string>
+    <string name="phone">Số điện thoại</string>
+    <string name="provinces_and_cities">Tỉnh/Thành phố</string>
+    <string name="enter_name">Nhập họ tên</string>
+    <string name="enter_phone_number">Nhập số điện thoại</string>
+    <string name="chose_provinces_cities">Chọn Tỉnh/Thành phố</string>
+    <string name="chose_districts">Chọn Quận/Huyện</string>
+    <string name="districts">Quận/Huyện</string>
+    <string name="precinct">Phường/Xã</string>
+    <string name="chose_precinct">Chọn Phường/Xã</string>
+    <string name="delivery_address">Địa chỉ nhận hàng</string>
+    <string name="delivery_detail">Tòa nhà, số nhà, tên đường</string>
+    <string name="set_it_default">Sử dụng làm địa chỉ mặc định</string>
+    <string name="exit_this_page">Bạn có chắc chắn rời khỏi trang này?</string>
+    <string name="your_information_enter_not_save">Thông tin bạn vừa nhập sẽ không được lưu lại.</string>
+    <string name="exit">Rời khỏi</string>
+    <string name="stay">Ở lại</string>
+    <string name="enter_recipient_name">Nhập tên người nhận</string>
+    <string name="enter_delivery_address">Nhập địa chỉ nhận hàng</string>
+    <string name="add_address_success">Thêm địa chỉ thành công</string>
+    <string name="name_not_valid">Tên phải bắt đầu bằng chữ hoa và không được chứa chữ số và kí tự đặc biệt</string>
+    <string name="delivery_must_at_least_two_words">Địa chỉ phải chứa ít nhất 2 từ</string>
+    <string name="delivery_not_valid">Địa chỉ không nên chứa các kí tự đặc biệt</string>
+    <string name="phone_not_valid">Số điện thoại không hợp lệ</string>
+    <string name="enter_fullname">Nhập họ tên đầy đủ</string>
+    <string name="remove">Xóa</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="set_default">Đặt làm mặc định</string>
+    <string name="limit_product">Chỉ còn %d sản phẩm</string>
 
 </resources>

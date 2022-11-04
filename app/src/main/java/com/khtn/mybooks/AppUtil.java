@@ -2,6 +2,7 @@ package com.khtn.mybooks;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -57,6 +58,20 @@ public class AppUtil {
         return str.matches(emailPattern) && str.length() > 4;
     }
 
+    public static boolean isName(String str){
+        String regex = "^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$";
+        if (str.isEmpty())
+            return false;
+        return str.matches(regex) && str.contains(" ");
+    }
+
+    public static boolean isString(String str){
+        String regex = "[\\W_]";
+        if (str.isEmpty())
+            return false;
+        return str.matches(regex) && str.contains(" ");
+    }
+
     // convert number to string
     // ex: 10000 -> 10.000
     public static String convertNumber(int num){
@@ -92,5 +107,10 @@ public class AppUtil {
             return aString;
         else
             return context.getString(resId);
+    }
+
+    public static void startLoginPage(Context context){
+        Intent intent = new Intent(context, SignInSignUpActivity.class);
+        context.startActivity(intent);
     }
 }

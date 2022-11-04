@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -31,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -42,7 +42,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.adapter.BookDetailAdapter;
 import com.khtn.mybooks.adapter.ListImageAdapter;
-import com.khtn.mybooks.databases.DataBase;
+import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.databases.DataBaseCart;
 import com.khtn.mybooks.model.Book;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Publisher;
@@ -308,21 +309,74 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void addCart(){
-        new DataBase(BookDetailActivity.this).addCart(new Order(
-                dataBook.getId(),
-                dataBook.getName(),
-                dataBook.getImage().get(0),
-                dataPublisher.getId(),
-                1,
-                dataBook.getOriginalPrice(),
-                dataBook.getDiscount()
-        ));
-        openDialog();
+        DataBaseCart dataBaseCart = new DataBaseCart(BookDetailActivity.this);
+        List<Order> orderList = dataBaseCart.getCarts();
+        int quantity = 0;
+        boolean exists = false;
+        for (int i = 0; i < orderList.size(); ++i){
+            if (orderList.get(i).getBookId().equals(dataBook.getId())){
+                exists = true;
+                quantity = orderList.get(i).getBookQuantity();
+            }
+        }
+
+        int finalQuantity = quantity;
+        boolean finalExists = exists;
+        database.getReference("book").child(dataBook.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("DefaultLocale")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int amount = snapshot.child("amount").getValue(Integer.class);
+                if (amount > finalQuantity){
+                    dataBaseCart.addCart(new Order(
+                            dataBook.getId(),
+                            dataBook.getName(),
+                            dataBook.getImage().get(0),
+                            dataPublisher.getId(),
+                            1,
+                            dataBook.getOriginalPrice(),
+                            dataBook.getDiscount()
+                    ));
+
+                    String[] mode = {"mybooks", "google", "facebook"};
+                    database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("cartList").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (finalExists){
+                                for (DataSnapshot snapshot1:snapshot.getChildren()){
+                                    if (snapshot1.child("bookId").getValue(String.class).equals(dataBook.getId())){
+                                        int quantity = snapshot1.child("bookQuantity").getValue(Integer.class);
+                                        snapshot1.child("bookQuantity").getRef().setValue(quantity + 1);
+                                    }
+                                }
+                            } else {
+                                snapshot.child(String.valueOf(snapshot.getChildrenCount())).child("bookId").getRef().setValue(dataBook.getId());
+                                snapshot.child(String.valueOf(snapshot.getChildrenCount())).child("bookQuantity").getRef().setValue(1);
+                            }
+                            openDialog();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(BookDetailActivity.this,  String.format(getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void openDialog(){
         Dialog dialog = new Dialog(this, R.style.FullScreenDialog);
-        dialog.setContentView(R.layout.layout_dialog_done_add_cart);
+        dialog.setContentView(R.layout.dialog_done_add_cart);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);

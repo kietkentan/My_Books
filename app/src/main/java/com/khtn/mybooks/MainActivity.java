@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
     private final Fragment userFrag = new UserFragment();
     private final Fragment cartFrag = new CartFragment(this);
     private Stack<Fragment> fragmentStack;
+
     private boolean fm = true;
     private boolean backPress = false;
 

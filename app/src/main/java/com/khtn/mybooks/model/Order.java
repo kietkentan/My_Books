@@ -1,81 +1,81 @@
 package com.khtn.mybooks.model;
 
 public class Order {
-    private String BookId;
-    private String BookName;
-    private String BookImage;
-    private String PublisherId;
-    private int BookQuantity;
-    private int BookPrice;
-    private int BookDiscount;
+    private String bookId;
+    private String bookName;
+    private String bookImage;
+    private String publisherId;
+    private int bookQuantity;
+    private int bookPrice;
+    private int bookDiscount;
     private boolean selected;
 
     public Order() {}
 
     public Order(String bookId, String bookName, String bookImage, String publisherId, int bookQuantity, int bookPrice, int bookDiscount) {
-        BookId = bookId;
-        BookName = bookName;
-        BookImage = bookImage;
-        PublisherId = publisherId;
-        BookQuantity = bookQuantity;
-        BookPrice = bookPrice;
-        BookDiscount = bookDiscount;
+        this.bookId = bookId;
+        this.bookName = bookName;
+        this.bookImage = bookImage;
+        this.publisherId = publisherId;
+        this.bookQuantity = bookQuantity;
+        this.bookPrice = bookPrice;
+        this.bookDiscount = bookDiscount;
     }
 
     public String getBookId() {
-        return BookId;
+        return bookId;
     }
 
     public void setBookId(String bookId) {
-        BookId = bookId;
+        this.bookId = bookId;
     }
 
     public String getBookName() {
-        return BookName;
+        return bookName;
     }
 
     public void setBookName(String bookName) {
-        BookName = bookName;
+        this.bookName = bookName;
     }
 
     public String getBookImage() {
-        return BookImage;
+        return bookImage;
     }
 
     public void setBookImage(String bookImage) {
-        BookImage = bookImage;
+        this.bookImage = bookImage;
     }
 
     public String getPublisherId() {
-        return PublisherId;
+        return publisherId;
     }
 
     public void setPublisherId(String publisherId) {
-        PublisherId = publisherId;
+        this.publisherId = publisherId;
     }
 
     public int getBookQuantity() {
-        return BookQuantity;
+        return bookQuantity;
     }
 
     public void setBookQuantity(int bookQuantity) {
-        BookQuantity = bookQuantity;
+        this.bookQuantity = bookQuantity;
     }
 
     public int getBookPrice() {
-        return BookPrice;
+        return bookPrice;
     }
 
     public void setBookPrice(int bookPrice) {
-        BookPrice = bookPrice;
+        this.bookPrice = bookPrice;
     }
 
     public int getBookDiscount() {
-        return BookDiscount;
+        return bookDiscount;
     }
 
     public void setBookDiscount(int bookDiscount) {
-        BookDiscount = bookDiscount;
+        this.bookDiscount = bookDiscount;
     }
 
     public boolean isSelected() {

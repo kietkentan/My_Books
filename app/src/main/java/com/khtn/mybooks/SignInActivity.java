@@ -165,7 +165,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                                         Address address = snapshot1.getValue(Address.class);
                                         addressList.add(address);
                                     }
-                                    Common.addressLists = addressList;
+                                    Common.setAddressLists(addressList);
                                     Common.currentUser = user;
                                     Common.modeLogin = 1;
                                     Common.saveUser(SignInActivity.this);

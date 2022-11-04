@@ -13,11 +13,16 @@ import java.util.List;
 public class Common {
     public static User currentUser;
     public static List<Address> addressLists;
-    public static int addressNow = 0;
+    public static Address addressNow;
     public static int modeLogin;
                             // 1: username, password
                             // 2: google
                             // 3: facebook
+
+    public static void setAddressLists(List<Address> addressList){
+        addressLists = addressList;
+        addressNow = (addressList == null) ? null:addressList.get(0);
+    }
 
     public static SharedPreferences checkUser(Context context){
         SharedPreferences preferences = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);

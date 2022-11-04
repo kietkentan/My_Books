@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 
 import com.khtn.mybooks.model.Order;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -14,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("MalformedFormatString")
-public class DataBase extends SQLiteAssetHelper {
+public class DataBaseCart extends SQLiteAssetHelper {
     private static final String DB_NAME = "MyBooksDB.db";
     private static final int DB_VERSION = 1;
 
-    public DataBase(Context context) {
+    public DataBaseCart(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

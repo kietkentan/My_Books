@@ -9,15 +9,20 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.AppUtil;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
-import com.khtn.mybooks.databases.DataBase;
+import com.khtn.mybooks.databases.DataBaseCart;
 import com.khtn.mybooks.model.Order;
 import com.squareup.picasso.Picasso;
 
@@ -66,22 +71,41 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             viewCartClickInterface.OnCheckedChanged(getSelectedCart());
         });
         holder.btnAdd.setOnClickListener(view -> {
-            orders.get(position).setBookQuantity(orders.get(position).getBookQuantity() + 1);
-            new DataBase(context).updateCart(orders.get(position).getBookId(), orders.get(position).getBookQuantity());
-            notifyDataSetChanged();
+            int quantity = orders.get(position).getBookQuantity() + 1;
+            FirebaseDatabase.getInstance().getReference("book").child(orders.get(position).getBookId()).child("amount").addListenerForSingleValueEvent(new ValueEventListener() {
+                @SuppressLint("DefaultLocale")
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int amount = snapshot.getValue(Integer.class);
+                    if (amount >= quantity){
+                        orders.get(position).setBookQuantity(quantity);
+                        new DataBaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
+                        viewCartClickInterface.OnChangeDataCart(position, orders.get(position).getBookQuantity());
+                        notifyItemChanged(position);
+                    } else {
+                        Toast.makeText(context, String.format(context.getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         });
         holder.btnSub.setOnClickListener(view -> {
-            int quantity = orders.get(position).getBookQuantity();
-            if (quantity == 1) {
-                new DataBase(context).removeCarts(orders.get(position).getBookId());
+            int quantity = orders.get(position).getBookQuantity() - 1;
+            if (quantity < 1) {
+                new DataBaseCart(context).removeCarts(orders.get(position).getBookId());
                 orders.remove(position);
+                viewCartClickInterface.OnSaveAllCart(orders);
                 notifyItemRemoved(position);
-                viewCartClickInterface.OnRemoveCart();
             }
             else {
-                orders.get(position).setBookQuantity(quantity - 1);
-                new DataBase(context).updateCart(orders.get(position).getBookId(), quantity - 1);
-                notifyDataSetChanged();
+                orders.get(position).setBookQuantity(quantity);
+                new DataBaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
+                viewCartClickInterface.OnChangeDataCart(position, quantity);
+                notifyItemChanged(position);
             }
         });
     }

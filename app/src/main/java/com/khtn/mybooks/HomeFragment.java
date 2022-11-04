@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +25,7 @@ import com.khtn.mybooks.Interface.ViewPublisherClickInterface;
 import com.khtn.mybooks.adapter.BookItemAdapter;
 import com.khtn.mybooks.adapter.PublisherItemAdapter;
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.databases.DataBaseCart;
 import com.khtn.mybooks.model.BookItem;
 import com.khtn.mybooks.model.PublisherItem;
 
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPublisherClickInterface {
     private View view;
@@ -162,6 +160,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         Common.currentUser = null;
         Common.modeLogin = 0;
         Common.addressLists = null;
+        Common.setAddressLists(null);
+        new DataBaseCart(getActivity()).cleanCarts();
     }
 
     @Override
