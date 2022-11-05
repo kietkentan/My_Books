@@ -116,6 +116,7 @@ public class SplashActivity extends AppCompatActivity {
                                             database.getReference("book").child(order.getBookId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    @SuppressWarnings("unchecked")
                                                     List<String> image = (List<String>) snapshot.child("image").getValue();
                                                     order.setBookImage(image.get(0));
                                                     order.setBookName(snapshot.child("name").getValue(String.class));

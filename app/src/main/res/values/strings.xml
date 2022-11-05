@@ -179,5 +179,8 @@
     <string name="edit">Chỉnh sửa</string>
     <string name="set_default">Đặt làm mặc định</string>
     <string name="limit_product">Chỉ còn %d sản phẩm</string>
+    <string name="name_limit">%d/50</string>
+    <string name="default_name_limit">0/50</string>
+    <string name="chose_address">Chọn nơi giao hàng</string>
 
 </resources>

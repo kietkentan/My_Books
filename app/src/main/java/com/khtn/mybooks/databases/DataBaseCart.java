@@ -12,7 +12,6 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("MalformedFormatString")
 public class DataBaseCart extends SQLiteAssetHelper {
     private static final String DB_NAME = "MyBooksDB.db";
     private static final int DB_VERSION = 1;

@@ -34,8 +34,6 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     private AddressAdapter addressAdapter;
     private AppCompatButton btnChoseAddress;
 
-    private AddressClickInterface clickInterface;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,12 +63,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     public void setRecyclerViewAddress(){
         if (Common.addressLists != null) {
             recListAddress.setLayoutManager(new LinearLayoutManager(AddressActivity.this, RecyclerView.VERTICAL, false));
-            clickInterface = new AddressClickInterface() {
-                @Override
-                public void OnClick() {
-                    addressAdapter.notifyDataSetChanged();
-                }
-            };
+            AddressClickInterface clickInterface = () -> addressAdapter.notifyDataSetChanged();
             addressAdapter = new AddressAdapter(Common.addressLists, clickInterface, this);
             recListAddress.setAdapter(addressAdapter);
         } else {

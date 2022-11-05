@@ -12,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,6 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     private final String[] mode = {"mybooks", "google", "facebook"};
     private final CartFragmentClickInterface cartFragmentClickInterface;
     private DatabaseReference referenceUser;
-    private DatabaseReference referenceBook;
 
     public CartFragment(CartFragmentClickInterface cartFragmentClickInterface) {
         this.cartFragmentClickInterface = cartFragmentClickInterface;
@@ -93,7 +91,6 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         layoutViewCart = view.findViewById(R.id.layout_view_cart);
 
         referenceUser = FirebaseDatabase.getInstance().getReference("user");
-        referenceBook = FirebaseDatabase.getInstance().getReference("book");
     }
 
     public void getData(){
@@ -114,7 +111,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             layoutViewCart.setVisibility(View.VISIBLE);
             ibRemoveCart.setOnClickListener(this);
             if (Common.addressLists != null) {
-                String defaultAddress = Common.addressNow.getAddress();
+                String defaultAddress = String.format("%s, %s, %s, %s", Common.addressNow.getAddress(),
+                        Common.addressNow.getPrecinct(),
+                        Common.addressNow.getDistricts(),
+                        Common.addressNow.getProvinces_cities());
                 tvAddress.setText(defaultAddress);
             }
         }

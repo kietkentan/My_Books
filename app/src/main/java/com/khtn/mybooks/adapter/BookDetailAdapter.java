@@ -44,7 +44,7 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
         int num = Integer.parseInt(list.get(position).get(1));
 
         while (true){
-            detail = detail + AppUtil.getStringResourceByName(ageRange[(num%10) - 1], context);
+            detail = String.format("%s%s", detail, AppUtil.getStringResourceByName(ageRange[(num % 10) - 1], context));
             num /= 10;
             if (num != 0) detail += "\n";
             else break;

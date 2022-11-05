@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;

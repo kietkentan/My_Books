@@ -80,7 +80,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
             @SuppressLint("DefaultLocale")
             @Override
             public void afterTextChanged(Editable editable) {
-                tvLimitName.setText(String.format("%d/50", edtEnterRecipientName.getText().length()));
+                tvLimitName.setText(String.format(getString(R.string.name_limit), edtEnterRecipientName.getText().length()));
             }
         });
     }
@@ -160,6 +160,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
     public void checkInfo(){
         if (!AppUtil.isName(edtEnterRecipientName.getText().toString())
             || !AppUtil.isPhoneNumber(edtEnterPhone.getText().toString())
+            || tvChoseProvincesCities.getText().toString().isEmpty()
             || !AppUtil.isString(edtEnterDeliveryAddress.getText().toString())){
             if (edtEnterRecipientName.getText().toString().isEmpty())
                 edtEnterRecipientName.setError(getString(R.string.enter_recipient_name));
@@ -173,6 +174,9 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
             else if (!AppUtil.isPhoneNumber(edtEnterPhone.getText().toString()))
                 edtEnterPhone.setError(getString(R.string.phone_not_valid));
 
+            if (tvChoseProvincesCities.getText().toString().isEmpty())
+                tvChoseProvincesCities.setError(getString(R.string.chose_address));
+
             if (edtEnterDeliveryAddress.getText().toString().isEmpty())
                 edtEnterDeliveryAddress.setError(getString(R.string.enter_delivery_address));
             else if (!edtEnterDeliveryAddress.getText().toString().contains(" "))
@@ -183,8 +187,13 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
             //if (tvChoseProvincesCities.getText().toString().isEmpty())
                 //tvChoseProvincesCities.setError(getString(R.string.chose_provinces_cities));
         } else {
-            address = new Address(edtEnterRecipientName.getText().toString(), edtEnterPhone.getText().toString(),
-                    edtEnterDeliveryAddress.getText().toString(), cbSetItDefault.isChecked());
+            address = new Address(edtEnterRecipientName.getText().toString(),
+                    edtEnterPhone.getText().toString(),
+                    tvChoseProvincesCities.getText().toString(),
+                    tvChoseDistricts.getText().toString(),
+                    tvChosePrecinct.getText().toString(),
+                    edtEnterDeliveryAddress.getText().toString(),
+                    cbSetItDefault.isChecked());
             addAddress(cbSetItDefault.isChecked());
         }
     }

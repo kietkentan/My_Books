@@ -3,7 +3,6 @@ package com.khtn.mybooks.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -15,17 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.Interface.AddressClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.Address;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
@@ -52,7 +45,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.btnChoseAddress.setChecked(addressNow.equals(addressList.get(position)));
         holder.tvNameUser.setText(addressList.get(position).getName());
         holder.tvPhoneUser.setText(addressList.get(position).getPhone());
-        holder.tvAddressUser.setText(addressList.get(position).getAddress());
+        String address = String.format("%s, %s, %s, %s", addressList.get(position).getAddress(),
+                addressList.get(position).getPrecinct(),
+                addressList.get(position).getDistricts(),
+                addressList.get(position).getProvinces_cities());
+        holder.tvAddressUser.setText(address);
         if (addressList.get(position).isDefaultAddress())
             holder.tvDefault.setVisibility(View.VISIBLE);
         else {
@@ -75,23 +72,20 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         PopupMenu popupMenu = new PopupMenu(context, view.ibEdit);
         popupMenu.getMenuInflater().inflate(R.menu.in_address_menu, popupMenu.getMenu());
         popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener () {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.m_set_default:
-                        AddressAdapter.this.setDefault(position);
-                        notifyItemChanged(0);
-                        notifyItemChanged(position);
-                        break;
-                    case R.id.m_edit:
-                        //
-                        break;
-                    case R.id.m_remove:
-                        break;
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.m_set_default:
+                    AddressAdapter.this.setDefault(position);
+                    notifyItemChanged(0);
+                    notifyItemChanged(position);
+                    break;
+                case R.id.m_edit:
+                    //
+                    break;
+                case R.id.m_remove:
+                    break;
             }
+            return false;
         });
     }
 

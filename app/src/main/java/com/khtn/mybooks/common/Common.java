@@ -1,9 +1,7 @@
 package com.khtn.mybooks.common;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.khtn.mybooks.model.Address;
 import com.khtn.mybooks.model.User;
@@ -26,7 +24,6 @@ public class Common {
 
     public static SharedPreferences checkUser(Context context){
         SharedPreferences preferences = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
-        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = preferences.edit();
         if (preferences.contains("saved_id"))
             return preferences;
         return null;
@@ -38,13 +35,13 @@ public class Common {
         editor.putString("saved_id", currentUser.getId());
         editor.putString("saved_password", currentUser.getPassword());
         editor.putInt("mode_login", modeLogin);
-        editor.commit();
+        editor.apply();
     }
 
     public static void clearUser(Context context){
         SharedPreferences preferences = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }
