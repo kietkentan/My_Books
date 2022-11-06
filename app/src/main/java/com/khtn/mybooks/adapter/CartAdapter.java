@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.AppUtil;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
-import com.khtn.mybooks.databases.DataBaseCart;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 import com.squareup.picasso.Picasso;
 
@@ -79,7 +79,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                     int amount = snapshot.getValue(Integer.class);
                     if (amount >= quantity){
                         orders.get(position).setBookQuantity(quantity);
-                        new DataBaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
+                        new DatabaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
                         viewCartClickInterface.OnChangeDataCart(position, orders.get(position).getBookQuantity());
                         notifyItemChanged(position);
                     } else {
@@ -96,14 +96,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         holder.btnSub.setOnClickListener(view -> {
             int quantity = orders.get(position).getBookQuantity() - 1;
             if (quantity < 1) {
-                new DataBaseCart(context).removeCarts(orders.get(position).getBookId());
+                new DatabaseCart(context).removeCarts(orders.get(position).getBookId());
                 orders.remove(position);
                 viewCartClickInterface.OnSaveAllCart(orders);
                 notifyItemRemoved(position);
             }
             else {
                 orders.get(position).setBookQuantity(quantity);
-                new DataBaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
+                new DatabaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
                 viewCartClickInterface.OnChangeDataCart(position, quantity);
                 notifyItemChanged(position);
             }

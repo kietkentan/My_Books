@@ -19,12 +19,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.databases.DataBaseCart;
-import com.khtn.mybooks.model.Address;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("CustomSplashScreen")
@@ -84,61 +82,8 @@ public class SplashActivity extends AppCompatActivity {
                         if (snapshot.exists()){
                             User user = snapshot.getValue(User.class);
                             if (user.getPassword().equals(password)) {
-                                user.setPassword(null);
-                                Common.currentUser = user;
-                                snapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        List<Address> addressList = new ArrayList<>();
-                                        for (DataSnapshot snapshot1:snapshot.getChildren()){
-                                            Address address = snapshot1.getValue(Address.class);
-                                            addressList.add(address);
-                                        }
-                                        Common.setAddressLists(addressList);
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-                                snapshot.child("cartList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        List<Order> orderList = new ArrayList<>();
-                                        for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                                            Order order = dataSnapshot.getValue(Order.class);
-                                            orderList.add(order);
-                                        }
-                                        DataBaseCart dataBase = new DataBaseCart(SplashActivity.this);
-                                        dataBase.cleanCarts();
-                                        for (Order order:orderList){
-                                            database.getReference("book").child(order.getBookId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                    @SuppressWarnings("unchecked")
-                                                    List<String> image = (List<String>) snapshot.child("image").getValue();
-                                                    order.setBookImage(image.get(0));
-                                                    order.setBookName(snapshot.child("name").getValue(String.class));
-                                                    order.setBookDiscount(snapshot.child("discount").getValue(Integer.class));
-                                                    order.setBookPrice(snapshot.child("originalPrice").getValue(Integer.class));
-                                                    order.setPublisherId(snapshot.child("publisher").getValue(String.class));
-                                                    dataBase.addCart(order);
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                                }
-                                            });
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
+                                Common.signIn(user, 1);
+                                getMoreData();
                             }
                         }
                     }
@@ -153,23 +98,8 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Common.currentUser = snapshot.getValue(User.class);
-                            snapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    List<Address> addressList = new ArrayList<>();
-                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
-                                        Address address = snapshot1.getValue(Address.class);
-                                        addressList.add(address);
-                                    }
-                                    Common.setAddressLists(addressList);
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                            Common.signIn(snapshot.getValue(User.class), 2);
+                            getMoreData();
                         }
                     }
 
@@ -183,23 +113,8 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Common.currentUser = snapshot.getValue(User.class);
-                            snapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    List<Address> addressList = new ArrayList<>();
-                                    for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                        Address address = snapshot1.getValue(Address.class);
-                                        addressList.add(address);
-                                    }
-                                    Common.setAddressLists(addressList);
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                            Common.signIn(snapshot.getValue(User.class), 3);
+                            getMoreData();
                         }
                     }
 
@@ -211,6 +126,32 @@ public class SplashActivity extends AppCompatActivity {
             }
         } else
             Common.currentUser = null;
+    }
+
+    public void getMoreData(){
+        DatabaseCart databaseCart = new DatabaseCart(SplashActivity.this);
+        databaseCart.cleanCarts();
+        if (Common.currentUser.getCartList() != null)
+            for (Order order:Common.currentUser.getCartList()){
+                database.getReference("book").child(order.getBookId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        @SuppressWarnings("unchecked")
+                        List<String> image = (List<String>) snapshot.child("image").getValue();
+                        order.setBookImage(image.get(0));
+                        order.setBookName(snapshot.child("name").getValue(String.class));
+                        order.setBookDiscount(snapshot.child("discount").getValue(Integer.class));
+                        order.setBookPrice(snapshot.child("originalPrice").getValue(Integer.class));
+                        order.setPublisherId(snapshot.child("publisher").getValue(String.class));
+                        databaseCart.addCart(order);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
     }
 
     public void startHome(){

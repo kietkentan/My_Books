@@ -10,16 +10,23 @@ import java.util.List;
 
 public class Common {
     public static User currentUser;
-    public static List<Address> addressLists;
     public static Address addressNow;
     public static int modeLogin;
                             // 1: username, password
                             // 2: google
                             // 3: facebook
 
-    public static void setAddressLists(List<Address> addressList){
-        addressLists = addressList;
-        addressNow = (addressList == null) ? null:addressList.get(0);
+    public static void signOut(){
+        currentUser = null;
+        addressNow = null;
+        modeLogin = 0;
+    }
+
+    public static void signIn(User user, int mode){
+        currentUser = user;
+        currentUser.setPassword(null);
+        modeLogin = mode;
+        addressNow = (currentUser.getAddressList() == null) ? null:currentUser.getAddressList().get(0);
     }
 
     public static SharedPreferences checkUser(Context context){

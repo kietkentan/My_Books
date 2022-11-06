@@ -28,7 +28,7 @@ import com.khtn.mybooks.Interface.CartFragmentClickInterface;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.adapter.CartAdapter;
 import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.databases.DataBaseCart;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     private CartAdapter adapter;
     private List<Order> orderList;
-    private DataBaseCart dataBaseOrder;
+    private DatabaseCart dataBaseOrder;
     private final String[] mode = {"mybooks", "google", "facebook"};
     private final CartFragmentClickInterface cartFragmentClickInterface;
     private DatabaseReference referenceUser;
@@ -78,7 +78,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     public void init(){
-        dataBaseOrder = new DataBaseCart(getActivity());
+        dataBaseOrder = new DatabaseCart(getActivity());
 
         cbAllCart = view.findViewById(R.id.cb_check_all_cart);
         tvTotalPrice = view.findViewById(R.id.tv_total_price);
@@ -110,11 +110,11 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             layoutNoneCart.setVisibility(View.GONE);
             layoutViewCart.setVisibility(View.VISIBLE);
             ibRemoveCart.setOnClickListener(this);
-            if (Common.addressLists != null) {
+            if (Common.addressNow != null) {
                 String defaultAddress = String.format("%s, %s, %s, %s", Common.addressNow.getAddress(),
-                        Common.addressNow.getPrecinct(),
-                        Common.addressNow.getDistricts(),
-                        Common.addressNow.getProvinces_cities());
+                        Common.addressNow.getPrecinct().getName_with_type(),
+                        Common.addressNow.getDistricts().getName_with_type(),
+                        Common.addressNow.getProvinces_cities().getName_with_type());
                 tvAddress.setText(defaultAddress);
             }
         }

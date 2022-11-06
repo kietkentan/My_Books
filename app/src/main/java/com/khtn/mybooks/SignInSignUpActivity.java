@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -47,10 +46,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.databases.DatabaseCart;
+import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.User;
 
 import java.util.Collections;
-import java.util.Objects;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SignInSignUpActivity extends AppCompatActivity implements View.OnClickListener{
@@ -70,7 +71,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     private String tmpPhone = "";
     private String tmpEmail = "";
 
-    private DatabaseReference databaseReference;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
 
     private GoogleSignInClient gsc;
 
@@ -144,7 +146,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("user");
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("user");
 
         ibBack = findViewById(R.id.ib_exit_sign_in_sign_up);
         btnContinueLoginPhoneNumber = findViewById(R.id.btn_continue_login_phone_number);
@@ -205,7 +208,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
         Bundle bundle = new Bundle();
         bundle.putString("user", edtEnterPhoneNumberOrEmail.getText().toString());
         if (AppUtil.isPhoneNumber(edtEnterPhoneNumberOrEmail.getText().toString())) {
-            databaseReference.child("mybooks").orderByChild("phone").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            reference.child("mybooks").orderByChild("phone").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
@@ -256,7 +259,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 }
             });
         } else if (AppUtil.isEmail(edtEnterPhoneNumberOrEmail.getText().toString())) {
-            databaseReference.child("mybooks").orderByChild("email").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            reference.child("mybooks").orderByChild("email").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
@@ -308,23 +311,24 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
             if (acct != null) {
-                String personName = acct.getDisplayName();
-                String personEmail = acct.getEmail();
-                String personId = acct.getId();
-                Uri personPhoto = acct.getPhotoUrl();
-                User user = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, null);
-
-                databaseReference.child("google").child(Objects.requireNonNull(personId)).addListenerForSingleValueEvent(new ValueEventListener() {
+                reference.child("google").child(acct.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (!snapshot.exists())
-                            databaseReference.child("google").child(personId).getRef().setValue(user);
-                        else
-                            Common.currentUser = snapshot.getValue(User.class);
-                        Common.modeLogin = 2;
+                        if (!snapshot.exists()) {
+                            User user_gg = new User(acct.getPhotoUrl().toString(), null, acct.getDisplayName(), null, acct.getId(), acct.getEmail(), null);
+                            Common.signIn(user_gg, 2);
+                            reference.child("google").child(acct.getId()).getRef().setValue(user_gg);
+                        }
+                        else {
+                            Common.signIn(snapshot.getValue(User.class), 2);
+                            getMoreData();
+                        }
                         Common.saveUser(SignInSignUpActivity.this);
                         Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("fm", true);
+                        intent.putExtras(bundle);
                         startActivity(intent);
                         finish();
                     }
@@ -335,7 +339,6 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                     }
                 });
             }
-            // Signed in successfully, update authenticated UI.
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -348,25 +351,26 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = mAuth.getCurrentUser();
-                        String personName = Objects.requireNonNull(user).getDisplayName();
-                        String personEmail = user.getEmail();
-                        String personId = user.getUid();
-                        Uri personPhoto = user.getPhotoUrl();
-                        String personPhone = user.getPhoneNumber();
-                        User user_fb = new User(Objects.requireNonNull(personPhoto).toString(), null, personName, null, personId, personEmail, personPhone);
-                        databaseReference.child("facebook").child(personId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        reference.child("facebook").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (!snapshot.exists())
-                                    databaseReference.child("facebook").child(personId).getRef().setValue(user_fb);
-                                else
-                                    Common.currentUser = snapshot.getValue(User.class);
-                                Common.modeLogin = 3;
+                                if (!snapshot.exists()) {
+                                    User user_fb = new User(user.getPhotoUrl().toString(), null, user.getDisplayName(), null, user.getUid(), user.getEmail(), user.getPhoneNumber());
+                                    Common.signIn(user_fb, 3);
+                                    reference.child("facebook").child(user.getUid()).getRef().setValue(user_fb);
+                                }
+                                else {
+                                    Common.signIn(snapshot.getValue(User.class), 3);
+                                    getMoreData();
+                                }
                                 Common.saveUser(SignInSignUpActivity.this);
                                 Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Bundle bundle = new Bundle();
+                                bundle.putBoolean("fm", true);
+                                intent.putExtras(bundle);
                                 startActivity(intent);
                                 finish();
                             }
@@ -381,5 +385,31 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                         Toast.makeText(SignInSignUpActivity.this, "Fail", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void getMoreData(){
+        DatabaseCart databaseCart = new DatabaseCart(SignInSignUpActivity.this);
+        databaseCart.cleanCarts();
+        if (Common.currentUser.getCartList() != null)
+            for (Order order:Common.currentUser.getCartList()){
+                database.getReference("book").child(order.getBookId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        @SuppressWarnings("unchecked")
+                        List<String> image = (List<String>) snapshot.child("image").getValue();
+                        order.setBookImage(image.get(0));
+                        order.setBookName(snapshot.child("name").getValue(String.class));
+                        order.setBookDiscount(snapshot.child("discount").getValue(Integer.class));
+                        order.setBookPrice(snapshot.child("originalPrice").getValue(Integer.class));
+                        order.setPublisherId(snapshot.child("publisher").getValue(String.class));
+                        databaseCart.addCart(order);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
     }
 }

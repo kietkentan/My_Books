@@ -27,10 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.model.Address;
+import com.khtn.mybooks.databases.DatabaseCart;
+import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,6 +45,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     private ProgressBar progressBarLogin;
     private Context thisContext;
 
+    private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String strUser;
     public boolean hiddenPassword = false;
@@ -89,7 +90,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void init(){
-        databaseReference = FirebaseDatabase.getInstance().getReference("user");
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("user");
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         strUser = bundle.getString("user");
@@ -156,39 +158,22 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             || Objects.requireNonNull(dataSnapshot.child("email").getValue(String.class)).equals(strUser)) {
                         User user = dataSnapshot.getValue(User.class);
                         if (Objects.requireNonNull(user).getPassword().equals(edtPassword.getText().toString())) {
-                            dataSnapshot.child("addressList").getRef().addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    List<Address> addressList = new ArrayList<>();
-                                    for (DataSnapshot snapshot1:snapshot.getChildren()){
-                                        Address address = snapshot1.getValue(Address.class);
-                                        addressList.add(address);
-                                    }
-                                    Common.setAddressLists(addressList);
-                                    Common.currentUser = user;
-                                    Common.modeLogin = 1;
-                                    Common.saveUser(SignInActivity.this);
-                                    Common.currentUser.setPassword(null);
-                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putBoolean("fm", true);
-                                    intent.putExtras(bundle);
-                                    startActivity(intent);
-                                    finish();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                            Common.signIn(user, 1);
+                            Common.saveUser(SignInActivity.this);
+                            getMoreData();
                         } else {
                             Toast.makeText(thisContext, R.string.incorrect_password, Toast.LENGTH_SHORT).show();
                         }
                     }
                 btnLogin.setVisibility(View.VISIBLE);
                 progressBarLogin.setVisibility(View.GONE);
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("fm", true);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                finish();
             }
 
             @Override
@@ -196,5 +181,31 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
             }
         });
+    }
+
+    public void getMoreData(){
+        DatabaseCart databaseCart = new DatabaseCart(SignInActivity.this);
+        databaseCart.cleanCarts();
+        if (Common.currentUser.getCartList() != null)
+            for (Order order:Common.currentUser.getCartList()){
+                database.getReference("book").child(order.getBookId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        @SuppressWarnings("unchecked")
+                        List<String> image = (List<String>) snapshot.child("image").getValue();
+                        order.setBookImage(image.get(0));
+                        order.setBookName(snapshot.child("name").getValue(String.class));
+                        order.setBookDiscount(snapshot.child("discount").getValue(Integer.class));
+                        order.setBookPrice(snapshot.child("originalPrice").getValue(Integer.class));
+                        order.setPublisherId(snapshot.child("publisher").getValue(String.class));
+                        databaseCart.addCart(order);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
     }
 }

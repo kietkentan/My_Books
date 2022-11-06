@@ -2,6 +2,7 @@ package com.khtn.mybooks;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -85,7 +86,8 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
                     fragmentStack.clear();
                 else
                     fragmentStack.add(freFrag);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragment).commit();
+
+                openFragment();
             }
             return true;
         });
@@ -117,14 +119,22 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
         else {
             fragment = fragmentStack.pop();
             switchSelectItem();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragment).commit();
+            openFragment();
         }
+    }
+
+    public void openFragment(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.switch_enter_activity, R.anim.switch_exit_activity, R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        transaction.replace(R.id.fragment_view, fragment);
+        transaction.commit();
+        getSupportFragmentManager().executePendingTransactions();
     }
 
     @Override
     public void OnClick() {
         fragment = homeFrag;
         switchSelectItem();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragment).commit();
+        openFragment();
     }
 }

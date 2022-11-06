@@ -43,7 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.adapter.BookDetailAdapter;
 import com.khtn.mybooks.adapter.ListImageAdapter;
 import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.databases.DataBaseCart;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Book;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Publisher;
@@ -299,6 +299,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         bundle.putBoolean("fm", false);
         intent.putExtras(bundle);
         startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     public void showMenuPopup(){
@@ -309,7 +310,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void addCart(){
-        DataBaseCart dataBaseCart = new DataBaseCart(BookDetailActivity.this);
+        DatabaseCart dataBaseCart = new DatabaseCart(BookDetailActivity.this);
         List<Order> orderList = dataBaseCart.getCarts();
         int quantity = 0;
         boolean exists = false;
@@ -427,5 +428,17 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             });
             return drawable;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 }

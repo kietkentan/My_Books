@@ -25,7 +25,7 @@ import com.khtn.mybooks.Interface.ViewPublisherClickInterface;
 import com.khtn.mybooks.adapter.BookItemAdapter;
 import com.khtn.mybooks.adapter.PublisherItemAdapter;
 import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.databases.DataBaseCart;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.BookItem;
 import com.khtn.mybooks.model.PublisherItem;
 
@@ -157,11 +157,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             gsc.signOut().addOnCompleteListener(requireActivity(), task -> {});
         else if (Common.modeLogin == 3)
             FirebaseAuth.getInstance().signOut();
-        Common.currentUser = null;
-        Common.modeLogin = 0;
-        Common.addressLists = null;
-        Common.setAddressLists(null);
-        new DataBaseCart(getActivity()).cleanCarts();
+        Common.signOut();
+        new DatabaseCart(getActivity()).cleanCarts();
     }
 
     @Override

@@ -66,10 +66,10 @@ public class AppUtil {
     }
 
     public static boolean isString(String str){
-        String regex = "[\\W_]";
+        String regex = "[!@#$%&*()'+,\\-./:;<=>?\\[\\]^_`{|}]";
         if (str.isEmpty())
             return false;
-        return str.matches(regex) && str.contains(" ");
+        return !str.matches(regex) && str.contains(" ");
     }
 
     // convert number to string

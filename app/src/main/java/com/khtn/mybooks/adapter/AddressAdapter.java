@@ -2,6 +2,8 @@ package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.khtn.mybooks.AddAddressActivity;
 import com.khtn.mybooks.Interface.AddressClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
@@ -46,9 +50,9 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.tvNameUser.setText(addressList.get(position).getName());
         holder.tvPhoneUser.setText(addressList.get(position).getPhone());
         String address = String.format("%s, %s, %s, %s", addressList.get(position).getAddress(),
-                addressList.get(position).getPrecinct(),
-                addressList.get(position).getDistricts(),
-                addressList.get(position).getProvinces_cities());
+                addressList.get(position).getPrecinct().getName_with_type(),
+                addressList.get(position).getDistricts().getName_with_type(),
+                addressList.get(position).getProvinces_cities().getName_with_type());
         holder.tvAddressUser.setText(address);
         if (addressList.get(position).isDefaultAddress())
             holder.tvDefault.setVisibility(View.VISIBLE);
@@ -80,7 +84,8 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                     notifyItemChanged(position);
                     break;
                 case R.id.m_edit:
-                    //
+                    startEditAddress(position);
+                    notifyItemChanged(position);
                     break;
                 case R.id.m_remove:
                     break;
@@ -89,11 +94,22 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         });
     }
 
+    public void startEditAddress(int position){
+        Intent intent = new Intent(context, AddAddressActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("pos", position);
+        bundle.putString("address", new Gson().toJson(addressList.get(position)));
+
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+    }
+
     public void setDefault(int position){
         if (addressList.get(position).isDefaultAddress())
             return;
-        Common.addressLists.get(0).setDefaultAddress(false);
-        Common.addressLists.get(position).setDefaultAddress(true);
+        Common.currentUser.getAddressList().get(0).setDefaultAddress(false);
+        Common.currentUser.getAddressList().get(position).setDefaultAddress(true);
 
         addressList.get(0).setDefaultAddress(false);
         addressList.get(position).setDefaultAddress(true);

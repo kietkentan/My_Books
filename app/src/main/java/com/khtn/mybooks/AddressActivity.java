@@ -61,10 +61,10 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
     @SuppressLint("NotifyDataSetChanged")
     public void setRecyclerViewAddress(){
-        if (Common.addressLists != null) {
+        if (Common.currentUser.getAddressList() != null) {
             recListAddress.setLayoutManager(new LinearLayoutManager(AddressActivity.this, RecyclerView.VERTICAL, false));
             AddressClickInterface clickInterface = () -> addressAdapter.notifyDataSetChanged();
-            addressAdapter = new AddressAdapter(Common.addressLists, clickInterface, this);
+            addressAdapter = new AddressAdapter(Common.currentUser.getAddressList(), clickInterface, this);
             recListAddress.setAdapter(addressAdapter);
         } else {
             recListAddress.setVisibility(View.GONE);
@@ -82,18 +82,18 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
     private void saveDatabase(){
         int pos = 0;
-        for (int i = 0; i < Common.addressLists.size(); ++i)
-            if (Common.addressLists.get(i).isDefaultAddress()) {
+        for (int i = 0; i < Common.currentUser.getAddressList().size(); ++i)
+            if (Common.currentUser.getAddressList().get(i).isDefaultAddress()) {
                 pos = i;
                 break;
             }
 
         List<Address> list = new ArrayList<>();
-        list.add(Common.addressLists.get(pos));
-        for (int i = 0; i < Common.addressLists.size(); ++i)
+        list.add(Common.currentUser.getAddressList().get(pos));
+        for (int i = 0; i < Common.currentUser.getAddressList().size(); ++i)
             if (i != pos)
-                list.add(Common.addressLists.get(i));
-        Common.addressLists = list;
+                list.add(Common.currentUser.getAddressList().get(i));
+        Common.currentUser.setAddressList(list);
 
         String[] mode = {"mybooks", "google", "facebook"};
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user");
@@ -101,9 +101,9 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 snapshot.getRef().removeValue();
-                for (int i = 0; i < Common.addressLists.size(); ++i) {
+                for (int i = 0; i < Common.currentUser.getAddressList().size(); ++i) {
                     @SuppressLint("DefaultLocale") String count = String.format("%d", i);
-                    snapshot.child(count).getRef().setValue(Common.addressLists.get(i));
+                    snapshot.child(count).getRef().setValue(Common.currentUser.getAddressList().get(i));
                 }
             }
 
@@ -115,7 +115,13 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void startAddAddress(){
-        startActivity(new Intent(AddressActivity.this, AddAddressActivity.class));
+        Intent intent = new Intent(AddressActivity.this, AddAddressActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("pos", -1);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @Override
@@ -128,5 +134,11 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (view.getId() == R.id.tv_add_address)
             startAddAddress();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 }

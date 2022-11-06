@@ -3,15 +3,15 @@ package com.khtn.mybooks.model;
 public class Address {
     private String name;
     private String phone;
-    private String provinces_cities;
-    private String districts;
-    private String precinct;
+    private Location provinces_cities;
+    private Location districts;
+    private Location precinct;
     private String address;
     private boolean defaultAddress;
 
     public Address() {}
 
-    public Address(String name, String phone, String provinces_cities, String districts, String precinct, String address, boolean defaultAddress) {
+    public Address(String name, String phone, Location provinces_cities, Location districts, Location precinct, String address, boolean defaultAddress) {
         this.name = name;
         this.phone = phone;
         this.provinces_cities = provinces_cities;
@@ -37,27 +37,27 @@ public class Address {
         this.phone = phone;
     }
 
-    public String getProvinces_cities() {
+    public Location getProvinces_cities() {
         return provinces_cities;
     }
 
-    public void setProvinces_cities(String provinces_cities) {
+    public void setProvinces_cities(Location provinces_cities) {
         this.provinces_cities = provinces_cities;
     }
 
-    public String getDistricts() {
+    public Location getDistricts() {
         return districts;
     }
 
-    public void setDistricts(String districts) {
+    public void setDistricts(Location districts) {
         this.districts = districts;
     }
 
-    public String getPrecinct() {
+    public Location getPrecinct() {
         return precinct;
     }
 
-    public void setPrecinct(String precinct) {
+    public void setPrecinct(Location precinct) {
         this.precinct = precinct;
     }
 

@@ -1,6 +1,7 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -65,6 +66,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             intent.putExtra("publisher", bookItemList.get(position).getPublisher());
             intent.putExtra("id", bookItemList.get(position).getId());
             context.startActivity(intent);
+            ((Activity) context).overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         });
     }
 
