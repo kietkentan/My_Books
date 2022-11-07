@@ -158,7 +158,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             Intent intent = new Intent(thisContext, MainActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putBoolean("fm", true);
+            bundle.putInt("fragment", 1);
             intent.putExtras(bundle);
             startActivity(intent);
             overridePendingTransition(R.anim.alpha_appear_100, R.anim.alpha_hidden_100);

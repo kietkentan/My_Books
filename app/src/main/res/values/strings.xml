@@ -182,5 +182,7 @@
     <string name="name_limit">%d/50</string>
     <string name="default_name_limit">0/50</string>
     <string name="chose_address">Chọn nơi giao hàng</string>
+    <string name="you_unselected_book_to_buy">Bạn chưa chọn sản phẩm nào để mua</string>
+    <string name="understood">Đã hiểu</string>
 
 </resources>

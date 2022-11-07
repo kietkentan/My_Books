@@ -9,12 +9,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -127,8 +130,8 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
                 adapter.selectedAllCart();
             else
                 adapter.unSelectedAllCart();
+            setTotal(adapter.getSelectedCart());
         });
-        setTotal(adapter.getSelectedCart());
     }
 
     @SuppressLint("DefaultLocale")
@@ -172,6 +175,27 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         OnSaveAllCart(orderList);
     }
 
+    public void startBuyPage(){
+        if (adapter.getSelectedCart().size() > 0){
+            // start Buy Page
+        } else
+            openDialog();
+    }
+
+    public void openDialog(){
+        Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_unselected_book);
+        dialog.getWindow().setGravity(Gravity.CENTER);
+        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setAttributes(layoutParams);
+
+        TextView tvUnderstood = dialog.findViewById(R.id.tv_understood);
+        tvUnderstood.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tv_address)
@@ -179,7 +203,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         if (view.getId() == R.id.ib_remove_cart)
             removeCart();
         if (view.getId() == R.id.btn_buy)
-            ; // buy
+            startBuyPage();
         if (view.getId() == R.id.btn_continue_shopping)
             cartFragmentClickInterface.OnClick();
     }

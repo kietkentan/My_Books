@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -254,7 +255,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void setAboutDetails(){
         tvDescribe.setMovementMethod(LinkMovementMethod.getInstance());
-        tvDescribe.setText(Html.fromHtml(describe, new URLImagePaser(BookDetailActivity.this, tvDescribe), null));
+        tvDescribe.setText(Html.fromHtml(describe, new URIImagePasser(BookDetailActivity.this, tvDescribe), null));
         BookDetailAdapter detailAdapter = new BookDetailAdapter(listDetails, this);
         viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         viewListDetails.setAdapter(detailAdapter);
@@ -296,17 +297,48 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     public void startCart(){
         Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putBoolean("fm", false);
+        bundle.putInt("fragment", 5);
         intent.putExtras(bundle);
         startActivity(intent);
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    @SuppressLint("NonConstantResourceId")
     public void showMenuPopup(){
         PopupMenu popupMenu = new PopupMenu(this, ivMenu);
         popupMenu.getMenuInflater().inflate(R.menu.in_detail_menu, popupMenu.getMenu());
         popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(menuItem -> false);
+        popupMenu.setOnMenuItemClickListener(item -> {
+            Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Bundle bundle = new Bundle();
+            switch (item.getItemId()){
+                case R.id.m_share:
+                    Toast.makeText(BookDetailActivity.this, "Share Link", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.m_home:
+                    bundle.putInt("fragment", 1);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                    break;
+                case R.id.m_my_account:
+                    if (Common.currentUser != null) {
+                        bundle.putInt("fragment", 3);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intentSignIn = new Intent(BookDetailActivity.this, SignInSignUpActivity.class);
+                        startActivity(intentSignIn);
+                    }
+                    break;
+                case R.id.m_help:
+                    Toast.makeText(BookDetailActivity.this, "Help Page", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            return true;
+        });
     }
 
     public void addCart(){
@@ -401,11 +433,11 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         dialog.show();
     }
 
-    public static class URLImagePaser implements Html.ImageGetter {
+    public static class URIImagePasser implements Html.ImageGetter {
         Context context;
         TextView mTextView;
 
-        public URLImagePaser(Context context, TextView mTextView) {
+        public URIImagePasser(Context context, TextView mTextView) {
             this.context = context;
             this.mTextView = mTextView;
         }

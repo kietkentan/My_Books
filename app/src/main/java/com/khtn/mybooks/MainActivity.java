@@ -24,7 +24,12 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
     private final Fragment cartFrag = new CartFragment(this);
     private Stack<Fragment> fragmentStack;
 
-    private boolean fm = true;
+    private int fm = 1;
+                    // 1: Home Page
+                    // 2: Favorite Page
+                    // 3: User Page
+                    // 4: danh muc
+                    // 5: Cart Page
     private boolean backPress = false;
 
     @Override
@@ -42,21 +47,26 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
 
         fragmentStack = new Stack<>();
 
-        fm = bundle.getBoolean("fm");
+        fm = bundle.getInt("fragment");
         bottomNav = findViewById(R.id.bottom_navigation);
         createFm();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragment).commit();
     }
 
     public void createFm(){
-        if (fm) {
-            fragment = homeFrag;
+        switch (fm) {
+            case 1:
+                fragment = homeFrag;
+                break;
+            case 3:
+                fragment = userFrag;
+                fm = 1;
+                break;
+            case 5:
+                fragment = cartFrag;
+                break;
         }
-        else {
-            fragment = cartFrag;
-            switchSelectItem();
-            fragmentStack.add(homeFrag);
-        }
+        switchSelectItem();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -81,12 +91,11 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
                     break;
             }
             if (!freFrag.equals(fragment)) {
-                fm = true;
                 if (fragment.equals(homeFrag))
                     fragmentStack.clear();
                 else
                     fragmentStack.add(freFrag);
-
+                fm = 1;
                 openFragment();
             }
             return true;
@@ -114,10 +123,13 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
             backPress = true;
             Toast.makeText(MainActivity.this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(() -> backPress = false, 2000);
-        } else if (!fm)
+        } else if (fm != 1)
             finish();
         else {
-            fragment = fragmentStack.pop();
+            if (fragmentStack.isEmpty())
+                fragment = homeFrag;
+            else
+                fragment = fragmentStack.pop();
             switchSelectItem();
             openFragment();
         }
@@ -136,5 +148,11 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
         fragment = homeFrag;
         switchSelectItem();
         openFragment();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 }
