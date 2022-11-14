@@ -194,5 +194,8 @@
     <string name="info_payment">Thông tin thanh toán</string>
     <string name="default_address">Địa chỉ mặc định</string>
     <string name="address_is_empty">Hiện chưa có địa chỉ nào</string>
+    <string name="remove_address">Xóa địa chỉ</string>
+    <string name="confirm_remove_this_address">Bạn muốn xóa địa chỉ này?</string>
+    <string name="no">Không</string>
 
 </resources>

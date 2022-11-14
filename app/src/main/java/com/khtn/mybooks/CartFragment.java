@@ -65,6 +65,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart, container, false);
+        AppUtil.changeStatusBarColor(getContext(), "#E32127");
 
         init();
         getData();

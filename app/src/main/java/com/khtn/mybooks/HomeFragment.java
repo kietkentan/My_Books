@@ -58,6 +58,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+        AppUtil.defaultStatusBarColor(getContext());
+
         init();
 
         ig.setOnClickListener(this);

@@ -45,6 +45,7 @@ public class NoteAddressActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_address);
+        AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
         setupCart();

@@ -38,6 +38,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
+        AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
         setRecyclerViewAddress();

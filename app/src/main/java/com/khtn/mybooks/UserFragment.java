@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
@@ -38,6 +39,8 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user, container, false);
+        AppUtil.defaultStatusBarColor(getContext());
+
         init();
 
         tvAddress.setOnClickListener(this);

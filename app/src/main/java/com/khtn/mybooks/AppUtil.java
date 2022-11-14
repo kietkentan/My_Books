@@ -1,13 +1,20 @@
 package com.khtn.mybooks;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -112,5 +119,20 @@ public class AppUtil {
     public static void startLoginPage(Context context){
         Intent intent = new Intent(context, SignInSignUpActivity.class);
         context.startActivity(intent);
+    }
+
+    public static void changeStatusBarColor(Context context, String color){
+        Window window = ((Activity) context).getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(Color.parseColor(color));
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+    }
+
+    public static void defaultStatusBarColor(Context context){
+        Window window = ((Activity) context).getWindow();
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
     }
 }

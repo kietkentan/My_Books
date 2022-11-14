@@ -61,6 +61,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
+        AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
 

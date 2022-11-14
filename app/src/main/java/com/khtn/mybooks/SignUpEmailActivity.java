@@ -45,6 +45,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up_email);
+        AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
 

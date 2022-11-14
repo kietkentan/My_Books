@@ -1,6 +1,7 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
@@ -78,9 +80,7 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
                     notifyItemChanged(position);
                     break;
                 case R.id.m_remove:
-                    removeAddress(position);
-                    notifyItemRemoved(position);
-                    removeInterface.OnRemove();
+                    openDialogRemove(position);
                     break;
             }
             return false;
@@ -103,6 +103,23 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
             addressList.get(0).setDefaultAddress(true);
 
         Common.currentUser.setAddressList(addressList);
+    }
+
+    private void openDialogRemove(int position){
+        Dialog dialog = new Dialog(context, R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_confirm_remove_address);
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnAccept = dialog.findViewById(R.id.btn_accept_dialog);
+
+        btnClose.setOnClickListener(view -> dialog.dismiss());
+
+        btnAccept.setOnClickListener(view -> {
+            dialog.dismiss();
+            removeAddress(position);
+            notifyItemRemoved(position);
+            removeInterface.OnRemove();
+        });
+        dialog.show();
     }
 
     public void startEditAddress(int position){

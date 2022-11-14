@@ -47,6 +47,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
+        AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
 
