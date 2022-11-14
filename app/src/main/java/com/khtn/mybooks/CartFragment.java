@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     private CartAdapter adapter;
     private List<Order> orderList;
+    private List<Integer> listChecked;
     private DatabaseCart dataBaseOrder;
     private final String[] mode = {"mybooks", "google", "facebook"};
     private final CartFragmentClickInterface cartFragmentClickInterface;
@@ -67,6 +69,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         init();
         getData();
 
+        listChecked = adapter.getSelectedCart();
         tvAddress.setOnClickListener(this);
         btnContinueShopping.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
@@ -74,10 +77,13 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         return view;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
         super.onResume();
-        getData();
+        adapter.notifyDataSetChanged();
+        setTotal();
+        setupAddress();
     }
 
     public void init(){
@@ -104,6 +110,17 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         setupLayout();
     }
 
+    public void setupAddress(){
+        if (Common.addressNow != null) {
+            String defaultAddress = String.format("%s, %s, %s, %s", Common.addressNow.getAddress(),
+                    Common.addressNow.getPrecinct().getName_with_type(),
+                    Common.addressNow.getDistricts().getName_with_type(),
+                    Common.addressNow.getProvinces_cities().getName_with_type());
+            tvAddress.setText(defaultAddress);
+        } else
+            tvAddress.setText(getString(R.string.add_address));
+    }
+
     public void setupLayout(){
         if (orderList.size() == 0) {
             layoutNoneCart.setVisibility(View.VISIBLE);
@@ -113,15 +130,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             layoutNoneCart.setVisibility(View.GONE);
             layoutViewCart.setVisibility(View.VISIBLE);
             ibRemoveCart.setOnClickListener(this);
-            if (Common.addressNow != null) {
-                String defaultAddress = String.format("%s, %s, %s, %s", Common.addressNow.getAddress(),
-                        Common.addressNow.getPrecinct().getName_with_type(),
-                        Common.addressNow.getDistricts().getName_with_type(),
-                        Common.addressNow.getProvinces_cities().getName_with_type());
-                tvAddress.setText(defaultAddress);
-            }
+            setupAddress();
         }
         setupCheckboxAllCart();
+        setTotal();
     }
 
     public void setupCheckboxAllCart(){
@@ -130,32 +142,50 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
                 adapter.selectedAllCart();
             else
                 adapter.unSelectedAllCart();
-            setTotal(adapter.getSelectedCart());
+            setTotal();
         });
     }
 
     @SuppressLint("DefaultLocale")
-    public void setTotal(List<Integer> selectedCart){
-        if (selectedCart.size() == 0){
+    public void setTotal(){
+        listChecked = adapter.getSelectedCart();
+        if (listChecked.size() == 0){
             tvTotalPrice.setText(getString(R.string.please_chose_product));
             tvTotalPrice.setTextSize(14);
             tvTotalPrice.setTypeface(null, Typeface.NORMAL);
             btnBuy.setText(getString(R.string.default_buy));
         } else {
             int total = 0;
-            for (int i = 0; i < selectedCart.size(); ++i)
-                total = total + (orderList.get(selectedCart.get(i)).getBookPrice()*
-                        (100 - orderList.get(selectedCart.get(i)).getBookDiscount())/100)*
-                        orderList.get(selectedCart.get(i)).getBookQuantity();
+            for (int i = 0; i < listChecked.size(); ++i)
+                total = total + (orderList.get(listChecked.get(i)).getBookPrice()*
+                        (100 - orderList.get(listChecked.get(i)).getBookDiscount())/100)*
+                        orderList.get(listChecked.get(i)).getBookQuantity();
             tvTotalPrice.setText(String.format("%s₫", AppUtil.convertNumber(total)));
             tvTotalPrice.setTextSize(20);
             tvTotalPrice.setTypeface(null, Typeface.BOLD);
-            btnBuy.setText(String.format("%s (%d)", getString(R.string.buy), selectedCart.size()));
+            btnBuy.setText(String.format("%s (%d)", getString(R.string.buy), listChecked.size()));
         }
     }
 
     public void startAddressPage(){
-        startActivity(new Intent(getActivity(), AddressActivity.class));
+        if (Common.currentUser.getAddressList() != null) {
+            startActivity(new Intent(getActivity(), AddressActivity.class));
+            getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        } else {
+            Intent intent = new Intent(getActivity(), AddAddressActivity.class);
+            Bundle bundle = new Bundle();
+
+            bundle.putInt("pos", -1);
+
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+    }
+
+    public void startCompletePayment(){
+        Intent intent = new Intent(getActivity(), CompletePaymentActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -169,7 +199,6 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
                     dataBaseOrder.removeCarts(orderList.get(listRemove.get(i)).getBookId());
             else
                 return;
-            setTotal(listRemove);
         }
         getData();
         OnSaveAllCart(orderList);
@@ -177,7 +206,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     public void startBuyPage(){
         if (adapter.getSelectedCart().size() > 0){
-            // start Buy Page
+            startCompletePayment();
         } else
             openDialog();
     }
@@ -217,7 +246,8 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             cbAllCart.setChecked(false);
             adapter.setSelectedCart(tempChecked);
         }
-        setTotal(selectedCart);
+        listChecked = adapter.getSelectedCart();
+        setTotal();
     }
 
     @Override

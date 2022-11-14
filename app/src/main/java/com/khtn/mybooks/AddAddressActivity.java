@@ -163,22 +163,28 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                     address.setDefaultAddress(true);
                     List<Address> addressList = new ArrayList<>();
                     addressList.add(address);
-                    addressList.addAll(Common.currentUser.getAddressList());
-
+                    if (Common.currentUser.getAddressList() != null)
+                        addressList.addAll(Common.currentUser.getAddressList());
                     if (addressList.size() > 1)
                         addressList.get(1).setDefaultAddress(false);
                     Common.currentUser.setAddressList(addressList);
-
                     snapshot.getRef().removeValue();
                     for (int i = 0; i < Common.currentUser.getAddressList().size(); ++i) {
                         @SuppressLint("DefaultLocale") String count = String.format("%d", i);
                         snapshot.child(count).getRef().setValue(Common.currentUser.getAddressList().get(i));
                     }
                 } else {
-                    @SuppressLint("DefaultLocale") String count = String.format("%d", Common.currentUser.getAddressList().size());
-                    reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("addressList").child(count).setValue(address);
+                    if (Common.currentUser.getAddressList() != null) {
+                        @SuppressLint("DefaultLocale") String count = String.format("%d", Common.currentUser.getAddressList().size());
+                        reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("addressList").child(count).setValue(address);
+                    }else {
+                        address.setDefaultAddress(true);
+                        reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("addressList").child("0").setValue(address);
+                        Common.currentUser.setAddressList(new ArrayList<>());
+                    }
                     Common.currentUser.getAddressList().add(address);
                 }
+                Common.setAddressNow();
                 Toast.makeText(AddAddressActivity.this, R.string.add_address_success, Toast.LENGTH_SHORT).show();
                 btnConfirmAddress.setVisibility(View.VISIBLE);
                 progressBarAdd.setVisibility(View.GONE);

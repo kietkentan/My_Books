@@ -12,6 +12,11 @@ public class Order {
 
     public Order() {}
 
+    public Order(String bookId, int bookQuantity) {
+        this.bookId = bookId;
+        this.bookQuantity = bookQuantity;
+    }
+
     public Order(String bookId, String bookName, String bookImage, String publisherId, int bookQuantity, int bookPrice, int bookDiscount) {
         this.bookId = bookId;
         this.bookName = bookName;

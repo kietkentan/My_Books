@@ -184,5 +184,15 @@
     <string name="chose_address">Chọn nơi giao hàng</string>
     <string name="you_unselected_book_to_buy">Bạn chưa chọn sản phẩm nào để mua</string>
     <string name="understood">Đã hiểu</string>
+    <string name="order_confirmation">Xác nhận đơn hàng</string>
+    <string name="order">Đặt hàng</string>
+    <string name="total_price">Tổng tiền</string>
+    <string name="buy_again">Mua lại</string>
+    <string name="see_more_product">Xem thêm sản phẩm</string>
+    <string name="viewed">Đã xem gần đây</string>
+    <string name="note_address">Sổ địa chỉ</string>
+    <string name="info_payment">Thông tin thanh toán</string>
+    <string name="default_address">Địa chỉ mặc định</string>
+    <string name="address_is_empty">Hiện chưa có địa chỉ nào</string>
 
 </resources>

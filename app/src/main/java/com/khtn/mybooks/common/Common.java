@@ -29,6 +29,10 @@ public class Common {
         addressNow = (currentUser.getAddressList() == null) ? null:currentUser.getAddressList().get(0);
     }
 
+    public static void setAddressNow(){
+        addressNow = (currentUser.getAddressList() == null) ? null:currentUser.getAddressList().get(0);
+    }
+
     public static SharedPreferences checkUser(Context context){
         SharedPreferences preferences = context.getSharedPreferences("MyPref", Context.MODE_PRIVATE);
         if (preferences.contains("saved_id"))

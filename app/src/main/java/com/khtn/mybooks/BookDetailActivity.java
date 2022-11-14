@@ -56,7 +56,6 @@ import java.util.Objects;
 
 public class BookDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageView ivMenu;
-    private ImageView ivCart;
     private ViewPager2 rcImages;
     private TextView tvPrice;
     private TextView tvOriginalPrice;
@@ -74,12 +73,14 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private TextView tvDatePosted;
     private TextView tvDescribe;
     private TextView tvPosition;
+    private TextView tvNumCart;
     private ImageButton ibAddFavorite;
     private ImageButton ibBack;
     private RatingBar barRatingBook;
     private ShapeableImageView ivLogoPublisher;
     private RecyclerView viewListDetails;
     private FrameLayout layoutUpcoming;
+    private FrameLayout layoutCart;
     private AppCompatButton btnAddCart;
     private AppCompatButton btnBuyNow;
 
@@ -90,6 +91,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private List<List<String>> listDetails;
     private String describe;
 
+    private DatabaseCart databaseCart;
     private FirebaseDatabase database;
 
     @Override
@@ -100,9 +102,15 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
         getData();
         ivMenu.setOnClickListener(BookDetailActivity.this);
-        ivCart.setOnClickListener(BookDetailActivity.this);
+        layoutCart.setOnClickListener(BookDetailActivity.this);
         ibBack.setOnClickListener(BookDetailActivity.this);
         btnAddCart.setOnClickListener(BookDetailActivity.this);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        setupCart();
     }
 
     public void getData(){
@@ -156,6 +164,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void init(){
+        databaseCart = new DatabaseCart(BookDetailActivity.this);
         database = FirebaseDatabase.getInstance();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -163,7 +172,6 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         listDetails = new ArrayList<>();
 
         ivMenu = findViewById(R.id.iv_menu_in_detail);
-        ivCart = findViewById(R.id.iv_shopping_cart);
         rcImages = findViewById(R.id.list_img);
         tvPrice = findViewById(R.id.tv_price_book);
         tvOriginalPrice = findViewById(R.id.tv_original_price_book);
@@ -181,12 +189,14 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         tvDatePosted = findViewById(R.id.tv_date_posted);
         tvDescribe = findViewById(R.id.tv_describe);
         tvPosition = findViewById(R.id.tv_position);
+        tvNumCart = findViewById(R.id.tv_num_cart);
         barRatingBook = findViewById(R.id.bar_rating_book);
         ibAddFavorite = findViewById(R.id.ib_add_favorite);
         ibBack = findViewById(R.id.ib_exit_detail);
         ivLogoPublisher = findViewById(R.id.iv_avatar_publisher);
         viewListDetails = findViewById(R.id.list_details);
         layoutUpcoming = findViewById(R.id.layout_upcoming);
+        layoutCart = findViewById(R.id.layout_shopping_cart);
         btnAddCart = findViewById(R.id.btn_add_cart);
         btnBuyNow = findViewById(R.id.btn_buy_now);
     }
@@ -202,6 +212,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                 tvPosition.setText(String.format("%d/%d", position + 1, dataBook.getImage().size()));
             }
         });
+
         if (dataBook.getDiscount() == 0){
             tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvPrice.setTextColor(Color.parseColor("#FF000000"));
@@ -213,31 +224,37 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             tvDiscount.setText(String.format("-%d%%", dataBook.getDiscount()));
         }
+
         tvNameBook.setText(dataBook.getName());
         barRatingBook.setRating(dataBook.getTotalRatingScore());
         tvTotalRating.setText(String.format("%.1f", dataBook.getTotalRatingScore()));
         tvTotalNumberPeopleRating.setText(String.format("(%s)", dataBook.getTotalRatings()));
         tvQuantitySold.setText(String.format("%d %s", dataBook.getSold(), getString(R.string.sold)));
+
         if (dataBook.getAmount() == 0){
             tvInStockOrNot.setText(getString(R.string.out_of_stock));
             tvInStockOrNot.setTextColor(Color.parseColor("#BDBDBD"));
         } else {
             tvInStockOrNot.setText(getString(R.string.in_stock));
         }
+
         Picasso.get().load(dataPublisher.getLogo()).into(ivLogoPublisher);
         tvShopName.setText(dataPublisher.getName());
         tvShopLocation.setText(dataPublisher.getLocation());
+
         if (dataPublisher.getReply() < 60)
             tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
         else
             tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply() / 60, getString(R.string.minute)));
         tvShopRating.setText(String.format("%.1f", dataPublisher.getRating()));
+
         if (AppUtil.numDays(dataPublisher.getWorked()) < 30)
             tvShopWorked.setText(String.format("%d %s", AppUtil.numDays(dataPublisher.getWorked()), getString(R.string.day)));
         else if (AppUtil.numDays(dataPublisher.getWorked()) < 365)
             tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked())/30, getString(R.string.month)));
         else
             tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked()) / 365, getString(R.string.year)));
+
         if (AppUtil.numDays(dataBook.getDatePosted()) < 30) {
             tvDatePosted.setText(String.format("%d %s", AppUtil.numDays(dataBook.getDatePosted()), getString(R.string.day)));
             layoutUpcoming.setVisibility(View.VISIBLE);
@@ -250,7 +267,17 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(dataBook.getDatePosted())/365, getString(R.string.year)));
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
+
+        setupCart();
         setButton();
+    }
+
+    @SuppressLint("DefaultLocale")
+    public void setupCart(){
+        if (databaseCart.getCarts().size() != 0){
+            tvNumCart.setText(String.format("%d", databaseCart.getCarts().size()));
+        } else
+            tvNumCart.setVisibility(View.GONE);
     }
 
     public void setAboutDetails(){
@@ -286,7 +313,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         if (view.getId() == R.id.iv_menu_in_detail)
             showMenuPopup();
-        if (view.getId() == R.id.iv_shopping_cart)
+        if (view.getId() == R.id.layout_shopping_cart)
             startCart();
         if (view.getId() == R.id.ib_exit_detail)
             finish();
@@ -294,7 +321,11 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             addCart();
     }
 
-    public void startCart(){
+    public void startCart() {
+        if (Common.currentUser == null) {
+            AppUtil.startLoginPage(this);
+            return;
+        }
         Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("fragment", 5);
@@ -307,6 +338,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     public void showMenuPopup(){
         PopupMenu popupMenu = new PopupMenu(this, ivMenu);
         popupMenu.getMenuInflater().inflate(R.menu.in_detail_menu, popupMenu.getMenu());
+        if (Common.currentUser == null)
+            popupMenu.getMenu().getItem(2).setTitle(R.string.login);
         popupMenu.show();
         popupMenu.setOnMenuItemClickListener(item -> {
             Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
@@ -323,15 +356,14 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                     finish();
                     break;
                 case R.id.m_my_account:
-                    if (Common.currentUser != null) {
-                        bundle.putInt("fragment", 3);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intentSignIn = new Intent(BookDetailActivity.this, SignInSignUpActivity.class);
-                        startActivity(intentSignIn);
+                    if (Common.currentUser == null) {
+                        AppUtil.startLoginPage(this);
+                        return true;
                     }
+                    bundle.putInt("fragment", 3);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
                     break;
                 case R.id.m_help:
                     Toast.makeText(BookDetailActivity.this, "Help Page", Toast.LENGTH_SHORT).show();
@@ -341,13 +373,16 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
-    public void addCart(){
-        DatabaseCart dataBaseCart = new DatabaseCart(BookDetailActivity.this);
-        List<Order> orderList = dataBaseCart.getCarts();
+    public void addCart() {
+        if (Common.currentUser == null){
+            AppUtil.startLoginPage(this);
+            return;
+        }
+        List<Order> orderList = databaseCart.getCarts();
         int quantity = 0;
         boolean exists = false;
-        for (int i = 0; i < orderList.size(); ++i){
-            if (orderList.get(i).getBookId().equals(dataBook.getId())){
+        for (int i = 0; i < orderList.size(); ++i) {
+            if (orderList.get(i).getBookId().equals(dataBook.getId())) {
                 exists = true;
                 quantity = orderList.get(i).getBookQuantity();
             }
@@ -360,8 +395,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int amount = snapshot.child("amount").getValue(Integer.class);
-                if (amount > finalQuantity){
-                    dataBaseCart.addCart(new Order(
+                if (amount > finalQuantity) {
+                    databaseCart.addCart(new Order(
                             dataBook.getId(),
                             dataBook.getName(),
                             dataBook.getImage().get(0),
@@ -370,14 +405,15 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                             dataBook.getOriginalPrice(),
                             dataBook.getDiscount()
                     ));
+                    Common.currentUser.setCartList(databaseCart.getCarts());
 
                     String[] mode = {"mybooks", "google", "facebook"};
                     database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("cartList").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (finalExists){
-                                for (DataSnapshot snapshot1:snapshot.getChildren()){
-                                    if (snapshot1.child("bookId").getValue(String.class).equals(dataBook.getId())){
+                            if (finalExists) {
+                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                    if (snapshot1.child("bookId").getValue(String.class).equals(dataBook.getId())) {
                                         int quantity = snapshot1.child("bookQuantity").getValue(Integer.class);
                                         snapshot1.child("bookQuantity").getRef().setValue(quantity + 1);
                                     }
@@ -396,7 +432,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                     });
 
                 } else {
-                    Toast.makeText(BookDetailActivity.this,  String.format(getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BookDetailActivity.this, String.format(getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
                 }
             }
 

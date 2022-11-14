@@ -9,55 +9,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.khtn.mybooks.AddAddressActivity;
-import com.khtn.mybooks.Interface.AddressClickInterface;
+import com.khtn.mybooks.Interface.NoteAddressRemoveInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.Address;
 
 import java.util.List;
 
-public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHolder> {
+public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.ViewHolder>{
     private final List<Address> addressList;
-    private final AddressClickInterface clickInterface;
     private final Context context;
     private Address addressNow = Common.addressNow;
+    private NoteAddressRemoveInterface removeInterface;
 
-    public AddressAdapter(List<Address> addressList, AddressClickInterface clickInterface, Context context) {
+    public NoteAddressAdapter(List<Address> addressList, Context context, NoteAddressRemoveInterface removeInterface) {
         this.addressList = addressList;
-        this.clickInterface = clickInterface;
         this.context = context;
+        this.removeInterface = removeInterface;
     }
-
 
     @NonNull
     @Override
-    public AddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.address_item, parent, false));
+    public NoteAddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new NoteAddressAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.address_note_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AddressAdapter.ViewHolder holder, int position) {
-        holder.btnChoseAddress.setChecked(addressNow.equals(addressList.get(position)));
-        holder.tvNameUser.setText(addressList.get(position).getName());
-        holder.tvPhoneUser.setText(addressList.get(position).getPhone());
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.tvName.setText(addressList.get(position).getName());
+        holder.tvPhone.setText(addressList.get(position).getPhone());
         String address = String.format("%s, %s, %s, %s", addressList.get(position).getAddress(),
                 addressList.get(position).getPrecinct().getName_with_type(),
                 addressList.get(position).getDistricts().getName_with_type(),
                 addressList.get(position).getProvinces_cities().getName_with_type());
-        holder.tvAddressUser.setText(address);
+        holder.tvAddress.setText(address);
         if (addressList.get(position).isDefaultAddress())
             holder.tvDefault.setVisibility(View.VISIBLE);
         else {
@@ -66,24 +58,18 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
             params.bottomMargin = 0;
             holder.tvDefault.setLayoutParams(params);
         }
-        holder.btnChoseAddress.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b){
-                addressNow = addressList.get(holder.getAdapterPosition());
-                clickInterface.OnClick();
-            }
-        });
-        holder.ibEdit.setOnClickListener(view -> AddressAdapter.this.showMenuPopup(holder, holder.getAdapterPosition()));
+        holder.ibEdit.setOnClickListener(view -> NoteAddressAdapter.this.showMenuPopup(holder, holder.getAdapterPosition()));
     }
 
     @SuppressLint({"NonConstantResourceId"})
-    public void showMenuPopup(AddressAdapter.ViewHolder view, int position){
+    public void showMenuPopup(NoteAddressAdapter.ViewHolder view, int position){
         PopupMenu popupMenu = new PopupMenu(context, view.ibEdit);
         popupMenu.getMenuInflater().inflate(R.menu.in_address_menu, popupMenu.getMenu());
         popupMenu.show();
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.m_set_default:
-                    AddressAdapter.this.setDefault(position);
+                    NoteAddressAdapter.this.setDefault(position);
                     notifyItemChanged(0);
                     notifyItemChanged(position);
                     break;
@@ -94,6 +80,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 case R.id.m_remove:
                     removeAddress(position);
                     notifyItemRemoved(position);
+                    removeInterface.OnRemove();
                     break;
             }
             return false;
@@ -144,28 +131,20 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         return addressList.size();
     }
 
-    public Address getSelectedPosition(){
-        return addressNow;
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        RadioButton btnChoseAddress;
-        TextView tvNameUser;
-        TextView tvPhoneUser;
-        TextView tvAddressUser;
+        TextView tvName;
+        TextView tvPhone;
+        TextView tvAddress;
         TextView tvDefault;
         ImageButton ibEdit;
-        ProgressBar progressSaveData;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            btnChoseAddress = itemView.findViewById(R.id.btn_chose_address);
-            tvNameUser = itemView.findViewById(R.id.tv_name_user);
-            tvPhoneUser = itemView.findViewById(R.id.tv_phone_user);
-            tvAddressUser = itemView.findViewById(R.id.tv_address_user);
+            tvName = itemView.findViewById(R.id.tv_name_user);
+            tvPhone = itemView.findViewById(R.id.tv_phone_user);
+            tvAddress = itemView.findViewById(R.id.tv_address_user);
             tvDefault = itemView.findViewById(R.id.tv_default_location);
             ibEdit = itemView.findViewById(R.id.ib_edit_address);
-            progressSaveData = itemView.findViewById(R.id.progress_address_item);
         }
     }
 }

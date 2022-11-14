@@ -197,18 +197,18 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingVertical="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_user">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="20dp"
@@ -220,28 +220,31 @@
                         android:layout_height="wrap_content"
                         android:text="@string/my_order"
                         android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:textColor="@color/black"
+                        app:drawableStartCompat="@drawable/ic_notepad"
+                        app:drawableTint="@color/reduced_price"
+                        android:drawablePadding="10dp"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/view_history_order"
+                        android:gravity="end"
+                        android:drawablePadding="5dp"
                         android:textColor="@color/reduced_price"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        app:drawableEndCompat="@drawable/ic_next"
+                        app:drawableTint="@color/reduced_price" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
-                    android:baselineAligned="false">
+                    android:paddingVertical="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -265,8 +268,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_wait_confirm"
-                                tools:ignore="ContentDescription"
-                                app:tint="@color/reduced_price" />
+                                app:tint="@color/reduced_price"
+                                tools:ignore="ContentDescription" />
                         </FrameLayout>
 
                         <TextView
@@ -301,8 +304,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_confirmed"
-                                tools:ignore="ContentDescription"
-                                app:tint="@color/reduced_price" />
+                                app:tint="@color/reduced_price"
+                                tools:ignore="ContentDescription" />
                         </FrameLayout>
 
                         <TextView
@@ -337,8 +340,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_in_transit"
-                                tools:ignore="ContentDescription"
-                                app:tint="@color/reduced_price" />
+                                app:tint="@color/reduced_price"
+                                tools:ignore="ContentDescription" />
                         </FrameLayout>
 
                         <TextView
@@ -373,8 +376,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_delivered"
-                                tools:ignore="ContentDescription"
-                                app:tint="@color/reduced_price" />
+                                app:tint="@color/reduced_price"
+                                tools:ignore="ContentDescription" />
                         </FrameLayout>
 
                         <TextView
@@ -409,8 +412,8 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_package_return"
-                                tools:ignore="ContentDescription"
-                                app:tint="@color/reduced_price" />
+                                app:tint="@color/reduced_price"
+                                tools:ignore="ContentDescription" />
                         </FrameLayout>
 
                         <TextView
@@ -423,6 +426,93 @@
                             android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_buy_again"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="20dp"
+                android:background="@color/white"
+                android:paddingVertical="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+                <LinearLayout
+                android:id="@+id/layout_see_more_buy_again"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/buy_again"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:drawablePadding="10dp"
+                    app:drawableStartCompat="@drawable/ic_bag"
+                    app:drawableTint="@color/reduced_price" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/see_more_product"
+                    android:drawablePadding="5dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/reduced_price"
+                    app:drawableEndCompat="@drawable/ic_next"
+                    app:drawableTint="@color/reduced_price"/>
+            </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rec_list_buy_again"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:background="@color/white"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_buy_again">
+
+                <TextView
+                    android:id="@+id/tv_note_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/note_address"
+                    android:textSize="16sp"
+                    android:drawablePadding="10dp"
+                    app:drawableStartCompat="@drawable/ic_note_address"
+                    app:drawableEndCompat="@drawable/ic_next"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/text_hint"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/info_payment"
+                    android:textSize="16sp"
+                    android:drawablePadding="10dp"
+                    app:drawableStartCompat="@drawable/ic_card"
+                    app:drawableEndCompat="@drawable/ic_next" />
+
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

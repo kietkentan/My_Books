@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khtn.mybooks.Interface.CartFragmentClickInterface;
+import com.khtn.mybooks.common.Common;
 
 import java.util.Stack;
 
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
 
         init();
         switchFragment();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        switchSelectItem();
     }
 
     public void init(){
@@ -87,7 +94,12 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
                     Toast.makeText(MainActivity.this, "DirectoryFragment", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.cart_page:
-                    fragment = cartFrag;
+                    if (Common.currentUser != null)
+                        fragment = cartFrag;
+                    else {
+                        AppUtil.startLoginPage(this);
+                        return true;
+                    }
                     break;
             }
             if (!freFrag.equals(fragment)) {
