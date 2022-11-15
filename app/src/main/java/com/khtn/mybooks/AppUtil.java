@@ -15,6 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.model.Address;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +56,14 @@ public class AppUtil {
             if (c < '0' || c > '9')
                 return false;
         return true;
+    }
+
+    public static String getStringAddress(Address address){
+        String stringAddress = String.format("%s, %s, %s, %s", address.getAddress(),
+                address.getPrecinct().getName_with_type(),
+                address.getDistricts().getName_with_type(),
+                address.getProvinces_cities().getName_with_type());
+        return stringAddress;
     }
 
     // checking the email

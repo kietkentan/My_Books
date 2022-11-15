@@ -128,9 +128,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     List<BookItem> newList = new ArrayList<>();
+                    int i = 0;
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         BookItem item = dataSnapshot.getValue(BookItem.class);
                         newList.add(item);
+                        if (++i > 10)
+                            break;
                     }
                     bookList.put(idPublisher, newList);
                     changeData(idPublisher);

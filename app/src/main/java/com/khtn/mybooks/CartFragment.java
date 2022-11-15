@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartFragment extends Fragment implements View.OnClickListener, ViewCartClickInterface {
@@ -111,13 +113,9 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     public void setupAddress(){
-        if (Common.addressNow != null) {
-            String defaultAddress = String.format("%s, %s, %s, %s", Common.addressNow.getAddress(),
-                    Common.addressNow.getPrecinct().getName_with_type(),
-                    Common.addressNow.getDistricts().getName_with_type(),
-                    Common.addressNow.getProvinces_cities().getName_with_type());
-            tvAddress.setText(defaultAddress);
-        } else
+        if (Common.addressNow != null)
+            tvAddress.setText(AppUtil.getStringAddress(Common.addressNow));
+        else
             tvAddress.setText(getString(R.string.add_address));
     }
 
@@ -184,6 +182,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
 
     public void startCompletePayment(){
         Intent intent = new Intent(getActivity(), CompletePaymentActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putIntegerArrayList("list_buy", (ArrayList<Integer>) adapter.getSelectedCart());
+        intent.putExtras(bundle);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }

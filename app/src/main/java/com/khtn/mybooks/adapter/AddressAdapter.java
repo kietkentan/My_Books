@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.khtn.mybooks.AddAddressActivity;
+import com.khtn.mybooks.AppUtil;
 import com.khtn.mybooks.Interface.AddressClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
@@ -52,11 +53,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         holder.btnChoseAddress.setChecked(addressNow.equals(addressList.get(position)));
         holder.tvNameUser.setText(addressList.get(position).getName());
         holder.tvPhoneUser.setText(addressList.get(position).getPhone());
-        String address = String.format("%s, %s, %s, %s", addressList.get(position).getAddress(),
-                addressList.get(position).getPrecinct().getName_with_type(),
-                addressList.get(position).getDistricts().getName_with_type(),
-                addressList.get(position).getProvinces_cities().getName_with_type());
-        holder.tvAddressUser.setText(address);
+        holder.tvAddressUser.setText(AppUtil.getStringAddress(addressList.get(position)));
         if (addressList.get(position).isDefaultAddress())
             holder.tvDefault.setVisibility(View.VISIBLE);
         else {

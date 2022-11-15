@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.khtn.mybooks.AddAddressActivity;
+import com.khtn.mybooks.AppUtil;
 import com.khtn.mybooks.Interface.NoteAddressRemoveInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
@@ -48,11 +49,7 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.tvName.setText(addressList.get(position).getName());
         holder.tvPhone.setText(addressList.get(position).getPhone());
-        String address = String.format("%s, %s, %s, %s", addressList.get(position).getAddress(),
-                addressList.get(position).getPrecinct().getName_with_type(),
-                addressList.get(position).getDistricts().getName_with_type(),
-                addressList.get(position).getProvinces_cities().getName_with_type());
-        holder.tvAddress.setText(address);
+        holder.tvAddress.setText(AppUtil.getStringAddress(addressList.get(position)));
         if (addressList.get(position).isDefaultAddress())
             holder.tvDefault.setVisibility(View.VISIBLE);
         else {

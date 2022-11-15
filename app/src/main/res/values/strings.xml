@@ -198,5 +198,12 @@
     <string name="confirm_remove_this_address">Bạn muốn xóa địa chỉ này?</string>
     <string name="no">Không</string>
     <string name="not_remove_default_address">Bạn không thể xóa địa chỉ mặc định</string>
+    <string name="payment_methods">Phương thức thanh toán</string>
+    <string name="cash_payment">Thanh toán tiền mặt</string>
+    <string name="temp_total">Tạm tính (%d)</string>
+    <string name="ship_cost">Phí vận chuyển</string>
+    <string name="quantity">Số lượng: x%d</string>
+    <string name="ship_method">Hình thức giao hàng</string>
+    <string name="standard_delivery">Giao hàng tiêu chuẩn</string>
 
 </resources>
