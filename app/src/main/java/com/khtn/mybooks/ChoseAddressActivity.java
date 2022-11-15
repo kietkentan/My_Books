@@ -5,14 +5,12 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.khtn.mybooks.Interface.ChoseLocationClickInterface;
-import com.khtn.mybooks.model.Address;
 import com.khtn.mybooks.model.Location;
 
 public class ChoseAddressActivity extends AppCompatActivity implements View.OnClickListener{

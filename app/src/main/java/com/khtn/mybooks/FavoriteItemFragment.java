@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.khtn.mybooks.R;
-
 public class FavoriteItemFragment extends Fragment {
 
     public FavoriteItemFragment() {}

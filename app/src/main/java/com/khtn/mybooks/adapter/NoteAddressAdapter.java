@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
@@ -29,7 +30,7 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
     private final List<Address> addressList;
     private final Context context;
     private Address addressNow = Common.addressNow;
-    private NoteAddressRemoveInterface removeInterface;
+    private final NoteAddressRemoveInterface removeInterface;
 
     public NoteAddressAdapter(List<Address> addressList, Context context, NoteAddressRemoveInterface removeInterface) {
         this.addressList = addressList;
@@ -88,7 +89,10 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
     }
 
     public void removeAddress(int position){
-        boolean isDefault = addressList.get(position).isDefaultAddress();
+        if (addressList.get(position).isDefaultAddress()){
+            Toast.makeText(context, R.string.not_remove_default_address, Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (addressNow.equals(Common.currentUser.getAddressList().get(position))){
             if (addressList.size() > 1) {
                 addressNow = addressList.get(1);
@@ -99,8 +103,9 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
                 Common.addressNow  = null;
         }
         addressList.remove(position);
-        if (isDefault && addressList.size() > 0)
-            addressList.get(0).setDefaultAddress(true);
+
+        notifyItemRemoved(position);
+        removeInterface.OnRemove();
 
         Common.currentUser.setAddressList(addressList);
     }
@@ -116,8 +121,6 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
         btnAccept.setOnClickListener(view -> {
             dialog.dismiss();
             removeAddress(position);
-            notifyItemRemoved(position);
-            removeInterface.OnRemove();
         });
         dialog.show();
     }

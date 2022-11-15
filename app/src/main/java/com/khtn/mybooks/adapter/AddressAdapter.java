@@ -1,6 +1,7 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,14 +13,12 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.khtn.mybooks.AddAddressActivity;
 import com.khtn.mybooks.Interface.AddressClickInterface;
@@ -92,16 +91,34 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                     notifyItemChanged(position);
                     break;
                 case R.id.m_remove:
-                    removeAddress(position);
-                    notifyItemRemoved(position);
+                    openDialogRemove(position);
                     break;
             }
             return false;
         });
     }
 
+    private void openDialogRemove(int position){
+        Dialog dialog = new Dialog(context, R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_confirm_remove_address);
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnAccept = dialog.findViewById(R.id.btn_accept_dialog);
+
+        btnClose.setOnClickListener(view -> dialog.dismiss());
+
+        btnAccept.setOnClickListener(view -> {
+            dialog.dismiss();
+            removeAddress(position);
+        });
+        dialog.show();
+    }
+
+
     public void removeAddress(int position){
-        boolean isDefault = addressList.get(position).isDefaultAddress();
+        if (addressList.get(position).isDefaultAddress()){
+            Toast.makeText(context, R.string.not_remove_default_address, Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (addressNow.equals(Common.currentUser.getAddressList().get(position))){
             if (addressList.size() > 1) {
                 addressNow = addressList.get(1);
@@ -112,8 +129,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
                 Common.addressNow  = null;
         }
         addressList.remove(position);
-        if (isDefault && addressList.size() > 0)
-            addressList.get(0).setDefaultAddress(true);
+        notifyItemRemoved(position);
 
         Common.currentUser.setAddressList(addressList);
     }

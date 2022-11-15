@@ -197,5 +197,6 @@
     <string name="remove_address">Xóa địa chỉ</string>
     <string name="confirm_remove_this_address">Bạn muốn xóa địa chỉ này?</string>
     <string name="no">Không</string>
+    <string name="not_remove_default_address">Bạn không thể xóa địa chỉ mặc định</string>
 
 </resources>
