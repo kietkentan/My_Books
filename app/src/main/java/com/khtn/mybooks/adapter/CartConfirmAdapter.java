@@ -52,8 +52,8 @@ public class CartConfirmAdapter extends RecyclerView.Adapter<CartConfirmAdapter.
         Picasso.get().load(orders.get(position).getBookImage()).into(holder.ivLogo);
         holder.tvName.setText(orders.get(position).getBookName());
         holder.tvQuantity.setText(String.format(context.getString(R.string.quantity), orders.get(position).getBookQuantity()));
-        holder.tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(price)));
-        holder.tvTotalPrice.setText(String.format("%sđ", AppUtil.convertNumber(price * orders.get(position).getBookQuantity())));
+        holder.tvPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(price)));
+        holder.tvTotalPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(price * orders.get(position).getBookQuantity())));
     }
 
     @Override

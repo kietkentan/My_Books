@@ -14,8 +14,8 @@
     <string name="coming">Mới phát hành</string>
     <string name="out_of_stock">Hết hàng</string>
     <string name="book_default_name">My Book</string>
-    <string name="book_default_price">00.000đ</string>
-    <string name="book_default_discount">00%</string>
+    <string name="book_price">%s đ</string>
+    <string name="book_discount">-%d%%</string>
     <string name="news_book">SÁCH MỚI</string>
     <string name="login_logout">Đăng nhập/Đăng kí</string>
     <string name="login_logout_with_phone_number">Đăng nhập hoặc đăng kí bằng số điện thoại</string>
@@ -71,13 +71,15 @@
     <string name="facebook_app_id">630015428788820</string>
     <string name="fb_login_protocol_scheme">fb630015428788820</string>
     <string name="facebook_client_token">668c5a956161d24890e3a25c2a0eb3c0</string>
-    <string name="sold">đã bán</string>
+    <string name="sold">%d đã bán</string>
     <string name="in_stock">Còn hàng</string>
     <string name="provider_information">Thông tin nhà cung cấp</string>
     <string name="HoChiMinhCity">TP Hồ Chí Minh</string>
-    <string name="reply_within">Trả lời trong</string>
+    <string name="reply_within">Trả lời trong %d %s</string>
+    <string name="shop_worked">%d %s</string>
     <string name="shop_reply">Shop phản hồi</string>
-    <string name="rating_score">0.0</string>
+    <string name="rating_score">%.1f</string>
+    <string name="people_rating">(%d)</string>
     <string name="rating">Đánh giá</string>
     <string name="year">năm</string>
     <string name="month">tháng</string>
@@ -102,7 +104,7 @@
     <string name="ageRange">Lứa tuổi</string>
     <string name="type">Loại</string>
     <string name="describe">Mô tả</string>
-    <string name="position">0/0</string>
+    <string name="fraction">%d/%d</string>
     <string name="num_default">0</string>
     <string name="setting">Cài đặt</string>
     <string name="language">Ngôn ngữ</string>
@@ -127,8 +129,7 @@
     <string name="all">Tất cả</string>
     <string name="total">Tổng cộng</string>
     <string name="please_chose_product">Vui lòng chọn sản phẩm</string>
-    <string name="default_buy">Mua hàng (0)</string>
-    <string name="buy">Mua hàng</string>
+    <string name="default_buy">Mua hàng (%d)</string>
     <string name="added_cart">Sản phẩm đã được thêm vào giỏ hàng</string>
     <string name="view_cart">Xem Giỏ Hàng</string>
     <string name="provided_by">Cung cấp bởi:</string>
@@ -179,8 +180,6 @@
     <string name="edit">Chỉnh sửa</string>
     <string name="set_default">Đặt làm mặc định</string>
     <string name="limit_product">Chỉ còn %d sản phẩm</string>
-    <string name="name_limit">%d/50</string>
-    <string name="default_name_limit">0/50</string>
     <string name="chose_address">Chọn nơi giao hàng</string>
     <string name="you_unselected_book_to_buy">Bạn chưa chọn sản phẩm nào để mua</string>
     <string name="understood">Đã hiểu</string>
@@ -205,5 +204,8 @@
     <string name="quantity">Số lượng: x%d</string>
     <string name="ship_method">Hình thức giao hàng</string>
     <string name="standard_delivery">Giao hàng tiêu chuẩn</string>
+    <string name="you_need_add_address_to_continue">Bạn cần thêm địa chỉ giao hàng để tiếp tục</string>
+    <string name="remove_selected_item">Bạn có muốn xóa sản phẩm đang chọn</string>
+    <string name="not_item_selected_to_remove">Bạn chưa chọn sản phẩm muốn xóa</string>
 
 </resources>

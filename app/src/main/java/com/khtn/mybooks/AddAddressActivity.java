@@ -101,6 +101,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setupLayout(){
+        tvLimitName.setText(String.format(getString(R.string.fraction), edtEnterRecipientName.getText().length(), LENGTH_NAME));
         edtEnterPhone.setInputType(InputType.TYPE_CLASS_PHONE);
         edtEnterPhone.setFilters(new InputFilter[] {new InputFilter.LengthFilter(LENGTH_PHONE_NUMBER)});
         edtEnterRecipientName.setFilters(new InputFilter[] {new InputFilter.LengthFilter(LENGTH_NAME)});
@@ -118,7 +119,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
             @SuppressLint("DefaultLocale")
             @Override
             public void afterTextChanged(Editable editable) {
-                tvLimitName.setText(String.format(getString(R.string.name_limit), edtEnterRecipientName.getText().length()));
+                tvLimitName.setText(String.format(getString(R.string.fraction), edtEnterRecipientName.getText().length(), LENGTH_NAME));
             }
         });
 
@@ -128,7 +129,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
     public void showAddress(){
         edtEnterRecipientName.setText(address.getName());
-        tvLimitName.setText(String.format(getString(R.string.name_limit), edtEnterRecipientName.getText().length()));
+        tvLimitName.setText(String.format(getString(R.string.fraction), edtEnterRecipientName.getText().length(), LENGTH_NAME));
         edtEnterPhone.setText(address.getPhone());
         edtEnterDeliveryAddress.setText(address.getAddress());
         tvChoseDistricts.setText(address.getDistricts().getName_with_type());

@@ -1,6 +1,7 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -52,11 +53,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         Picasso.get().load(orders.get(position).getBookImage()).into(holder.ivLogo);
         holder.tvName.setText(orders.get(position).getBookName());
         if (orders.get(position).getBookDiscount() != 0){
-            holder.tvOriginalPrice.setText(String.format("%s₫", AppUtil.convertNumber(orders.get(position).getBookPrice())));
+            holder.tvOriginalPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(orders.get(position).getBookPrice())));
             holder.tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvReducedPrice.setText(String.format("%s₫", AppUtil.convertNumber(orders.get(position).getBookPrice()*(100 - orders.get(position).getBookDiscount())/100)));
+            holder.tvReducedPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(orders.get(position).getBookPrice()*(100 - orders.get(position).getBookDiscount())/100)));
         } else {
-            holder.tvReducedPrice.setText(String.format("%s₫", AppUtil.convertNumber(orders.get(position).getBookPrice())));
+            holder.tvReducedPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(orders.get(position).getBookPrice())));
             holder.tvOriginalPrice.setVisibility(View.GONE);
         }
         holder.tvQuantity.setText(String.format("%d", orders.get(position).getBookQuantity()));
@@ -85,6 +86,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                     } else {
                         Toast.makeText(context, String.format(context.getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
                     }
+                    viewCartClickInterface.OnCheckedChanged(getSelectedCart());
                 }
 
                 @Override
@@ -95,19 +97,35 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         });
         holder.btnSub.setOnClickListener(view -> {
             int quantity = orders.get(position).getBookQuantity() - 1;
-            if (quantity < 1) {
-                new DatabaseCart(context).removeCarts(orders.get(position).getBookId());
-                orders.remove(position);
-                viewCartClickInterface.OnSaveAllCart(orders);
-                notifyItemRemoved(position);
-            }
+            if (quantity < 1)
+                openDialogRemoveCart(position);
             else {
                 orders.get(position).setBookQuantity(quantity);
                 new DatabaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
                 viewCartClickInterface.OnChangeDataCart(position, quantity);
                 notifyItemChanged(position);
             }
+            viewCartClickInterface.OnCheckedChanged(getSelectedCart());
         });
+    }
+
+    public void openDialogRemoveCart(int position){
+        Dialog dialog = new Dialog(context, R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_remove_cart);
+
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnRemove = dialog.findViewById(R.id.btn_remove);
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnRemove.setOnClickListener(v -> {
+            dialog.dismiss();
+            new DatabaseCart(context).removeCarts(orders.get(position).getBookId());
+            orders.remove(position);
+            viewCartClickInterface.OnSaveAllCart(orders);
+            notifyItemRemoved(position);
+        });
+
+        dialog.show();
     }
 
     @SuppressLint("NotifyDataSetChanged")

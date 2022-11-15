@@ -12,11 +12,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.khtn.mybooks.adapter.CartConfirmAdapter;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
+import com.khtn.mybooks.model.Request;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,10 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
     private List<Order> orderList;
     private CartConfirmAdapter adapter;
 
+    private int totalPrice;
+    private int tempTotal;
+    private int shipCost;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,7 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
 
         ibBack.setOnClickListener(this);
         layoutAddress.setOnClickListener(this);
+        btnOrder.setOnClickListener(this);
     }
 
     public void init(){
@@ -94,23 +103,46 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
 
     public void setTotalPrice(){
         List<Order> orderListFull = new DatabaseCart(this).getCarts();
-        int total = 0;
-        int shipCost = 25000;
-        int totalPrice;
+        tempTotal = 0;
+        shipCost = 20000;
         int totalQuantity = 0;
+
         for (int i : buyList) {
+            orderListFull.get(i).setSelected(true);
             orderList.add(orderListFull.get(i));
-            total += (orderListFull.get(i).getBookPrice()
+            tempTotal += (orderListFull.get(i).getBookPrice()
                     * (100 - orderListFull.get(i).getBookDiscount()) / 100)
                     * orderListFull.get(i).getBookQuantity();
             totalQuantity += orderListFull.get(i).getBookQuantity();
+            shipCost += 2000*orderListFull.get(i).getBookQuantity();
         }
-        totalPrice = shipCost + total;
+        totalPrice = shipCost + tempTotal;
+
         tvStringTempTotal.setText(String.format(getString(R.string.temp_total), totalQuantity));
-        tvTempTotal.setText(String.format("%s₫", AppUtil.convertNumber(total)));
-        tvShipCost.setText(String.format("%s₫", AppUtil.convertNumber(shipCost)));
-        tvTempTotalPrice.setText(String.format("%s₫", AppUtil.convertNumber(totalPrice)));
-        tvTotalPrice.setText(String.format("%s₫", AppUtil.convertNumber(totalPrice)));
+        tvTempTotal.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(tempTotal)));
+        tvShipCost.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(shipCost)));
+        tvTempTotalPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(totalPrice)));
+        tvTotalPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(totalPrice)));
+    }
+
+    public void startPutRequest(){
+        Request request = new Request(Common.currentUser.getId(),
+                                    AppUtil.getStringAddress(Common.addressNow),
+                                    Common.addressNow.getName(),
+                                    Common.addressNow.getPhone(),
+                                    orderList,
+                                    tempTotal,
+                                    shipCost,
+                                    totalPrice);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("request");
+        DatabaseCart dataBaseOrder = new DatabaseCart(this);
+
+        reference.child(String.valueOf(System.currentTimeMillis())).setValue(request);
+        for (Order order : orderList)
+            dataBaseOrder.removeCarts(order.getBookId());
+        Toast.makeText(this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -119,6 +151,8 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
             finish();
         if (v.getId() == R.id.layout_start_address_page)
             startAddressPage();
+        if (v.getId() == R.id.btn_order)
+            startPutRequest();
     }
 
     @Override

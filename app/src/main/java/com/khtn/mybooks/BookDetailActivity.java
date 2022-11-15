@@ -208,27 +208,27 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tvPosition.setText(String.format("%d/%d", position + 1, dataBook.getImage().size()));
+                tvPosition.setText(String.format(getString(R.string.fraction), position + 1, dataBook.getImage().size()));
             }
         });
 
         if (dataBook.getDiscount() == 0){
-            tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
+            tvPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvPrice.setTextColor(Color.parseColor("#FF000000"));
             tvOriginalPrice.setVisibility(View.INVISIBLE);
             tvDiscount.setVisibility(View.INVISIBLE);
         } else {
-            tvPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getReducedPrice())));
-            tvOriginalPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getOriginalPrice())));
+            tvPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(dataBook.getReducedPrice())));
+            tvOriginalPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(dataBook.getOriginalPrice())));
             tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            tvDiscount.setText(String.format("-%d%%", dataBook.getDiscount()));
+            tvDiscount.setText(String.format(getString(R.string.book_discount), dataBook.getDiscount()));
         }
 
         tvNameBook.setText(dataBook.getName());
         barRatingBook.setRating(dataBook.getTotalRatingScore());
-        tvTotalRating.setText(String.format("%.1f", dataBook.getTotalRatingScore()));
-        tvTotalNumberPeopleRating.setText(String.format("(%s)", dataBook.getTotalRatings()));
-        tvQuantitySold.setText(String.format("%d %s", dataBook.getSold(), getString(R.string.sold)));
+        tvTotalRating.setText(String.format(getString(R.string.rating_score), dataBook.getTotalRatingScore()));
+        tvTotalNumberPeopleRating.setText(String.format(getString(R.string.people_rating), dataBook.getTotalRatings()));
+        tvQuantitySold.setText(String.format(getString(R.string.sold), dataBook.getSold()));
 
         if (dataBook.getAmount() == 0){
             tvInStockOrNot.setText(getString(R.string.out_of_stock));
@@ -242,28 +242,28 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         tvShopLocation.setText(dataPublisher.getLocation());
 
         if (dataPublisher.getReply() < 60)
-            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
+            tvShopReplyWithin.setText(String.format(getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
         else
-            tvShopReplyWithin.setText(String.format("%s %d %s", getString(R.string.reply_within), dataPublisher.getReply() / 60, getString(R.string.minute)));
-        tvShopRating.setText(String.format("%.1f", dataPublisher.getRating()));
+            tvShopReplyWithin.setText(String.format(getString(R.string.reply_within), dataPublisher.getReply() / 60, getString(R.string.hour)));
+        tvShopRating.setText(String.format(getString(R.string.rating_score), dataPublisher.getRating()));
 
         if (AppUtil.numDays(dataPublisher.getWorked()) < 30)
-            tvShopWorked.setText(String.format("%d %s", AppUtil.numDays(dataPublisher.getWorked()), getString(R.string.day)));
+            tvShopWorked.setText(String.format(getString(R.string.shop_worked), AppUtil.numDays(dataPublisher.getWorked()), getString(R.string.day)));
         else if (AppUtil.numDays(dataPublisher.getWorked()) < 365)
-            tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked())/30, getString(R.string.month)));
+            tvShopWorked.setText(String.format(getString(R.string.shop_worked), (int) AppUtil.numDays(dataPublisher.getWorked())/30, getString(R.string.month)));
         else
-            tvShopWorked.setText(String.format("%d %s", (int) AppUtil.numDays(dataPublisher.getWorked()) / 365, getString(R.string.year)));
+            tvShopWorked.setText(String.format(getString(R.string.shop_worked), (int) AppUtil.numDays(dataPublisher.getWorked()) / 365, getString(R.string.year)));
 
         if (AppUtil.numDays(dataBook.getDatePosted()) < 30) {
-            tvDatePosted.setText(String.format("%d %s", AppUtil.numDays(dataBook.getDatePosted()), getString(R.string.day)));
+            tvDatePosted.setText(String.format(getString(R.string.shop_worked), AppUtil.numDays(dataBook.getDatePosted()), getString(R.string.day)));
             layoutUpcoming.setVisibility(View.VISIBLE);
         }
         else if (AppUtil.numDays(dataBook.getDatePosted()) < 365) {
-            tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(dataBook.getDatePosted()) / 30, getString(R.string.month)));
+            tvDatePosted.setText(String.format(getString(R.string.shop_worked), (int) AppUtil.numDays(dataBook.getDatePosted()) / 30, getString(R.string.month)));
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
         else {
-            tvDatePosted.setText(String.format("%d %s", (int) AppUtil.numDays(dataBook.getDatePosted())/365, getString(R.string.year)));
+            tvDatePosted.setText(String.format(getString(R.string.shop_worked), (int) AppUtil.numDays(dataBook.getDatePosted())/365, getString(R.string.year)));
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
 
@@ -459,7 +459,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         Picasso.get().load(dataBook.getImage().get(0)).into(ivImage);
         tvBookName.setText(dataBook.getName());
         tvPublisherName.setText(dataPublisher.getName());
-        tvBookPrice.setText(String.format("%sđ", AppUtil.convertNumber(dataBook.getReducedPrice())));
+        tvBookPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(dataBook.getReducedPrice())));
 
         btnCartPage.setOnClickListener(view -> {
             dialog.dismiss();

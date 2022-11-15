@@ -45,15 +45,15 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
         Picasso.get().load(bookItemList.get(position).getImage().get(0)).into(holder.ivItemReview);
 
         if (bookItemList.get(position).getDiscount() == 0){
-            holder.tvOriginalPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
+            holder.tvOriginalPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
             holder.tvDiscount.setVisibility(View.INVISIBLE);
             holder.tvReducedPrice.setVisibility(View.INVISIBLE);
         } else {
-            holder.tvDiscount.setText(String.format("-%d%%", bookItemList.get(position).getDiscount()));
-            holder.tvOriginalPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
+            holder.tvDiscount.setText(String.format(context.getString(R.string.book_discount), bookItemList.get(position).getDiscount()));
+            holder.tvOriginalPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
             holder.tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             holder.tvOriginalPrice.setTextColor(Color.parseColor("#BDBDBD"));
-            holder.tvReducedPrice.setText(String.format("%s₫", AppUtil.convertNumber(bookItemList.get(position).getReducedPrice())));
+            holder.tvReducedPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(bookItemList.get(position).getReducedPrice())));
         }
         if (!(bookItemList.get(position).getAmount() == 0))
             holder.tvOutOfStock.setVisibility(View.INVISIBLE);

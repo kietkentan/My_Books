@@ -124,16 +124,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         if (bookList.containsKey(idPublisher))
             changeData(idPublisher);
         else {
-            database.getReference("book").orderByChild("publisher").equalTo(idPublisher).addListenerForSingleValueEvent(new ValueEventListener() {
+            database.getReference("book").orderByChild("publisher").limitToFirst(10).equalTo(idPublisher).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     List<BookItem> newList = new ArrayList<>();
-                    int i = 0;
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         BookItem item = dataSnapshot.getValue(BookItem.class);
                         newList.add(item);
-                        if (++i > 10)
-                            break;
                     }
                     bookList.put(idPublisher, newList);
                     changeData(idPublisher);

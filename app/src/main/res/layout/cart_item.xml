@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
-            android:text="@string/book_default_price"
+            android:text="@string/book_price"
             android:textSize="16sp"
             android:textColor="@color/reduced_price"
             app:layout_constraintStart_toEndOf="@+id/iv_cart_logo"
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="3dp"
-            android:text="@string/book_default_price"
+            android:text="@string/book_price"
             android:textColor="@color/original_price"
             app:layout_constraintStart_toEndOf="@+id/tv_cart_reduced_price"
             app:layout_constraintTop_toBottomOf="@+id/tv_cart_name" />

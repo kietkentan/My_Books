@@ -203,11 +203,13 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     private void continueWithUser(){
         btnContinueLoginPhoneNumber.setVisibility(View.INVISIBLE);
         progressBarContinue.setVisibility(View.VISIBLE);
+
         Intent intentSignIn = new Intent(SignInSignUpActivity.this, SignInActivity.class);
         Intent intentSignUpEmail = new Intent(SignInSignUpActivity.this, SignUpEmailActivity.class);
         Intent intentOTPVerification = new Intent(SignInSignUpActivity.this, OTPVerificationActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", edtEnterPhoneNumberOrEmail.getText().toString());
+
         if (AppUtil.isPhoneNumber(edtEnterPhoneNumberOrEmail.getText().toString())) {
             reference.child("mybooks").orderByChild("phone").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -285,11 +287,15 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void loginWithGoogle(){
+        btnContinueLoginPhoneNumber.setVisibility(View.INVISIBLE);
+        progressBarContinue.setVisibility(View.VISIBLE);
         Intent signInIntent = gsc.getSignInIntent();
         startActivityForResult(signInIntent, REQ_CODE_GG);
     }
 
     private void loginWithFacebook() {
+        btnContinueLoginPhoneNumber.setVisibility(View.INVISIBLE);
+        progressBarContinue.setVisibility(View.VISIBLE);
         LoginManager.getInstance().logInWithReadPermissions(SignInSignUpActivity.this, Collections.singletonList("public_profile"));
     }
 
@@ -324,6 +330,9 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                             Common.signIn(snapshot.getValue(User.class), 2);
                             getMoreData();
                         }
+                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                        progressBarContinue.setVisibility(View.GONE);
+
                         Common.saveUser(SignInSignUpActivity.this);
                         Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -336,7 +345,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                        progressBarContinue.setVisibility(View.GONE);
                     }
                 });
             }
@@ -344,6 +354,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i("TAG_U", "signInResult:failed code=" + e.getStatusCode());
+            btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+            progressBarContinue.setVisibility(View.GONE);
         }
     }
 
@@ -366,6 +378,9 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                                     Common.signIn(snapshot.getValue(User.class), 3);
                                     getMoreData();
                                 }
+                                btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                                progressBarContinue.setVisibility(View.GONE);
+
                                 Common.saveUser(SignInSignUpActivity.this);
                                 Intent intent = new Intent(SignInSignUpActivity.this, MainActivity.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -378,12 +393,15 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
+                                btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                                progressBarContinue.setVisibility(View.GONE);
                             }
                         });
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(SignInSignUpActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                        progressBarContinue.setVisibility(View.GONE);
                     }
                 });
     }

@@ -1,0 +1,103 @@
+package com.khtn.mybooks.model;
+
+import java.util.List;
+
+public class Request {
+    private String idUser;
+    private String address;
+    private String name;
+    private String phone;
+    private List<Order> orderList;
+    private int tempTotal;
+    private int shipCost;
+    private int total;
+    private int status;  // 1: Chờ xác nhận
+                            // 2: Chờ vận chuyển
+                            // 3: Đang vận chuyển
+                            // 4: Đã vận chuyển
+
+    public Request() {}
+
+    public Request(String idUser, String address, String name, String phone, List<Order> orderList, int tempTotal, int shipCost, int total) {
+        this.address = address;
+        this.name = name;
+        this.phone = phone;
+        this.orderList = orderList;
+        this.tempTotal = tempTotal;
+        this.shipCost = shipCost;
+        this.total = total;
+        this.status = 1;
+    }
+
+    public String getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(String idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
+
+    public int getTempTotal() {
+        return tempTotal;
+    }
+
+    public void setTempTotal(int tempTotal) {
+        this.tempTotal = tempTotal;
+    }
+
+    public int getShipCost() {
+        return shipCost;
+    }
+
+    public void setShipCost(int shipCost) {
+        this.shipCost = shipCost;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+}

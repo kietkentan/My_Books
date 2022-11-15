@@ -13,7 +13,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -151,33 +151,40 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             tvTotalPrice.setText(getString(R.string.please_chose_product));
             tvTotalPrice.setTextSize(14);
             tvTotalPrice.setTypeface(null, Typeface.NORMAL);
-            btnBuy.setText(getString(R.string.default_buy));
+            btnBuy.setText(String.format(getString(R.string.default_buy), 0));
         } else {
             int total = 0;
             for (int i = 0; i < listChecked.size(); ++i)
                 total = total + (orderList.get(listChecked.get(i)).getBookPrice()*
                         (100 - orderList.get(listChecked.get(i)).getBookDiscount())/100)*
                         orderList.get(listChecked.get(i)).getBookQuantity();
-            tvTotalPrice.setText(String.format("%s₫", AppUtil.convertNumber(total)));
+            tvTotalPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(total)));
             tvTotalPrice.setTextSize(20);
             tvTotalPrice.setTypeface(null, Typeface.BOLD);
-            btnBuy.setText(String.format("%s (%d)", getString(R.string.buy), listChecked.size()));
+            btnBuy.setText(String.format(getString(R.string.default_buy), listChecked.size()));
         }
     }
 
+    public void clickAddress(){
+        if (Common.currentUser.getAddressList() != null)
+            startAddressPage();
+        else
+            startAddAddressPage();
+    }
+
     public void startAddressPage(){
-        if (Common.currentUser.getAddressList() != null) {
-            startActivity(new Intent(getActivity(), AddressActivity.class));
-            getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
-        } else {
-            Intent intent = new Intent(getActivity(), AddAddressActivity.class);
-            Bundle bundle = new Bundle();
+        startActivity(new Intent(getActivity(), AddressActivity.class));
+        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
 
-            bundle.putInt("pos", -1);
+    public void startAddAddressPage(){
+        Intent intent = new Intent(getActivity(), AddAddressActivity.class);
+        Bundle bundle = new Bundle();
 
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
+        bundle.putInt("pos", -1);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public void startCompletePayment(){
@@ -206,20 +213,54 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         OnSaveAllCart(orderList);
     }
 
-    public void startBuyPage(){
-        if (adapter.getSelectedCart().size() > 0){
-            startCompletePayment();
-        } else
-            openDialog();
+    public void openDialogRemoveCart(){
+        if (adapter.getSelectedCart().size() == 0) {
+            Toast.makeText(getContext(), R.string.not_item_selected_to_remove, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_remove_cart);
+
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnRemove = dialog.findViewById(R.id.btn_remove);
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnRemove.setOnClickListener(v -> {
+            dialog.dismiss();
+            removeCart();
+        });
+
+        dialog.show();
     }
 
-    public void openDialog(){
+    public void clickBuyButton(){
+        if (Common.addressNow == null)
+            openDialogAddAddress();
+        else if (adapter.getSelectedCart().size() > 0)
+            startCompletePayment();
+        else
+            openDialogUnselected();
+    }
+
+    public void openDialogAddAddress(){
+        Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_none_address);
+
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnAddAddress = dialog.findViewById(R.id.btn_accept_add_address);
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnAddAddress.setOnClickListener(v -> {
+            startAddAddressPage();
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    public void openDialogUnselected(){
         Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialog);
         dialog.setContentView(R.layout.dialog_unselected_book);
-        dialog.getWindow().setGravity(Gravity.CENTER);
-        WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setAttributes(layoutParams);
 
         TextView tvUnderstood = dialog.findViewById(R.id.tv_understood);
         tvUnderstood.setOnClickListener(v -> dialog.dismiss());
@@ -230,11 +271,11 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.tv_address)
-            startAddressPage();
+            clickAddress();
         if (view.getId() == R.id.ib_remove_cart)
-            removeCart();
+            openDialogRemoveCart();
         if (view.getId() == R.id.btn_buy)
-            startBuyPage();
+            clickBuyButton();
         if (view.getId() == R.id.btn_continue_shopping)
             cartFragmentClickInterface.OnClick();
     }

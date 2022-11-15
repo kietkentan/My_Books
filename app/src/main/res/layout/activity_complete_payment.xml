@@ -215,7 +215,7 @@
                         android:id="@+id/tv_temp_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/book_default_price"/>
+                        android:text="@string/book_price"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -234,7 +234,7 @@
                         android:id="@+id/tv_ship_cost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/book_default_price"/>
+                        android:text="@string/book_price"/>
                 </LinearLayout>
 
                 <View
@@ -261,7 +261,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
-                        android:text="@string/book_default_price"/>
+                        android:text="@string/book_price"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -300,7 +300,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/book_default_price"
+                android:text="@string/book_price"
                 android:textColor="@color/reduced_price"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
