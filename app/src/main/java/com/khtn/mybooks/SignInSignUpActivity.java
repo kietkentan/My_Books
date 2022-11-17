@@ -84,7 +84,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_sign_up);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.defaultStatusBarColor(this);
 
         init();
 
@@ -204,9 +204,6 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
         btnContinueLoginPhoneNumber.setVisibility(View.INVISIBLE);
         progressBarContinue.setVisibility(View.VISIBLE);
 
-        Intent intentSignIn = new Intent(SignInSignUpActivity.this, SignInActivity.class);
-        Intent intentSignUpEmail = new Intent(SignInSignUpActivity.this, SignUpEmailActivity.class);
-        Intent intentOTPVerification = new Intent(SignInSignUpActivity.this, OTPVerificationActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("user", edtEnterPhoneNumberOrEmail.getText().toString());
 
@@ -217,40 +214,13 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                     if (snapshot.exists()){
                         btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
                         progressBarContinue.setVisibility(View.INVISIBLE);
+
+                        Intent intentSignIn = new Intent(SignInSignUpActivity.this, SignInActivity.class);
+
                         intentSignIn.putExtras(bundle);
                         startActivity(intentSignIn);
                     } else {
-                        PhoneAuthProvider.verifyPhoneNumber(PhoneAuthOptions.newBuilder()
-                                .setPhoneNumber("+84" + edtEnterPhoneNumberOrEmail.getText().toString().replaceFirst("0", ""))
-                                .setTimeout(60L, TimeUnit.SECONDS)
-                                .setActivity(SignInSignUpActivity.this)
-                                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                                    @Override
-                                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                        progressBarContinue.setVisibility(View.GONE);
-                                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
-                                    }
-
-                                    @Override
-                                    public void onVerificationFailed(@NonNull FirebaseException e) {
-                                        progressBarContinue.setVisibility(View.GONE);
-                                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
-                                        Toast.makeText(SignInSignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                        progressBarContinue.setVisibility(View.GONE);
-                                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
-
-                                        bundle.putString("mobile", edtEnterPhoneNumberOrEmail.getText().toString());
-                                        bundle.putString("verificationId", s);
-                                        intentOTPVerification.putExtras(bundle);
-                                        startActivity(intentOTPVerification);
-                                        finish();
-                                    }
-                                })
-                                .build());
+                        sentOTP(edtEnterPhoneNumberOrEmail.getText().toString());
                         progressBarContinue.setVisibility(View.VISIBLE);
                         btnContinueLoginPhoneNumber.setVisibility(View.INVISIBLE);
                     }
@@ -268,11 +238,17 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                     if (snapshot.exists()){
                         btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
                         progressBarContinue.setVisibility(View.INVISIBLE);
+
+                        Intent intentSignIn = new Intent(SignInSignUpActivity.this, SignInActivity.class);
+
                         intentSignIn.putExtras(bundle);
                         startActivity(intentSignIn);
                     } else {
                         btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
                         progressBarContinue.setVisibility(View.INVISIBLE);
+
+                        Intent intentSignUpEmail = new Intent(SignInSignUpActivity.this, SignUpEmailActivity.class);
+
                         intentSignUpEmail.putExtras(bundle);
                         startActivity(intentSignUpEmail);
                     }
@@ -284,6 +260,45 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 }
             });
         }
+    }
+
+    private void sentOTP(String phone){
+        PhoneAuthProvider.verifyPhoneNumber(PhoneAuthOptions.newBuilder()
+                .setPhoneNumber("+84" + phone.replaceFirst("0", ""))
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(SignInSignUpActivity.this)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        progressBarContinue.setVisibility(View.GONE);
+                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        progressBarContinue.setVisibility(View.GONE);
+                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                        Toast.makeText(SignInSignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        progressBarContinue.setVisibility(View.GONE);
+                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                        AppUtil.mForceResendingToken = forceResendingToken;
+
+                        Intent intentOTPVerification = new Intent(SignInSignUpActivity.this, OTPVerificationActivity.class);
+                        Bundle bundle = new Bundle();
+
+                        bundle.putString("mobile", phone);
+                        bundle.putString("verificationId", s);
+
+                        intentOTPVerification.putExtras(bundle);
+                        startActivity(intentOTPVerification);
+                        finish();
+                    }
+                })
+                .build());
     }
 
     private void loginWithGoogle(){

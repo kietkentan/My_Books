@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.model.User;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +48,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.defaultStatusBarColor(this);
 
         init();
 
@@ -119,42 +120,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
                     progressBar.setVisibility(View.VISIBLE);
                     btnGetPassword.setVisibility(View.INVISIBLE);
 
-                    // sent OTP to the phone
-                    PhoneAuthProvider.verifyPhoneNumber(PhoneAuthOptions.newBuilder()
-                            .setPhoneNumber("+84" + edtEnterUser.getText().toString())
-                            .setTimeout(60L, TimeUnit.SECONDS)
-                            .setActivity(ForgetPasswordActivity.this)
-                            .setForceResendingToken(AppUtil.mForceResendingToken)
-                            .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                                @Override
-                                public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                    progressBar.setVisibility(View.GONE);
-                                    btnGetPassword.setVisibility(View.VISIBLE);
-                                }
-
-                                @Override
-                                public void onVerificationFailed(@NonNull FirebaseException e) {
-                                    progressBar.setVisibility(View.GONE);
-                                    btnGetPassword.setVisibility(View.VISIBLE);
-                                    Toast.makeText(ForgetPasswordActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-
-                                @Override
-                                public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                    progressBar.setVisibility(View.GONE);
-                                    btnGetPassword.setVisibility(View.VISIBLE);
-                                    AppUtil.mForceResendingToken = forceResendingToken;
-
-                                    Intent intent = new Intent(ForgetPasswordActivity.this, OTPVerificationActivity.class);
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("mobile", edtEnterUser.getText().toString());
-                                    bundle.putString("verificationId", s);
-                                    bundle.putBoolean("register", false);
-                                    intent.putExtras(bundle);
-                                    startActivity(intent);
-                                }
-                            })
-                            .build());
+                    senOPT(edtEnterUser.getText().toString());
                 } else {
                     tvNotAccount.setVisibility(View.VISIBLE);
                     tvNotAccount.setText(R.string.not_have_account_for_phone_number);
@@ -169,19 +135,67 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void resetPasswordByEmail(){
-        databaseReference.child("mybooks").orderByChild(edtEnterUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("mybooks").orderByChild("email").equalTo(edtEnterUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // reset password using email
-                Log.i("TAG_U", "Reset Password By Email");
+                if (snapshot.exists()){
+                    for (DataSnapshot dataSnapshot:snapshot.getChildren()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        btnGetPassword.setVisibility(View.INVISIBLE);
+
+                        senOPT(dataSnapshot.child("phone").getValue(String.class));
+                    }
+                } else {
+                    tvNotAccount.setVisibility(View.VISIBLE);
+                    tvNotAccount.setText(R.string.not_have_account_for_email);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                tvNotAccount.setVisibility(View.VISIBLE);
-                tvNotAccount.setText(R.string.not_have_account_for_email);
+
             }
         });
+    }
+
+    private void senOPT(String phone){
+        PhoneAuthProvider.verifyPhoneNumber(PhoneAuthOptions.newBuilder()
+                .setPhoneNumber("+84" + phone.replaceFirst("0", ""))
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(ForgetPasswordActivity.this)
+                .setForceResendingToken(AppUtil.mForceResendingToken)
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+                        progressBar.setVisibility(View.GONE);
+                        btnGetPassword.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        progressBar.setVisibility(View.GONE);
+                        btnGetPassword.setVisibility(View.VISIBLE);
+                        Toast.makeText(ForgetPasswordActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        progressBar.setVisibility(View.GONE);
+                        btnGetPassword.setVisibility(View.VISIBLE);
+                        AppUtil.mForceResendingToken = forceResendingToken;
+
+                        Intent intent = new Intent(ForgetPasswordActivity.this, OTPVerificationActivity.class);
+                        Bundle bundle = new Bundle();
+
+                        bundle.putString("mobile", phone);
+                        bundle.putString("verificationId", s);
+                        bundle.putBoolean("register", false);
+
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                })
+                .build());
     }
 
     private void callHotline(){

@@ -51,8 +51,8 @@
     <string name="network_not_available">Không có kết nối mạng</string>
     <string name="complete_registration">Hoàn tất tạo tài khoản</string>
     <string name="please_enter_your_name">Vui lòng cho biết tên của bạn</string>
-    <string name="please_enter_your_password">Vui lòng nhập mật khẩu</string>
-    <string name="please_reenter_your_password">Vui lòng nhập lại mật khẩu</string>
+    <string name="please_enter_your_password">Vui lòng nhập mật khẩu (từ 8 kí tự gồm cả chữ và số)</string>
+    <string name="please_reenter_your_password">Vui lòng nhắc lại mật khẩu</string>
     <string name="password">Mật khẩu</string>
     <string name="name"><![CDATA[Họ & Tên]]></string>
     <string name="create_account">Tạo tài khoản</string>
@@ -207,5 +207,11 @@
     <string name="you_need_add_address_to_continue">Bạn cần thêm địa chỉ giao hàng để tiếp tục</string>
     <string name="remove_selected_item">Bạn có muốn xóa sản phẩm đang chọn</string>
     <string name="not_item_selected_to_remove">Bạn chưa chọn sản phẩm muốn xóa</string>
+    <string name="change_password">Đổi Mật Khẩu</string>
+    <string name="create_new_password">Tạo mật khẩu mới</string>
+    <string name="password_not_formatted_correctly">Mật khẩu không đúng định dạng</string>
+    <string name="enter_password_correctly_formatted">Nhập mật khẩu tối thiểu 8 kí tự gồm cả chữ và số</string>
+    <string name="enter_new_password">Nhập mật khẩu mới</string>
+    <string name="re_enter_new_password">Nhắc lại mật khẩu mới</string>
 
 </resources>

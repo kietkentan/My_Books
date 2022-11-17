@@ -17,6 +17,13 @@
         android:theme="@style/Theme.MyBooks"
         tools:targetApi="31">
         <activity
+            android:name=".EnterNewPasswordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".OrderStatusActivity"
             android:exported="false">
             <meta-data

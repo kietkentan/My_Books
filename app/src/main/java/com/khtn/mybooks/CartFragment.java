@@ -13,11 +13,9 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -219,7 +217,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
             return;
         }
         Dialog dialog = new Dialog(getContext(), R.style.FullScreenDialog);
-        dialog.setContentView(R.layout.dialog_remove_cart);
+        dialog.setContentView(R.layout.dialog_confirm_remove_cart);
 
         AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
         AppCompatButton btnRemove = dialog.findViewById(R.id.btn_remove);

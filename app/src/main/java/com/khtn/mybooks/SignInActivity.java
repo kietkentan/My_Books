@@ -54,7 +54,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.defaultStatusBarColor(this);
 
         init();
         setAbout();
@@ -126,11 +126,8 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             login();
         if (view.getId() == R.id.ib_hidden_show_password)
             checkHiddenPassword();
-        if (view.getId() == R.id.tv_forget_password){
-            // start forget password page
-            Intent intent = new Intent(SignInActivity.this, ForgetPasswordActivity.class);
-            startActivity(intent);
-        }
+        if (view.getId() == R.id.tv_forget_password)
+            startActivity(new Intent(SignInActivity.this, ForgetPasswordActivity.class));
     }
 
     public void checkHiddenPassword(){
@@ -162,19 +159,13 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             Common.signIn(user, 1);
                             Common.saveUser(SignInActivity.this);
                             getMoreData();
+                            startHome();
                         } else {
                             Toast.makeText(thisContext, R.string.incorrect_password, Toast.LENGTH_SHORT).show();
                         }
                     }
                 btnLogin.setVisibility(View.VISIBLE);
                 progressBarLogin.setVisibility(View.GONE);
-                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Bundle bundle = new Bundle();
-                bundle.putInt("fragment", 1);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                finish();
             }
 
             @Override
@@ -208,5 +199,17 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
             }
+    }
+
+    public void startHome(){
+        Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("fragment", 1);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+        finish();
     }
 }

@@ -46,9 +46,9 @@
             android:layout_marginBottom="20dp"
             android:text="@string/no"
             android:textAllCaps="false"
-            android:textColor="@color/reduced_price"
+            android:textColor="@color/white"
             android:textSize="17sp"
-            android:background="@drawable/custom_button_close"/>
+            android:background="@drawable/custom_button_continue_appear"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_accept_dialog"
@@ -58,9 +58,9 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
             android:text="@string/accept"
-            android:textColor="@color/white"
+            android:textColor="@color/reduced_price"
             android:textAllCaps="false"
             android:textSize="17sp"
-            android:background="@drawable/custom_button_continue_appear"/>
+            android:background="@drawable/custom_button_close"/>
     </LinearLayout>
 </LinearLayout>

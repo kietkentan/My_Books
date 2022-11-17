@@ -15,7 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.Address;
 
 import java.text.ParseException;
@@ -46,24 +45,19 @@ public class AppUtil {
 
     // checking the phone
     public static boolean isPhoneNumber(String str){
+
+        String regex = "0\\d{9}";
         if (str == null)
             return false;
-        if (str.charAt(0) != '0')
-            return false;
-        if (str.length() != 10)
-            return false;
-        for (char c : str.toCharArray())
-            if (c < '0' || c > '9')
-                return false;
-        return true;
+
+        return str.matches(regex);
     }
 
     public static String getStringAddress(Address address){
-        String stringAddress = String.format("%s, %s, %s, %s", address.getAddress(),
+        return String.format("%s, %s, %s, %s", address.getAddress(),
                 address.getPrecinct().getName_with_type(),
                 address.getDistricts().getName_with_type(),
                 address.getProvinces_cities().getName_with_type());
-        return stringAddress;
     }
 
     // checking the email
@@ -74,17 +68,30 @@ public class AppUtil {
     }
 
     public static boolean isName(String str){
-        String regex = "^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$";
+        String regex = "^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]" +
+                "[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ]" +
+                "[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]" +
+                "[a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$";
+
         if (str.isEmpty())
             return false;
         return str.matches(regex) && str.contains(" ");
     }
 
     public static boolean isString(String str){
-        String regex = "[!@#$%&*()'+,\\-./:;<=>?\\[\\]^_`{|}]";
+        String regex = ".*[!@#$%&*()'+,\\-./:;<=>?\\[\\]^_`{|}].*";
+
         if (str.isEmpty())
             return false;
         return !str.matches(regex) && str.contains(" ");
+    }
+
+    public static boolean checkValidPassword(String str){
+        String regexNumChar = "\\w{8,}";
+        String regexNum = ".*\\d.*";
+        String regexChar = ".*[a-zA-Z].*";
+
+        return str.matches(regexNumChar) & str.matches(regexNum) & str.matches(regexChar);
     }
 
     // convert number to string

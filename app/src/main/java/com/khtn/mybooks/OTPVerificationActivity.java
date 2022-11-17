@@ -48,7 +48,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.defaultStatusBarColor(this);
 
         init();
 
@@ -258,15 +258,22 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         private void startCreateUser(){
             Intent intent = new Intent(OTPVerificationActivity.this, CompleteRegistrationActivity.class);
             Bundle bundle = new Bundle();
+
             bundle.putString("mobile", phoneNumber);
             bundle.putString("email", email);
+
             intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }
 
         private void startForgetPassword(){
-            Intent intent = new Intent(OTPVerificationActivity.this, ForgetPasswordActivity.class);
+            Intent intent = new Intent(OTPVerificationActivity.this, EnterNewPasswordActivity.class);
+            Bundle bundle = new Bundle();
+
+            bundle.putString("phone", phoneNumber);
+
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }

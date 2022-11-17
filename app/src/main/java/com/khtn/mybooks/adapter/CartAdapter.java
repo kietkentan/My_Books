@@ -111,7 +111,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
 
     public void openDialogRemoveCart(int position){
         Dialog dialog = new Dialog(context, R.style.FullScreenDialog);
-        dialog.setContentView(R.layout.dialog_remove_cart);
+        dialog.setContentView(R.layout.dialog_confirm_remove_cart);
 
         AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
         AppCompatButton btnRemove = dialog.findViewById(R.id.btn_remove);
