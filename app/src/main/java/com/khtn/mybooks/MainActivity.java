@@ -12,20 +12,22 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khtn.mybooks.Interface.ContinueShoppingClickInterface;
+import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.fragment.CartFragment;
 import com.khtn.mybooks.fragment.FavoriteItemFragment;
 import com.khtn.mybooks.fragment.HomeFragment;
 import com.khtn.mybooks.fragment.ListOrderFragment;
+import com.khtn.mybooks.fragment.UserFragment;
 
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity implements ContinueShoppingClickInterface {
+public class MainActivity extends AppCompatActivity implements ContinueShoppingClickInterface, SwitchFavoritePageInterface {
     private BottomNavigationView bottomNav;
     private Fragment fragment;
     private final Fragment homeFrag = new HomeFragment();
     private final Fragment favoriteFrag = new FavoriteItemFragment(this);
-    private final Fragment userFrag = new ListOrderFragment.UserFragment();
+    private final Fragment userFrag = new UserFragment(this);
     private final Fragment cartFrag = new CartFragment(this);
     private Stack<Fragment> fragmentStack;
 
@@ -172,6 +174,14 @@ public class MainActivity extends AppCompatActivity implements ContinueShoppingC
     @Override
     public void OnClick() {
         fragment = homeFrag;
+        switchSelectItem();
+        openFragment();
+    }
+
+    @Override
+    public void OnClickFavorite() {
+        fragment = favoriteFrag;
+        fragmentStack.add(userFrag);
         switchSelectItem();
         openFragment();
     }
