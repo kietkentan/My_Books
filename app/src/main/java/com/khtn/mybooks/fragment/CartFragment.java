@@ -31,7 +31,7 @@ import com.khtn.mybooks.AddAddressActivity;
 import com.khtn.mybooks.AddressActivity;
 import com.khtn.mybooks.AppUtil;
 import com.khtn.mybooks.CompletePaymentActivity;
-import com.khtn.mybooks.Interface.CartFragmentClickInterface;
+import com.khtn.mybooks.Interface.ContinueShoppingClickInterface;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.CartAdapter;
@@ -59,11 +59,11 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     private List<Integer> listChecked;
     private DatabaseCart dataBaseOrder;
     private final String[] mode = {"mybooks", "google", "facebook"};
-    private final CartFragmentClickInterface cartFragmentClickInterface;
+    private final ContinueShoppingClickInterface continueShoppingClickInterface;
     private DatabaseReference referenceUser;
 
-    public CartFragment(CartFragmentClickInterface cartFragmentClickInterface) {
-        this.cartFragmentClickInterface = cartFragmentClickInterface;
+    public CartFragment(ContinueShoppingClickInterface continueShoppingClickInterface) {
+        this.continueShoppingClickInterface = continueShoppingClickInterface;
     }
 
     @Nullable
@@ -279,7 +279,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         if (view.getId() == R.id.btn_buy)
             clickBuyButton();
         if (view.getId() == R.id.btn_continue_shopping)
-            cartFragmentClickInterface.OnClick();
+            continueShoppingClickInterface.OnClick();
     }
 
     @Override

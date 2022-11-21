@@ -34,7 +34,7 @@
         app:startDestination="@id/userActivity">
         <activity
             android:id="@+id/userActivity"
-            android:name="com.khtn.mybooks.fragment.UserFragment"
+            android:name="com.khtn.mybooks.fragment.ListOrderFragment$UserFragment"
             android:label="activity_user"
             tools:layout="@layout/fragment_user" />
         <action

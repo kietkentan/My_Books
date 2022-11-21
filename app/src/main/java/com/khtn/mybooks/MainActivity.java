@@ -11,19 +11,21 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.khtn.mybooks.Interface.CartFragmentClickInterface;
+import com.khtn.mybooks.Interface.ContinueShoppingClickInterface;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.fragment.CartFragment;
+import com.khtn.mybooks.fragment.FavoriteItemFragment;
 import com.khtn.mybooks.fragment.HomeFragment;
-import com.khtn.mybooks.fragment.UserFragment;
+import com.khtn.mybooks.fragment.ListOrderFragment;
 
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity implements CartFragmentClickInterface{
+public class MainActivity extends AppCompatActivity implements ContinueShoppingClickInterface {
     private BottomNavigationView bottomNav;
     private Fragment fragment;
     private final Fragment homeFrag = new HomeFragment();
-    private final Fragment userFrag = new UserFragment();
+    private final Fragment favoriteFrag = new FavoriteItemFragment(this);
+    private final Fragment userFrag = new ListOrderFragment.UserFragment();
     private final Fragment cartFrag = new CartFragment(this);
     private Stack<Fragment> fragmentStack;
 
@@ -67,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
             case 1:
                 fragment = homeFrag;
                 break;
+            case 2:
+                fragment = favoriteFrag;
+                break;
             case 3:
                 fragment = userFrag;
                 fm = 1;
@@ -87,8 +92,13 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
                     fragment = homeFrag;
                     break;
                 case R.id.favorite_page:
-                    Toast.makeText(MainActivity.this, "FavoriteFragment", Toast.LENGTH_SHORT).show();
-                    return true;
+                    if (Common.currentUser != null)
+                        fragment = favoriteFrag;
+                    else {
+                        AppUtil.startLoginPage(this);
+                        return true;
+                    }
+                    break;
                 case R.id.user_page:
                     fragment = userFrag;
                     break;
@@ -120,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements CartFragmentClick
         int id = 0;
         if (fragment.equals(homeFrag))
             id = R.id.home_page;
+        else if (fragment.equals(favoriteFrag))
+            id = R.id.favorite_page;
         else if (fragment.equals(userFrag))
             id = R.id.user_page;
         else if (fragment.equals(cartFrag))

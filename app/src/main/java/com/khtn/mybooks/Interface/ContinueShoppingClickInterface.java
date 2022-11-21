@@ -1,5 +1,5 @@
 package com.khtn.mybooks.Interface;
 
-public interface CartFragmentClickInterface {
+public interface ContinueShoppingClickInterface {
     void OnClick();
 }
