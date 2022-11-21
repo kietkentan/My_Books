@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.fragment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.AddAddressActivity;
+import com.khtn.mybooks.AddressActivity;
+import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.CompletePaymentActivity;
 import com.khtn.mybooks.Interface.CartFragmentClickInterface;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.CartAdapter;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
@@ -77,13 +83,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         return view;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onResume() {
+        getData();
         super.onResume();
-        adapter.notifyDataSetChanged();
-        setTotal();
-        setupAddress();
     }
 
     public void init(){
@@ -103,6 +106,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     public void getData(){
+        Log.i("TAG_U", "getData: ");
         rcShowCart.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         orderList = dataBaseOrder.getCarts();
         adapter = new CartAdapter(orderList, this, getContext());

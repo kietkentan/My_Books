@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.fragment;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.khtn.mybooks.Interface.ChoseLocationClickInterface;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.LocationAdapter;
 import com.khtn.mybooks.model.Location;
 

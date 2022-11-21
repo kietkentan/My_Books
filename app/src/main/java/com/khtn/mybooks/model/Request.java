@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Request {
     private String idUser;
+    private String idPublisher;
+    private String namePublisher;
     private String address;
     private String name;
     private String phone;
@@ -11,14 +13,21 @@ public class Request {
     private int tempTotal;
     private int shipCost;
     private int total;
-    private int status;  // 1: Chờ xác nhận
-                            // 2: Chờ vận chuyển
-                            // 3: Đang vận chuyển
-                            // 4: Đã vận chuyển
+    private int status;
+    /*
+        1. Đang xác nhận
+        2: Chờ vận chuyển
+        3: Đang giao
+        4: Đã giao
+        5: Đợi xác nhận hủy
+        6: Đã hủy
+    */
 
     public Request() {}
 
-    public Request(String idUser, String address, String name, String phone, List<Order> orderList, int tempTotal, int shipCost, int total) {
+    public Request(String idUser, String idPublisher, String address, String name, String phone, List<Order> orderList, int tempTotal, int shipCost, int total, int status) {
+        this.idUser = idUser;
+        this.idPublisher = idPublisher;
         this.address = address;
         this.name = name;
         this.phone = phone;
@@ -26,7 +35,7 @@ public class Request {
         this.tempTotal = tempTotal;
         this.shipCost = shipCost;
         this.total = total;
-        this.status = 1;
+        this.status = status;
     }
 
     public String getIdUser() {
@@ -35,6 +44,22 @@ public class Request {
 
     public void setIdUser(String idUser) {
         this.idUser = idUser;
+    }
+
+    public String getIdPublisher() {
+        return idPublisher;
+    }
+
+    public void setIdPublisher(String idPublisher) {
+        this.idPublisher = idPublisher;
+    }
+
+    public String getNamePublisher() {
+        return namePublisher;
+    }
+
+    public void setNamePublisher(String namePublisher) {
+        this.namePublisher = namePublisher;
     }
 
     public String getAddress() {

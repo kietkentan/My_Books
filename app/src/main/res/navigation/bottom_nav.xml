@@ -9,7 +9,7 @@
         app:startDestination="@id/homeActivity">
         <activity
             android:id="@+id/homeActivity"
-            android:name="com.khtn.mybooks.HomeFragment"
+            android:name="com.khtn.mybooks.fragment.HomeFragment"
             android:label="activity_home"
             tools:layout="@layout/activity_home" />
         <action
@@ -23,7 +23,7 @@
         app:startDestination="@id/cartActivity">
         <activity
             android:id="@+id/cartActivity"
-            android:name="com.khtn.mybooks.CartFragment"
+            android:name="com.khtn.mybooks.fragment.CartFragment"
             android:label="activity_cart"
             tools:layout="@layout/fragment_cart" />
         <action
@@ -34,7 +34,7 @@
         app:startDestination="@id/userActivity">
         <activity
             android:id="@+id/userActivity"
-            android:name="com.khtn.mybooks.UserFragment"
+            android:name="com.khtn.mybooks.fragment.UserFragment"
             android:label="activity_user"
             tools:layout="@layout/fragment_user" />
         <action

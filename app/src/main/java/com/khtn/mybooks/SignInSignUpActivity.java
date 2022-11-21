@@ -235,18 +235,14 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             reference.child("mybooks").orderByChild("email").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
+                    progressBarContinue.setVisibility(View.INVISIBLE);
                     if (snapshot.exists()){
-                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
-                        progressBarContinue.setVisibility(View.INVISIBLE);
-
                         Intent intentSignIn = new Intent(SignInSignUpActivity.this, SignInActivity.class);
 
                         intentSignIn.putExtras(bundle);
                         startActivity(intentSignIn);
                     } else {
-                        btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
-                        progressBarContinue.setVisibility(View.INVISIBLE);
-
                         Intent intentSignUpEmail = new Intent(SignInSignUpActivity.this, SignUpEmailActivity.class);
 
                         intentSignUpEmail.putExtras(bundle);

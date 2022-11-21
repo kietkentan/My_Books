@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FindAddressFragment">
+    tools:context=".fragment.FindAddressFragment">
 
     <EditText
         android:id="@+id/edt_search"
@@ -15,8 +15,8 @@
         android:background="@drawable/custom_edit_text"
         android:backgroundTint="@color/background"
         android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="5dp"
-        android:paddingHorizontal="20dp"
+        android:drawablePadding="10dp"
+        android:paddingHorizontal="10dp"
         android:textSize="14sp"
         android:hint="@string/search"
         android:drawableTint="@color/text_hint"

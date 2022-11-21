@@ -90,7 +90,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             tvName = itemView.findViewById(R.id.tv_item_name);
             tvOriginalPrice = itemView.findViewById(R.id.tv_original_price);
             tvReducedPrice = itemView.findViewById(R.id.tv_reduced_price);
-            tvDiscount = itemView.findViewById(R.id.tv_discount);
+            tvDiscount = itemView.findViewById(R.id.tv_people_rating);
             tvUpComing = itemView.findViewById(R.id.tv_up_coming);
             tvOutOfStock = itemView.findViewById(R.id.tv_out_of_stock);
         }

@@ -65,7 +65,7 @@
                 app:tint="@color/black"
                 tools:ignore="ContentDescription" />
 
-            <EditText
+            <TextView
                 android:id="@+id/notice_chat"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

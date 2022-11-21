@@ -13,6 +13,9 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.khtn.mybooks.Interface.CartFragmentClickInterface;
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.fragment.CartFragment;
+import com.khtn.mybooks.fragment.HomeFragment;
+import com.khtn.mybooks.fragment.UserFragment;
 
 import java.util.Stack;
 

@@ -21,6 +21,7 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -89,6 +90,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private Publisher dataPublisher;
     private List<List<String>> listDetails;
     private String describe;
+    private final String[] mode = {"mybooks", "google", "facebook"};
 
     private DatabaseCart databaseCart;
     private FirebaseDatabase database;
@@ -104,6 +106,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         layoutCart.setOnClickListener(BookDetailActivity.this);
         ibBack.setOnClickListener(BookDetailActivity.this);
         btnAddCart.setOnClickListener(BookDetailActivity.this);
+        ibAddFavorite.setOnClickListener(BookDetailActivity.this);
     }
 
     @Override
@@ -113,17 +116,20 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void getData(){
-        database.getReference("publisher").child(publisher).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("publisher").child(publisher).
+                addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists())
                     dataPublisher = snapshot.getValue(Publisher.class);
-                database.getReference("book").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                database.getReference("book").child(id).
+                        addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             dataBook = snapshot.getValue(Book.class);
-                            snapshot.getRef().child("detail").addListenerForSingleValueEvent(new ValueEventListener() {
+                            snapshot.getRef().child("detail").
+                                    addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     for (DataSnapshot dataSnapshot2:snapshot.getChildren()) {
@@ -273,9 +279,12 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
     @SuppressLint("DefaultLocale")
     public void setupCart(){
-        if (databaseCart.getCarts().size() != 0){
-            tvNumCart.setText(String.format("%d", databaseCart.getCarts().size()));
-        } else
+        int i = databaseCart.getCarts().size();
+        if (i > 0) {
+            tvNumCart.setVisibility(View.VISIBLE);
+            tvNumCart.setText(String.format("%d", i));
+        }
+        else
             tvNumCart.setVisibility(View.GONE);
     }
 
@@ -308,16 +317,61 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.iv_menu_in_detail)
-            showMenuPopup();
-        if (view.getId() == R.id.layout_shopping_cart)
-            startCart();
-        if (view.getId() == R.id.ib_exit_detail)
-            finish();
-        if (view.getId() == R.id.btn_add_cart)
-            addCart();
+        switch (view.getId()) {
+            case R.id.iv_menu_in_detail:
+                showMenuPopup();
+                break;
+            case R.id.layout_shopping_cart:
+                startCart();
+                break;
+            case R.id.ib_exit_detail:
+                finish();
+                break;
+            case R.id.btn_add_cart:
+                addCart();
+                break;
+            case R.id.ib_add_favorite:
+                addFavoriteItem();
+                break;
+        }
+    }
+
+    private void addFavoriteItem() {
+        database.getReference("user").child(mode[Common.modeLogin - 1]).
+                child(Common.currentUser.getId()).child("list_favorite").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Book> books = new ArrayList<>();
+                boolean check = false;
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    Book book = snapshot1.getValue(Book.class);
+                    if (!book.getId().equals(dataBook.getId())) {
+                        books.add(book);
+                        continue;
+                    }
+                    check = true;
+                }
+                if (!check) {
+                    snapshot.child(String.valueOf(snapshot.getChildrenCount())).getRef().setValue(dataBook);
+                    Toast.makeText(BookDetailActivity.this, R.string.added_favorite, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                snapshot.getRef().removeValue();
+                if (books.size() > 0)
+                    snapshot.getRef().setValue(books);
+                Toast.makeText(BookDetailActivity.this, R.string.un_added_favorite, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
     public void startCart() {
@@ -344,6 +398,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             Bundle bundle = new Bundle();
+
             switch (item.getItemId()){
                 case R.id.m_share:
                     Toast.makeText(BookDetailActivity.this, "Share Link", Toast.LENGTH_SHORT).show();
@@ -389,7 +444,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
         int finalQuantity = quantity;
         boolean finalExists = exists;
-        database.getReference("book").child(dataBook.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("book").child(dataBook.getId()).
+                addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -406,8 +462,9 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                     ));
                     Common.currentUser.setCartList(databaseCart.getCarts());
 
-                    String[] mode = {"mybooks", "google", "facebook"};
-                    database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("cartList").addListenerForSingleValueEvent(new ValueEventListener() {
+                    database.getReference("user").child(mode[Common.modeLogin - 1]).
+                            child(Common.currentUser.getId()).child("cartList").
+                            addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (finalExists) {
@@ -443,6 +500,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void openDialog(){
+        setupCart();
+
         Dialog dialog = new Dialog(this, R.style.FullScreenDialog);
         dialog.setContentView(R.layout.dialog_done_add_cart);
         dialog.getWindow().setGravity(Gravity.BOTTOM);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserFragment">
+    tools:context=".fragment.UserFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -197,22 +197,23 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayout6"
+                android:id="@+id/layout12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:paddingVertical="10dp"
+                android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_user">
 
                 <LinearLayout
+                    android:id="@+id/layout_list_all_request"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="10dp">
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp">
 
                     <TextView
                         android:id="@+id/textView4"
@@ -243,14 +244,14 @@
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
                     android:paddingVertical="10dp">
 
                     <LinearLayout
+                        android:id="@+id/layout_list_order_wait_confirm"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -283,10 +284,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_list_oder_wait_shipping"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -319,10 +321,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_list_orders_in_transit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -355,10 +358,11 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/layout_list_delivered"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -392,9 +396,9 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:gravity="center_horizontal"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -439,7 +443,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+                app:layout_constraintTop_toBottomOf="@+id/layout12">
 
                 <LinearLayout
                 android:id="@+id/layout_see_more_buy_again"
@@ -486,6 +490,22 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_buy_again">
+
+                <TextView
+                    android:id="@+id/tv_favorite_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/favorite"
+                    android:textSize="16sp"
+                    android:drawablePadding="10dp"
+                    app:drawableStartCompat="@drawable/ic_favorite_item"
+                    app:drawableEndCompat="@drawable/ic_next"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/text_hint"/>
 
                 <TextView
                     android:id="@+id/tv_note_address"

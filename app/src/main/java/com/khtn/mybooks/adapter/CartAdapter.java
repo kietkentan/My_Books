@@ -1,19 +1,23 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +25,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.BookDetailActivity;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
+import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 import com.squareup.picasso.Picasso;
@@ -71,6 +77,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             orders.get(position).setSelected(holder.cbSelected.isChecked());
             viewCartClickInterface.OnCheckedChanged(getSelectedCart());
         });
+        holder.layoutCheckbox.setOnClickListener(v -> {
+            orders.get(position).setSelected(!holder.cbSelected.isChecked());
+            viewCartClickInterface.OnCheckedChanged(getSelectedCart());
+        });
         holder.btnAdd.setOnClickListener(view -> {
             int quantity = orders.get(position).getBookQuantity() + 1;
             FirebaseDatabase.getInstance().getReference("book").child(orders.get(position).getBookId()).child("amount").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,6 +116,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                 notifyItemChanged(position);
             }
             viewCartClickInterface.OnCheckedChanged(getSelectedCart());
+        });
+        holder.layoutItem.setOnClickListener(v -> {
+            Intent intent = new Intent(context, BookDetailActivity.class);
+            intent.putExtra("publisher", orders.get(position).getPublisherId());
+            intent.putExtra("id", orders.get(position).getBookId());
+            context.startActivity(intent);
+            ((Activity) context).overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         });
     }
 
@@ -163,6 +180,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        ConstraintLayout layoutItem;
+        FrameLayout layoutCheckbox;
         CheckBox cbSelected;
         ImageView ivLogo;
         TextView tvName;
@@ -174,6 +193,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            layoutItem = itemView.findViewById(R.id.layout_item_cart);
+            layoutCheckbox = itemView.findViewById(R.id.layout_checkbox);
             cbSelected = itemView.findViewById(R.id.cb_selected);
             ivLogo = itemView.findViewById(R.id.iv_cart_logo);
             tvName = itemView.findViewById(R.id.tv_cart_name);

@@ -13,10 +13,11 @@ public class Book {
     private String datePosted;
     private String name; // tên sách
     private String id;
+    private String publisher;
 
     public Book() {}
 
-    public Book(List<String> images, int originalPrice, int discountPercentage, int amount, int sold, int totalRatings, float totalRatingScore, String name, String datePosted, String id) {
+    public Book(List<String> images, int originalPrice, int discountPercentage, int amount, int sold, int totalRatings, float totalRatingScore, String name, String datePosted, String id, String publisher) {
         this.images = images;
         this.originalPrice = originalPrice;
         this.discount = discountPercentage;
@@ -27,6 +28,7 @@ public class Book {
         this.datePosted = datePosted;
         this.name = name;
         this.id = id;
+        this.publisher = publisher;
     }
 
     public List<String> getImage() {
@@ -109,12 +111,15 @@ public class Book {
         this.id = id;
     }
 
-    public int getReducedPrice() {
-        if (this.discount == 0)
-            return 0;
-        else {
-            return this.originalPrice - this.originalPrice*this.discount /100;
+    public String getPublisher() {
+        return publisher;
+    }
 
-        }
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public int getReducedPrice() {
+        return this.originalPrice * (100 - this.discount) / 100;
     }
 }

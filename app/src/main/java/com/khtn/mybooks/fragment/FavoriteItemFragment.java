@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.fragment;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.khtn.mybooks.R;
 
 public class FavoriteItemFragment extends Fragment {
 
