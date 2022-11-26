@@ -106,7 +106,6 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     public void getData(){
-        Log.i("TAG_U", "getData: ");
         rcShowCart.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         orderList = dataBaseOrder.getCarts();
         adapter = new CartAdapter(orderList, this, getContext());
@@ -283,15 +282,15 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     }
 
     @Override
-    public void OnCheckedChanged(List<Integer> selectedCart) {
-        if (selectedCart.size() == orderList.size())
+    public void OnCheckedChanged() {
+        if (adapter.getSelectedCart().size() == orderList.size())
             cbAllCart.setChecked(true);
         else {
             List<Integer> tempChecked = adapter.getSelectedCart();
             cbAllCart.setChecked(false);
             adapter.setSelectedCart(tempChecked);
         }
-        listChecked = adapter.getSelectedCart();
+        orderList = dataBaseOrder.getCarts();
         setTotal();
     }
 

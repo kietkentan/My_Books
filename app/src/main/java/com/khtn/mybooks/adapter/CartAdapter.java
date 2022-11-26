@@ -75,11 +75,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
         holder.cbSelected.setChecked(orders.get(position).isSelected());
         holder.cbSelected.setOnClickListener(view -> {
             orders.get(position).setSelected(holder.cbSelected.isChecked());
-            viewCartClickInterface.OnCheckedChanged(getSelectedCart());
+            viewCartClickInterface.OnCheckedChanged();
         });
         holder.layoutCheckbox.setOnClickListener(v -> {
             orders.get(position).setSelected(!holder.cbSelected.isChecked());
-            viewCartClickInterface.OnCheckedChanged(getSelectedCart());
+            viewCartClickInterface.OnCheckedChanged();
         });
         holder.btnAdd.setOnClickListener(view -> {
             int quantity = orders.get(position).getBookQuantity() + 1;
@@ -96,7 +96,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                     } else {
                         Toast.makeText(context, String.format(context.getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
                     }
-                    viewCartClickInterface.OnCheckedChanged(getSelectedCart());
+                    viewCartClickInterface.OnCheckedChanged();
                 }
 
                 @Override
@@ -114,8 +114,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
                 new DatabaseCart(context).updateCart(orders.get(position).getBookId(), quantity);
                 viewCartClickInterface.OnChangeDataCart(position, quantity);
                 notifyItemChanged(position);
+                viewCartClickInterface.OnCheckedChanged();
             }
-            viewCartClickInterface.OnCheckedChanged(getSelectedCart());
         });
         holder.layoutItem.setOnClickListener(v -> {
             Intent intent = new Intent(context, BookDetailActivity.class);
@@ -140,6 +140,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             orders.remove(position);
             viewCartClickInterface.OnSaveAllCart(orders);
             notifyItemRemoved(position);
+            viewCartClickInterface.OnCheckedChanged();
         });
 
         dialog.show();
