@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BookDetailActivity">
+    tools:context=".activity.BookDetailActivity">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -98,17 +98,15 @@
                             tools:ignore="ContentDescription,RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck"
                             app:tint="@color/black" />
 
-                        <EditText
-                            android:id="@+id/search"
+                        <TextView
+                            android:id="@+id/tv_search_item"
                             android:layout_width="0dp"
                             android:layout_height="35dp"
                             android:layout_marginStart="10dp"
                             android:background="@drawable/custom_search_bar"
-                            android:drawableEnd="@drawable/ic_search"
                             android:gravity="fill"
                             android:hint="@string/hint_findBooks"
                             android:importantForAutofill="no"
-                            android:inputType="text"
                             android:paddingHorizontal="12dp"
                             android:layout_marginEnd="10dp"
                             android:textSize="15sp"
@@ -116,7 +114,8 @@
                             app:layout_constraintEnd_toStartOf="@+id/layout_shopping_cart"
                             app:layout_constraintStart_toEndOf="@+id/ib_exit_detail"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TouchTargetSizeCheck" />
+                            tools:ignore="TouchTargetSizeCheck"
+                            app:drawableEndCompat="@drawable/ic_search" />
 
                         <ImageView
                             android:id="@+id/iv_menu_in_detail"
@@ -229,12 +228,10 @@
                         android:layout_marginEnd="20dp"
                         android:background="@color/white"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_favorite"
                         app:layout_constraintBottom_toTopOf="@+id/tv_name_book"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"
-                        app:tint="@color/black" />
+                        tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     <TextView
                         android:id="@+id/tv_name_book"

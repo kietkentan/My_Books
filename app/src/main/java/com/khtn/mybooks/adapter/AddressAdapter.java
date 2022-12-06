@@ -20,8 +20,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.khtn.mybooks.AddAddressActivity;
-import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.activity.AddAddressActivity;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.AddressClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
@@ -45,7 +45,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
     @NonNull
     @Override
     public AddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.address_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_address, parent, false));
     }
 
     @Override

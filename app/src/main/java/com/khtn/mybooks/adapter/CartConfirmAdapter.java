@@ -2,31 +2,20 @@ package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.AppUtil;
-import com.khtn.mybooks.Interface.ViewCartClickInterface;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
-import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CartConfirmAdapter extends RecyclerView.Adapter<CartConfirmAdapter.ViewHolder>{
@@ -41,7 +30,7 @@ public class CartConfirmAdapter extends RecyclerView.Adapter<CartConfirmAdapter.
     @NonNull
     @Override
     public CartConfirmAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_confirm_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_confirm, parent, false));
     }
 
     @SuppressLint("DefaultLocale")

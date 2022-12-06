@@ -20,8 +20,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.AppUtil;
-import com.khtn.mybooks.Interface.ContinueShoppingClickInterface;
+import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.FavoriteClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.FavoriteItemAdapter;
@@ -44,9 +44,9 @@ public class FavoriteItemFragment extends Fragment {
 
     private FirebaseDatabase database;
     private FavoriteClickInterface clickInterface;
-    private final ContinueShoppingClickInterface continueShoppingClickInterface;
+    private final SwitchFavoritePageInterface continueShoppingClickInterface;
 
-    public FavoriteItemFragment(ContinueShoppingClickInterface continueShoppingClickInterface) {
+    public FavoriteItemFragment(SwitchFavoritePageInterface continueShoppingClickInterface) {
         this.continueShoppingClickInterface = continueShoppingClickInterface;
     }
 
@@ -61,7 +61,7 @@ public class FavoriteItemFragment extends Fragment {
         setupRecyclerViewFavoriteList();
         loadData();
 
-        btnContinueShopping.setOnClickListener(v -> continueShoppingClickInterface.OnClick());
+        btnContinueShopping.setOnClickListener(v -> continueShoppingClickInterface.OnContinueShopping());
 
         return view;
     }

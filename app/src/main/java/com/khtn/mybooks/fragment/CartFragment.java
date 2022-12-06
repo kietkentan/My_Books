@@ -13,7 +13,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +26,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.AddAddressActivity;
-import com.khtn.mybooks.AddressActivity;
-import com.khtn.mybooks.AppUtil;
-import com.khtn.mybooks.CompletePaymentActivity;
-import com.khtn.mybooks.Interface.ContinueShoppingClickInterface;
+import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
+import com.khtn.mybooks.activity.AddAddressActivity;
+import com.khtn.mybooks.activity.AddressActivity;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.activity.CompletePaymentActivity;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.CartAdapter;
@@ -59,10 +58,10 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     private List<Integer> listChecked;
     private DatabaseCart dataBaseOrder;
     private final String[] mode = {"mybooks", "google", "facebook"};
-    private final ContinueShoppingClickInterface continueShoppingClickInterface;
+    private final SwitchFavoritePageInterface continueShoppingClickInterface;
     private DatabaseReference referenceUser;
 
-    public CartFragment(ContinueShoppingClickInterface continueShoppingClickInterface) {
+    public CartFragment(SwitchFavoritePageInterface continueShoppingClickInterface) {
         this.continueShoppingClickInterface = continueShoppingClickInterface;
     }
 
@@ -278,7 +277,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         if (view.getId() == R.id.btn_buy)
             clickBuyButton();
         if (view.getId() == R.id.btn_continue_shopping)
-            continueShoppingClickInterface.OnClick();
+            continueShoppingClickInterface.OnContinueShopping();
     }
 
     @Override

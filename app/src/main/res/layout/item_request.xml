@@ -119,6 +119,18 @@
                 app:layout_constraintStart_toEndOf="@+id/view6"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cart_name" />
 
+            <TextView
+                android:id="@+id/tv_more_order_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone"
+                android:text="@string/more_order_products"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cart_name"
+                tools:ignore="SmallSp" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -198,6 +210,7 @@
                 android:id="@+id/btn_buy_again"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:visibility="gone"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginVertical="10dp"
                 android:layout_weight="1"

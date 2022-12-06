@@ -24,23 +24,22 @@
             app:srcCompat="@drawable/logo"
             tools:ignore="ContentDescription" />
 
-        <EditText
-            android:id="@+id/search"
+        <TextView
+            android:id="@+id/tv_search_item"
             android:layout_width="0dp"
             android:layout_height="35dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/custom_search_bar"
-            android:drawableEnd="@drawable/ic_search"
             android:gravity="fill"
             android:hint="@string/hint_findBooks"
-            android:inputType="text"
             android:paddingHorizontal="12dp"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="Autofill,TouchTargetSizeCheck" />
+            tools:ignore="Autofill,TouchTargetSizeCheck"
+            app:drawableEndCompat="@drawable/ic_search" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
@@ -98,6 +97,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -127,7 +127,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec_bestSellers"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="330dp"
                 android:clipToPadding="false"
                 android:paddingStart="20dp"
                 tools:ignore="RtlSymmetry" />
@@ -143,7 +143,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec_news"
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="330dp"
                 android:clipToPadding="false"
                 android:paddingStart="20dp"
                 tools:ignore="RtlSymmetry" />

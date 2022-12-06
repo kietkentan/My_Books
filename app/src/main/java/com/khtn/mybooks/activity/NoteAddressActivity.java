@@ -1,9 +1,9 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,6 +11,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -19,59 +20,82 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.Interface.AddressClickInterface;
-import com.khtn.mybooks.adapter.AddressAdapter;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.Interface.NoteAddressRemoveInterface;
+import com.khtn.mybooks.R;
+import com.khtn.mybooks.adapter.NoteAddressAdapter;
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Address;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddressActivity extends AppCompatActivity implements View.OnClickListener{
+public class NoteAddressActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageButton ibBack;
+    private AppCompatButton btnNewAddress;
+    private TextView tvNumCart;
     private RecyclerView recListAddress;
-    private TextView tvAddAddress;
-    private AddressAdapter addressAdapter;
-    private AppCompatButton btnChoseAddress;
+    private FrameLayout layoutCart;
+    private ConstraintLayout layoutNoneAddress;
+
+    private DatabaseCart databaseCart;
+    private NoteAddressAdapter noteAddressAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_address);
+        setContentView(R.layout.activity_note_address);
         AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
+        setupCart();
         setRecyclerViewAddress();
+
         ibBack.setOnClickListener(this);
-        btnChoseAddress.setOnClickListener(this);
-        tvAddAddress.setOnClickListener(this);
+        btnNewAddress.setOnClickListener(this);
+        layoutCart.setOnClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        setupCart();
         setRecyclerViewAddress();
     }
 
+    @SuppressLint("DefaultLocale")
+    public void setupCart(){
+        if (databaseCart.getCarts().size() != 0){
+            tvNumCart.setText(String.format("%d", databaseCart.getCarts().size()));
+        } else
+            tvNumCart.setVisibility(View.GONE);
+    }
+
     public void init(){
-        ibBack = findViewById(R.id.ib_exit_ship_location);
+        ibBack = findViewById(R.id.ib_exit_note_address);
+        btnNewAddress = findViewById(R.id.btn_new_address);
+        tvNumCart = findViewById(R.id.tv_num_cart);
         recListAddress = findViewById(R.id.rec_list_address);
-        btnChoseAddress = findViewById(R.id.btn_chose_address);
-        tvAddAddress = findViewById(R.id.tv_add_address);
+        layoutCart = findViewById(R.id.layout_shopping_cart);
+        layoutNoneAddress = findViewById(R.id.layout_none_address);
+
+        databaseCart = new DatabaseCart(this);
     }
 
     @SuppressLint("NotifyDataSetChanged")
     public void setRecyclerViewAddress(){
-        if (Common.currentUser.getAddressList() != null) {
-            recListAddress.setLayoutManager(new LinearLayoutManager(AddressActivity.this, RecyclerView.VERTICAL, false));
-            AddressClickInterface clickInterface = () -> addressAdapter.notifyDataSetChanged();
-            addressAdapter = new AddressAdapter(Common.currentUser.getAddressList(), clickInterface, this);
-            recListAddress.setAdapter(addressAdapter);
-        } else {
+        if (Common.currentUser.getAddressList() == null || Common.currentUser.getAddressList().size() == 0) {
+            layoutNoneAddress.setVisibility(View.VISIBLE);
             recListAddress.setVisibility(View.GONE);
-            btnChoseAddress.setEnabled(false);
-            btnChoseAddress.setBackgroundResource(R.drawable.custom_button_continue_hidden);
-            btnChoseAddress.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
+        }
+        else if (Common.currentUser.getAddressList().size() != 0) {
+            NoteAddressRemoveInterface removeInterface = this::setRecyclerViewAddress;
+            layoutNoneAddress.setVisibility(View.GONE);
+            recListAddress.setVisibility(View.VISIBLE);
+            recListAddress.setLayoutManager(new LinearLayoutManager(NoteAddressActivity.this, RecyclerView.VERTICAL, false));
+            noteAddressAdapter = new NoteAddressAdapter(Common.currentUser.getAddressList(), this, removeInterface);
+            recListAddress.setAdapter(noteAddressAdapter);
         }
     }
 
@@ -126,7 +150,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void startAddAddress(){
-        Intent intent = new Intent(AddressActivity.this, AddAddressActivity.class);
+        Intent intent = new Intent(NoteAddressActivity.this, AddAddressActivity.class);
         Bundle bundle = new Bundle();
 
         bundle.putInt("pos", -1);
@@ -135,16 +159,23 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
     }
 
+    public void startCart(){
+        Intent intent = new Intent(NoteAddressActivity.this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("fragment", 5);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.ib_exit_ship_location)
+    public void onClick(View v) {
+        if (v.getId() == R.id.ib_exit_note_address)
             finish();
-        if (view.getId() == R.id.btn_chose_address){
-            Common.addressNow = addressAdapter.getSelectedPosition();
-            finish();
-        }
-        if (view.getId() == R.id.tv_add_address)
+        if (v.getId() == R.id.btn_new_address)
             startAddAddress();
+        if (v.getId() == R.id.layout_shopping_cart)
+            startCart();
     }
 
     @Override

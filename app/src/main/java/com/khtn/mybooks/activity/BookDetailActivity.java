@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +41,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.BookDetailAdapter;
 import com.khtn.mybooks.adapter.ListImageAdapter;
 import com.khtn.mybooks.common.Common;
@@ -74,6 +76,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private TextView tvDescribe;
     private TextView tvPosition;
     private TextView tvNumCart;
+    private TextView tvSearch;
     private ImageButton ibAddFavorite;
     private ImageButton ibBack;
     private RatingBar barRatingBook;
@@ -102,6 +105,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         init();
 
         getData();
+
+        tvSearch.setOnClickListener(BookDetailActivity.this);
         ivMenu.setOnClickListener(BookDetailActivity.this);
         layoutCart.setOnClickListener(BookDetailActivity.this);
         ibBack.setOnClickListener(BookDetailActivity.this);
@@ -195,6 +200,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         tvDescribe = findViewById(R.id.tv_describe);
         tvPosition = findViewById(R.id.tv_position);
         tvNumCart = findViewById(R.id.tv_num_cart);
+        tvSearch = findViewById(R.id.tv_search_item);
         barRatingBook = findViewById(R.id.bar_rating_book);
         ibAddFavorite = findViewById(R.id.ib_add_favorite);
         ibBack = findViewById(R.id.ib_exit_detail);
@@ -206,7 +212,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         btnBuyNow = findViewById(R.id.btn_buy_now);
     }
 
-    @SuppressLint("DefaultLocale")
+    @SuppressLint({"DefaultLocale", "ResourceType"})
     public void setDetails(){
         ListImageAdapter imageAdapter = new ListImageAdapter(dataBook.getImage());
         rcImages.setAdapter(imageAdapter);
@@ -273,8 +279,29 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
 
+       setupFavoriteButton();
+
         setupCart();
         setButton();
+    }
+
+    private boolean checkFavoriteList(){
+        if (Common.currentUser.getList_favorite() == null || Common.currentUser.getList_favorite().size() == 0)
+            return false;
+
+        for (Book book : Common.currentUser.getList_favorite()) {
+            Log.i("TAG_U", "checkFavoriteList: " + book.getId());
+            if (book.getId().equals(dataBook.getId()))
+                return true;
+        }
+        return false;
+    }
+
+    public void setupFavoriteButton(){
+        if (checkFavoriteList())
+            ibAddFavorite.setBackgroundResource(R.drawable.ic_favorite_added);
+        else
+            ibAddFavorite.setBackgroundResource(R.drawable.ic_favorite);
     }
 
     @SuppressLint("DefaultLocale")
@@ -336,6 +363,9 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             case R.id.ib_add_favorite:
                 addFavoriteItem();
                 break;
+            case R.id.tv_search_item:
+                startSearchItemPage();
+                break;
         }
     }
 
@@ -357,6 +387,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                 }
                 if (!check) {
                     snapshot.child(String.valueOf(snapshot.getChildrenCount())).getRef().setValue(dataBook);
+                    if (Common.currentUser.getList_favorite() == null)
+                        Common.currentUser.setList_favorite(new ArrayList<>());
+                    Common.currentUser.getList_favorite().add(dataBook);
+                    setupFavoriteButton();
                     Toast.makeText(BookDetailActivity.this, R.string.added_favorite, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -364,6 +398,9 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                 if (books.size() > 0)
                     snapshot.getRef().setValue(books);
                 Toast.makeText(BookDetailActivity.this, R.string.un_added_favorite, Toast.LENGTH_SHORT).show();
+
+                Common.currentUser.removeFavoriteById(dataBook.getId());
+                setupFavoriteButton();
             }
 
             @Override
@@ -371,7 +408,6 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
-
     }
 
     public void startCart() {
@@ -383,6 +419,12 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         Bundle bundle = new Bundle();
         bundle.putInt("fragment", 5);
         intent.putExtras(bundle);
+        startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
+    public void startSearchItemPage(){
+        Intent intent = new Intent(BookDetailActivity.this, SearchItemActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }

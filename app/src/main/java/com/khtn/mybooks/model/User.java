@@ -12,6 +12,7 @@ public class User {
     private String phone;
     private List<Order> cartList;
     private List<Address> addressList;
+    private List<Book> list_favorite;
 
     public User() {}
 
@@ -107,5 +108,21 @@ public class User {
 
     public void setAddressList(List<Address> addressList) {
         this.addressList = addressList;
+    }
+
+    public List<Book> getList_favorite() {
+        return list_favorite;
+    }
+
+    public void removeFavoriteById(String id){
+        for (int i = 0; i < list_favorite.size(); ++i)
+            if (id.equals(list_favorite.get(i).getId())) {
+                list_favorite.remove(i);
+                break;
+            }
+    }
+
+    public void setList_favorite(List<Book> list_favorite) {
+        this.list_favorite = list_favorite;
     }
 }

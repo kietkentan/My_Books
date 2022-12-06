@@ -18,8 +18,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.khtn.mybooks.AddAddressActivity;
-import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.activity.AddAddressActivity;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.NoteAddressRemoveInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
@@ -42,7 +42,7 @@ public class NoteAddressAdapter extends RecyclerView.Adapter<NoteAddressAdapter.
     @NonNull
     @Override
     public NoteAddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new NoteAddressAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.address_note_item, parent, false));
+        return new NoteAddressAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_address_note, parent, false));
     }
 
     @Override

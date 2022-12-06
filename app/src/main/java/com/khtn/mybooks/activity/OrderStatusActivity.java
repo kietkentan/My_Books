@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -9,12 +9,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.ViewPagerOrderStatusAdapter;
 
 public class OrderStatusActivity extends AppCompatActivity {
+    private ImageButton ibBack;
     private EditText edtSearchRequest;
     private TabLayout tabStatus;
     private ViewPager2 viewStatus;
@@ -32,7 +36,9 @@ public class OrderStatusActivity extends AppCompatActivity {
         init();
         setupTabLayout();
         setCurrentItem();
+
         edtSearchRequest.setOnKeyListener(onEnter);
+        ibBack.setOnClickListener(v -> finish());
     }
 
     protected View.OnKeyListener onEnter = (v, keyCode, event) -> {
@@ -73,6 +79,7 @@ public class OrderStatusActivity extends AppCompatActivity {
     public void init(){
         currentSelectedTab = getIntent().getIntExtra("tabSelect", 0);
 
+        ibBack = findViewById(R.id.ib_exit_order_status);
         edtSearchRequest = findViewById(R.id.edt_search_by_order_code);
         tabStatus = findViewById(R.id.tab_order_status);
         viewStatus = findViewById(R.id.vp_order_status);

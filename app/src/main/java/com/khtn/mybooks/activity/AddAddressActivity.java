@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +13,6 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -28,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.Address;
 import com.khtn.mybooks.model.Location;

@@ -8,17 +8,17 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.khtn.mybooks.fragment.ListOrderFragment;
 
 public class ViewPagerOrderStatusAdapter extends FragmentStateAdapter {
-    private final String code;
+    private final String keyword;
 
-    public ViewPagerOrderStatusAdapter(@NonNull FragmentActivity fragmentActivity, String code) {
+    public ViewPagerOrderStatusAdapter(@NonNull FragmentActivity fragmentActivity, String keyword) {
         super(fragmentActivity);
-        this.code = code;
+        this.keyword = keyword;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new ListOrderFragment(position, code);
+        return new ListOrderFragment(position, keyword);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class PublisherItemAdapter extends RecyclerView.Adapter<PublisherItemAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.publisher_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_publisher, parent, false));
     }
 
     @Override

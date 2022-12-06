@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,7 +10,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.ChoseLocationClickInterface;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.fragment.FindAddressFragment;
 import com.khtn.mybooks.model.Location;
 

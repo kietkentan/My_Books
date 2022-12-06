@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
     @NonNull
     @Override
     public BookDetailAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_view_detail, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_view_detail, parent, false));
     }
 
     @Override

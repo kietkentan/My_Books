@@ -213,7 +213,7 @@
     <string name="enter_password_correctly_formatted">Nhập mật khẩu tối thiểu 8 kí tự gồm cả chữ và số</string>
     <string name="enter_new_password">Nhập mật khẩu mới</string>
     <string name="re_enter_new_password">Nhắc lại mật khẩu mới</string>
-    <string name="search_by_order_code">Tìm Mã đơn hàng</string>
+    <string name="search_by_order_code">Tìm Mã đơn hàng, Tên sản phẩm</string>
     <string name="status">%s</string>
     <string name="see_more_detail_request">Xem chi tiết</string>
     <string name="quantity_list">%d sản phẩm</string>
@@ -224,6 +224,10 @@
     <string name="un_added_favorite">Đã bỏ khỏi mục yêu thích</string>
     <string name="end_the_list">Bạn đã xem hết danh sách</string>
     <string name="add_favorite_list_for_the_most_convenient_review">Hãy ♡ sản phẩm bạn yêu thích khi mua sắm để xem lại thuận tiện nhất.</string>
+    <string name="more_order_products">%d sản phẩm khác</string>
+    <string name="remove_history_search">Xóa Lịch Sử Tìm Kiếm</string>
+    <string name="see_more_history_search">Hiển thị nhiều hơn</string>
+    <string name="no_corresponding_products">Không có sản phẩm tương ứng nào</string>
     <string-array name="status">
         <item>Đang xác nhận</item>
         <item>Chờ vận chuyển</item>

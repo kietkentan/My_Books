@@ -15,8 +15,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.khtn.mybooks.AppUtil;
-import com.khtn.mybooks.BookDetailActivity;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.activity.BookDetailActivity;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.model.BookItem;
 import com.squareup.picasso.Picasso;
@@ -35,7 +35,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
     @NonNull
     @Override
     public BookItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.book_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book, parent, false));
     }
 
     @SuppressLint("DefaultLocale")

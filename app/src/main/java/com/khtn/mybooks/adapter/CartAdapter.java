@@ -24,11 +24,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.AppUtil;
-import com.khtn.mybooks.BookDetailActivity;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.activity.BookDetailActivity;
 import com.khtn.mybooks.Interface.ViewCartClickInterface;
 import com.khtn.mybooks.R;
-import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 import com.squareup.picasso.Picasso;
@@ -50,7 +49,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
     @NonNull
     @Override
     public CartAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart, parent, false));
     }
 
     @SuppressLint("DefaultLocale")

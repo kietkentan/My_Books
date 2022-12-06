@@ -5,7 +5,7 @@
     android:id="@+id/layout_chose_address"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChoseAddressActivity">
+    tools:context=".activity.ChoseAddressActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout7"

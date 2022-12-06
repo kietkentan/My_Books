@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,7 +29,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.model.User;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.R;
 
 import java.util.concurrent.TimeUnit;
 

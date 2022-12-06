@@ -19,16 +19,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.AppUtil;
-import com.khtn.mybooks.BookDetailActivity;
+import com.khtn.mybooks.activity.BookDetailActivity;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.FavoriteClickInterface;
-import com.khtn.mybooks.MainActivity;
+import com.khtn.mybooks.activity.MainActivity;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
@@ -61,11 +62,11 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
     @NonNull
     @Override
     public FavoriteItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new FavoriteItemAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.book_favorite_item, parent, false));
+        return new FavoriteItemAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_book_favorite, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteItemAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FavoriteItemAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Picasso.get().load(bookItemList.get(position).getImage().get(0)).into(holder.ivReview);
         holder.tvName.setText(bookItemList.get(position).getName());
         holder.tvPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(bookItemList.get(position).getReducedPrice())));
@@ -75,8 +76,16 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
             holder.tvDiscount.setText(String.format(context.getString(R.string.book_discount), bookItemList.get(position).getDiscount()));
         holder.ratingBar.setRating(bookItemList.get(position).getTotalRatingScore());
         holder.tvPeopleRating.setText(String.format(context.getString(R.string.people_rating), bookItemList.get(position).getTotalRatings()));
+
         holder.ibAddToCart.setOnClickListener(v -> addCart(position));
         holder.ibRemoveFavorite.setOnClickListener(v -> removeFavorite(position));
+        holder.layoutFavoriteItem.setOnClickListener(v -> {
+            Intent intent = new Intent(context, BookDetailActivity.class);
+            intent.putExtra("publisher", bookItemList.get(position).getPublisher());
+            intent.putExtra("id", bookItemList.get(position).getId());
+            context.startActivity(intent);
+            ((Activity) context).overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        });
     }
 
     public void removeFavorite(int position){
@@ -97,6 +106,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
                         Toast.makeText(context, R.string.un_added_favorite, Toast.LENGTH_SHORT).show();
                         bookItemList.remove(position);
                         notifyItemRemoved(position);
+                        Common.currentUser.setList_favorite(bookItemList);
                         if (bookItemList.size() == 0)
                             clickInterface.OnRemove();
                     }
@@ -243,6 +253,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
         TextView tvDiscount;
         TextView tvPeopleRating;
         RatingBar ratingBar;
+        ConstraintLayout layoutFavoriteItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -254,6 +265,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
             tvDiscount = itemView.findViewById(R.id.tv_discount_favorite_item);
             tvPeopleRating = itemView.findViewById(R.id.tv_people_rating);
             ratingBar = itemView.findViewById(R.id.bar_rating_favorite_item);
+            layoutFavoriteItem = itemView.findViewById(R.id.layout_item_favorite);
         }
     }
 }

@@ -18,11 +18,10 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.imageview.ShapeableImageView;
-import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
-import com.khtn.mybooks.MainActivity;
-import com.khtn.mybooks.NoteAddressActivity;
-import com.khtn.mybooks.OrderStatusActivity;
+import com.khtn.mybooks.activity.NoteAddressActivity;
+import com.khtn.mybooks.activity.OrderStatusActivity;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
 import com.squareup.picasso.Picasso;
@@ -126,14 +125,17 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             getActivity().startActivity(intent);
             getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         } else
-            AppUtil.startLoginPage(getActivity());
+            AppUtil.startLoginPage(getContext());
     }
 
     public void startOrderStatusPage(int tabSelect){
-        Intent intent = new Intent(getContext(), OrderStatusActivity.class);
-        intent.putExtra("tabSelect", tabSelect);
-        getActivity().startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        if (Common.currentUser != null) {
+            Intent intent = new Intent(getContext(), OrderStatusActivity.class);
+            intent.putExtra("tabSelect", tabSelect);
+            getActivity().startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        } else
+            AppUtil.startLoginPage(getContext());
     }
 
     @SuppressLint("NonConstantResourceId")

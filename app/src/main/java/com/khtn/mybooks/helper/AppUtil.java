@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.helper;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -15,6 +15,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.khtn.mybooks.activity.SignInSignUpActivity;
 import com.khtn.mybooks.model.Address;
 
 import java.text.ParseException;
@@ -84,6 +85,12 @@ public class AppUtil {
         if (str.isEmpty())
             return false;
         return !str.matches(regex) && str.contains(" ");
+    }
+
+    public static boolean isNumberCode(String str){
+        String regex = ".*[^\\d].*";
+
+        return !str.matches(regex);
     }
 
     public static boolean checkValidPassword(String str){

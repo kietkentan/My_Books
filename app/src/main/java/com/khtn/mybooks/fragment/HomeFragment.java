@@ -7,16 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,7 +23,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.activity.SearchItemActivity;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.ViewPublisherClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.BookItemAdapter;
@@ -44,7 +42,7 @@ import java.util.Map;
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPublisherClickInterface {
     private View view;
     private ImageView ig;
-    private EditText edtSearch;
+    private TextView tvSearch;
     private RecyclerView rcPublisher;
     private RecyclerView rcBestSellerBooks;
     private RecyclerView rcNewBooks;
@@ -71,16 +69,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         init();
 
         ig.setOnClickListener(this);
-        edtSearch.setOnKeyListener((v, keyCode, event) -> {
-            if ((event.getAction() == KeyEvent.ACTION_DOWN)
-                    && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                InputMethodManager imm = (InputMethodManager)  edtSearch.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow( edtSearch.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                Toast.makeText(getContext(), "fgdhjk", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            return false;
-        });
+        tvSearch.setOnClickListener(this);
+
         setRecyclerViewBook();
         setRecyclerViewPublisher();
         loadData();
@@ -96,7 +86,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         bookList = new HashMap<>();
 
         ig = view.findViewById(R.id.imageView);
-        edtSearch = view.findViewById(R.id.search);
+        tvSearch = view.findViewById(R.id.tv_search_item);
         rcPublisher = view.findViewById(R.id.rec_publishers);
         rcBestSellerBooks = view.findViewById(R.id.rec_bestSellers);
         rcNewBooks = view.findViewById(R.id.rec_news);
@@ -113,10 +103,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         rcNewBooks.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
     }
 
+    public void startSearchItemPage(){
+        Intent intent = new Intent(getActivity(), SearchItemActivity.class);
+        getActivity().startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.imageView)
-            signOut();
+        switch (view.getId()) {
+            case R.id.imageView:
+                signOut();
+                break;
+            case R.id.tv_search_item:
+                startSearchItemPage();
+                break;
+        }
     }
 
     private void loadData(){

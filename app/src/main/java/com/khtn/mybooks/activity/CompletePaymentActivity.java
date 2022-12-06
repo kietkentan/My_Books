@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.helper.AppUtil;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.CartConfirmAdapter;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
@@ -30,7 +32,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class CompletePaymentActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageButton ibBack;

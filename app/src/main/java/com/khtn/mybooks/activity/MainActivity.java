@@ -1,4 +1,4 @@
-package com.khtn.mybooks;
+package com.khtn.mybooks.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -11,8 +11,9 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.khtn.mybooks.Interface.ContinueShoppingClickInterface;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.fragment.CartFragment;
 import com.khtn.mybooks.fragment.FavoriteItemFragment;
@@ -21,7 +22,7 @@ import com.khtn.mybooks.fragment.UserFragment;
 
 import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity implements ContinueShoppingClickInterface, SwitchFavoritePageInterface {
+public class MainActivity extends AppCompatActivity implements SwitchFavoritePageInterface {
     private BottomNavigationView bottomNav;
     private Fragment fragment;
     private final Fragment homeFrag = new HomeFragment();
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements ContinueShoppingC
     }
 
     @Override
-    public void OnClick() {
+    public void OnContinueShopping() {
         fragment = homeFrag;
         switchSelectItem();
         openFragment();

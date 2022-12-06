@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.khtn.mybooks.AppUtil;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Request;
@@ -32,7 +32,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
     @NonNull
     @Override
     public RequestItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.request_item, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_request, parent, false));
     }
 
     @SuppressLint("ResourceType")
@@ -40,11 +40,17 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
     public void onBindViewHolder(@NonNull RequestItemAdapter.ViewHolder holder, int position) {
         Order order = requestList.get(position).getOrderList().get(0);
         int quantity = 0;
+        int status = requestList.get(position).getStatus();
         for (Order order1:requestList.get(position).getOrderList())
             quantity += order1.getBookQuantity();
 
         Picasso.get().load(requestList.get(position).getOrderList().get(0).getBookImage()).into(holder.ivReview);
-        holder.tvStatus.setText(String.valueOf(requestList.get(position).getStatus()));
+        holder.tvStatus.setText(String.valueOf(status));
+        if (status == 4)
+            holder.btnBuyAgain.setVisibility(View.VISIBLE);
+        else
+            holder.btnBuyAgain.setVisibility(View.GONE);
+
         holder.tvStatus.setText(context.getResources().getStringArray(R.array.status)[requestList.get(position).getStatus() - 1]);
         holder.tvNamePublisher.setText(requestList.get(position).getNamePublisher());
         holder.tvNameCart.setText(order.getBookName());
@@ -54,6 +60,12 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
         holder.tvQuantityList.setText(String.format(context.getString(R.string.quantity_list), quantity));
         holder.tvTotalPriceRequest.setText(String.format(context.getString(R.string.book_price),
                 AppUtil.convertNumber(requestList.get(position).getTotal())));
+
+        if (requestList.get(position).getOrderList().size() > 1){
+            holder.tvMoreOrderProducts.setVisibility(View.VISIBLE);
+            holder.tvMoreOrderProducts.setText(String.format(context.getString(R.string.more_order_products), requestList.get(position).getOrderList().size() - 1));
+        } else
+            holder.tvMoreOrderProducts.setVisibility(View.GONE);
     }
 
     @Override
@@ -69,6 +81,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
         TextView tvTotalPriceCart;
         TextView tvQuantityList;
         TextView tvTotalPriceRequest;
+        TextView tvMoreOrderProducts;
         AppCompatButton btnMoreDetail;
         AppCompatButton btnBuyAgain;
         ImageView ivReview;
@@ -82,6 +95,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
             tvTotalPriceCart = itemView.findViewById(R.id.tv_cart_total_price);
             tvQuantityList = itemView.findViewById(R.id.tv_quantity_list);
             tvTotalPriceRequest = itemView.findViewById(R.id.tv_total_price);
+            tvMoreOrderProducts = itemView.findViewById(R.id.tv_more_order_products);
             btnMoreDetail = itemView.findViewById(R.id.btn_see_more_detail);
             btnBuyAgain = itemView.findViewById(R.id.btn_buy_again);
             ivReview = itemView.findViewById(R.id.iv_cart_logo);
