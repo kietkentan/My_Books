@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import com.khtn.mybooks.activity.RecentlyViewedActivity;
+import com.khtn.mybooks.databases.DatabaseViewed;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
 import com.khtn.mybooks.activity.NoteAddressActivity;
@@ -34,16 +37,18 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     private TextView tvMyInformation;
     private TextView tvAddress;
     private TextView tvFavorite;
+    private TextView tvRecentlyViewed;
     private LinearLayout layoutSeeMore;
     private LinearLayout layoutListAllOrder;
     private LinearLayout layoutListOrderWaitConfirm;
     private LinearLayout layoutListOderWaitShipping;
     private LinearLayout layoutListOrdersInTransit;
     private LinearLayout layoutListDelivered;
+    private LinearLayout layoutRecentlyViewed;
     private ShapeableImageView ivBackground;
     private ShapeableImageView ivAvatar;
     private AppCompatButton btnLogin;
-    private SwitchFavoritePageInterface switchFavoritePageInterface;
+    private final SwitchFavoritePageInterface switchFavoritePageInterface;
 
     public UserFragment(SwitchFavoritePageInterface switchFavoritePageInterface) {
         this.switchFavoritePageInterface = switchFavoritePageInterface;
@@ -64,6 +69,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         layoutListOderWaitShipping.setOnClickListener(this);
         layoutListOrdersInTransit.setOnClickListener(this);
         layoutListDelivered.setOnClickListener(this);
+        layoutRecentlyViewed.setOnClickListener(this);
 
         checkUser();
         return view;
@@ -82,20 +88,24 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         tvMyInformation = view.findViewById(R.id.tv_my_information);
         tvAddress = view.findViewById(R.id.tv_note_address);
         tvFavorite = view.findViewById(R.id.tv_favorite_item);
+        tvRecentlyViewed = view.findViewById(R.id.tv_recently_viewed);
         layoutSeeMore = view.findViewById(R.id.layout_see_more);
         layoutListAllOrder = view.findViewById(R.id.layout_list_all_request);
         layoutListOrderWaitConfirm = view.findViewById(R.id.layout_list_order_wait_confirm);
         layoutListOderWaitShipping = view.findViewById(R.id.layout_list_oder_wait_shipping);
         layoutListOrdersInTransit = view.findViewById(R.id.layout_list_orders_in_transit);
         layoutListDelivered = view.findViewById(R.id.layout_list_delivered);
+        layoutRecentlyViewed = view.findViewById(R.id.layout_recently_viewed);
         ivBackground = view.findViewById(R.id.iv_background_user);
         ivAvatar = view.findViewById(R.id.iv_avatar_user);
         btnLogin = view.findViewById(R.id.btn_login_user);
     }
 
     private void checkUser(){
-        if (Common.currentUser != null)
+        if (Common.currentUser != null) {
             loadUser();
+            setupTextViewRecentlyViewed();
+        }
         else {
             btnLogin.setOnClickListener(this);
             tvMyInformation.setVisibility(View.GONE);
@@ -119,6 +129,13 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         tvName.setTextColor(Color.parseColor("#FFFFFFFF"));
     }
 
+    @SuppressLint("DefaultLocale")
+    public void setupTextViewRecentlyViewed(){
+        DatabaseViewed databaseViewed = new DatabaseViewed(getActivity());
+        int i = databaseViewed.getListsViewed().size();
+        tvRecentlyViewed.setText(String.format("%d", i));
+    }
+
     public void startNoteAddress(){
         if (Common.currentUser != null) {
             Intent intent = new Intent(getActivity(), NoteAddressActivity.class);
@@ -136,6 +153,12 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         } else
             AppUtil.startLoginPage(getContext());
+    }
+
+    public void startRecentlyViewed(){
+        Intent intent = new Intent(getContext(), RecentlyViewedActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -165,8 +188,14 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             case R.id.layout_list_delivered:
                 startOrderStatusPage(4);
                 break;
+            case R.id.layout_recently_viewed:
+                startRecentlyViewed();
+                break;
             case R.id.tv_favorite_item:
-                switchFavoritePageInterface.OnClickFavorite();
+                if (Common.currentUser != null)
+                    switchFavoritePageInterface.OnClickFavorite();
+                else
+                    AppUtil.startLoginPage(getActivity());
                 break;
         }
     }

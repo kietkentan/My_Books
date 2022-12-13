@@ -330,12 +330,19 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+            String avatar = null;
+            try {
+                avatar = acct.getPhotoUrl().toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (acct != null) {
+                String finalAvatar = avatar;
                 reference.child("google").child(acct.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
-                            User user_gg = new User(acct.getPhotoUrl().toString(), null, acct.getDisplayName(), null, acct.getId(), acct.getEmail(), null);
+                            User user_gg = new User(finalAvatar, null, acct.getDisplayName(), null, acct.getId(), acct.getEmail(), null);
                             Common.signIn(user_gg, 2);
                             reference.child("google").child(acct.getId()).getRef().setValue(user_gg);
                         }

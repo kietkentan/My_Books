@@ -80,6 +80,8 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
 
     private static final String FILE_NAME = "history.txt";
     private boolean remove = false;
+    float maxWidthPixel;
+    float maxHeightPixel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +116,9 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void init(){
+        maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
+        maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
+
         ibBack = findViewById(R.id.ib_exit_search_page);
         tvNumCart = findViewById(R.id.tv_num_cart);
         tvSeeMoreOrRemoveListSearch = findViewById(R.id.tv_see_more_remove_history_search);
@@ -136,7 +141,9 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
         reference = database.getReference("book");
         recListHistorySearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recListSearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-        recListItemSearch.setLayoutManager(new GridLayoutManager(this, 2));
+
+        int spanCount = (int) (maxWidthPixel/450);
+        recListItemSearch.setLayoutManager(new GridLayoutManager(this, spanCount));
 
         databaseCart = new DatabaseCart(this);
     }
@@ -425,6 +432,9 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
                             bookItemList.add(0, dataSnapshot.getValue(BookItem.class));
                         else
                             bookItemList.add(dataSnapshot.getValue(BookItem.class));
+
+                        if (bookItemList.size() > 30)
+                            break;
                     }
                 }
                 progressBar.setVisibility(View.GONE);

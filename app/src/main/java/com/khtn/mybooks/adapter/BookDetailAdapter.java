@@ -34,6 +34,8 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
         holder.tvDetailName.setText(AppUtil.getStringResourceByName(list.get(position).get(0), context));
         if (list.get(position).get(0).equals("ageRange"))
             holder.tvDetailAbout.setText(getAgeRange(position));
+        else if (list.get(position).get(0).equals("weight"))
+            holder.tvDetailAbout.setText(String.format("%s g", list.get(position).get(1)));
         else
             holder.tvDetailAbout.setText(list.get(position).get(1));
     }

@@ -17,6 +17,20 @@
         android:theme="@style/Theme.MyBooks"
         tools:targetApi="31">
         <activity
+            android:name=".activity.RecentlyViewedActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activity.SearchItemActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activity.EnterNewPasswordActivity"
             android:exported="false">
             <meta-data
@@ -155,7 +169,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name="com.khtn.mybooks.activity.SearchItemActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

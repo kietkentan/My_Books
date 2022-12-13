@@ -21,7 +21,6 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -41,6 +40,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.databases.DatabaseViewed;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.BookDetailAdapter;
@@ -48,6 +48,7 @@ import com.khtn.mybooks.adapter.ListImageAdapter;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Book;
+import com.khtn.mybooks.model.BookItem;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Publisher;
 import com.squareup.picasso.Picasso;
@@ -96,6 +97,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private final String[] mode = {"mybooks", "google", "facebook"};
 
     private DatabaseCart databaseCart;
+    private DatabaseViewed databaseViewed;
     private FirebaseDatabase database;
 
     @Override
@@ -133,6 +135,16 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             dataBook = snapshot.getValue(Book.class);
+
+                            databaseViewed.addViewed(new BookItem(dataBook.getImage(),
+                                    dataBook.getOriginalPrice(),
+                                    dataBook.getDiscount(),
+                                    dataBook.getAmount(),
+                                    dataBook.getName(),
+                                    dataBook.getDatePosted(),
+                                    dataBook.getId(),
+                                    dataBook.getPublisher()));
+
                             snapshot.getRef().child("detail").
                                     addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -175,6 +187,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void init(){
         databaseCart = new DatabaseCart(BookDetailActivity.this);
+        databaseViewed = new DatabaseViewed(BookDetailActivity.this);
         database = FirebaseDatabase.getInstance();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -279,18 +292,17 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             layoutUpcoming.setVisibility(View.INVISIBLE);
         }
 
-       setupFavoriteButton();
+        setupFavoriteButton();
 
         setupCart();
         setButton();
     }
 
     private boolean checkFavoriteList(){
-        if (Common.currentUser.getList_favorite() == null || Common.currentUser.getList_favorite().size() == 0)
+        if (Common.currentUser == null || Common.currentUser.getList_favorite() == null || Common.currentUser.getList_favorite().size() == 0)
             return false;
 
         for (Book book : Common.currentUser.getList_favorite()) {
-            Log.i("TAG_U", "checkFavoriteList: " + book.getId());
             if (book.getId().equals(dataBook.getId()))
                 return true;
         }
@@ -370,6 +382,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void addFavoriteItem() {
+        if (Common.currentUser == null) {
+            AppUtil.startLoginPage(this);
+            return;
+        }
         database.getReference("user").child(mode[Common.modeLogin - 1]).
                 child(Common.currentUser.getId()).child("list_favorite").
                 addListenerForSingleValueEvent(new ValueEventListener() {

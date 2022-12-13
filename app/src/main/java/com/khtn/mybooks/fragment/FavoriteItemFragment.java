@@ -46,6 +46,9 @@ public class FavoriteItemFragment extends Fragment {
     private FavoriteClickInterface clickInterface;
     private final SwitchFavoritePageInterface continueShoppingClickInterface;
 
+    float maxWidthPixel;
+    float maxHeightPixel;
+
     public FavoriteItemFragment(SwitchFavoritePageInterface continueShoppingClickInterface) {
         this.continueShoppingClickInterface = continueShoppingClickInterface;
     }

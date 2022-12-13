@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements SwitchFavoritePag
 
         fm = bundle.getInt("fragment");
         bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.inflateMenu(R.menu.bottom_nev);
         createFm();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_view, fragment).commit();
     }
