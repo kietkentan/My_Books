@@ -158,8 +158,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                             || Objects.requireNonNull(dataSnapshot.child("email").getValue(String.class)).equals(strUser)) {
                         User user = dataSnapshot.getValue(User.class);
                         if (Objects.requireNonNull(user).getPassword().equals(edtPassword.getText().toString())) {
-                            Common.signIn(user, 1);
-                            Common.saveUser(SignInActivity.this);
+                            Common.signIn(SignInActivity.this, user, 1);
                             getMoreData();
                             startHome();
                         } else {

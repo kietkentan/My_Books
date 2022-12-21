@@ -7,16 +7,19 @@ public class User {
     private String background;
     private String name;
     private String password;
+    private String staffFrom;
     private String id;
     private String email;
     private String phone;
+    private boolean staff;
     private List<Order> cartList;
     private List<Address> addressList;
     private List<Book> list_favorite;
+    private List<String> list_shopFollow;
 
     public User() {}
 
-    public User(String avatar, String background, String name, String password, String id, String email, String phone) {
+    public User(String avatar, String background, String name, String password, String id, String email, String phone, String staffFrom) {
         this.avatar = avatar;
         this.background = background;
         this.name = name;
@@ -24,18 +27,11 @@ public class User {
         this.id = id;
         this.email = email;
         this.phone = phone;
-    }
-
-    public User(String avatar, String background, String name, String password, String id, String email, String phone, List<Order> cartList, List<Address> addressList) {
-        this.avatar = avatar;
-        this.background = background;
-        this.name = name;
-        this.password = password;
-        this.id = id;
-        this.email = email;
-        this.phone = phone;
-        this.cartList = cartList;
-        this.addressList = addressList;
+        if (staffFrom != null){
+            this.staffFrom = staffFrom;
+            this.staff = true;
+        } else
+            this.staff = false;
     }
 
     public String getAvatar() {
@@ -70,6 +66,14 @@ public class User {
         this.password = password;
     }
 
+    public String getStaffFrom() {
+        return staffFrom;
+    }
+
+    public void setStaffFrom(String staffFrom) {
+        this.staffFrom = staffFrom;
+    }
+
     public String getId() {
         return id;
     }
@@ -92,6 +96,14 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
     }
 
     public List<Order> getCartList() {
@@ -124,5 +136,13 @@ public class User {
 
     public void setList_favorite(List<Book> list_favorite) {
         this.list_favorite = list_favorite;
+    }
+
+    public List<String> getList_shopFollow() {
+        return list_shopFollow;
+    }
+
+    public void setList_shopFollow(List<String> list_shopFollow) {
+        this.list_shopFollow = list_shopFollow;
     }
 }

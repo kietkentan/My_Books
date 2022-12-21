@@ -228,6 +228,14 @@
     <string name="remove_history_search">Xóa Lịch Sử Tìm Kiếm</string>
     <string name="see_more_history_search">Hiển thị nhiều hơn</string>
     <string name="no_corresponding_products">Không có sản phẩm tương ứng nào</string>
+    <string name="store_manager">Quản lí cửa hàng</string>
+    <string name="followed">Đang theo dõi</string>
+    <string name="follow">Theo dõi</string>
+    <string name="order_detail">Chi tiết đơn hàng</string>
+    <string name="code_request">Mã đơn hàng</string>
+    <string name="copy" tools:ignore="PrivateResource">Sao chép</string>
+    <string name="date_submit_request">Đặt ngày</string>
+    <string name="copied">Đã sao chép vào bộ nhớ tạm</string>
     <string-array name="status">
         <item>Đang xác nhận</item>
         <item>Chờ vận chuyển</item>

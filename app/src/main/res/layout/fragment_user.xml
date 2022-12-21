@@ -324,6 +324,20 @@
                                 android:src="@drawable/ic_wait_confirm"
                                 app:tint="@color/reduced_price"
                                 tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tv_num_order_wait_confirm"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:visibility="gone"
+                                android:layout_gravity="right|top"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/custom_dot_notifications"
+                                android:gravity="center"
+                                android:text="@string/num_default"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                tools:ignore="RtlHardcoded,SmallSp" />
                         </FrameLayout>
 
                         <TextView
@@ -361,6 +375,20 @@
                                 android:src="@drawable/ic_confirmed"
                                 app:tint="@color/reduced_price"
                                 tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tv_num_order_wait_shipping"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:visibility="gone"
+                                android:layout_gravity="right|top"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/custom_dot_notifications"
+                                android:gravity="center"
+                                android:text="@string/num_default"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                tools:ignore="RtlHardcoded,SmallSp" />
                         </FrameLayout>
 
                         <TextView
@@ -398,6 +426,20 @@
                                 android:src="@drawable/ic_in_transit"
                                 app:tint="@color/reduced_price"
                                 tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tv_num_order_in_transit"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:visibility="gone"
+                                android:layout_gravity="right|top"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/custom_dot_notifications"
+                                android:gravity="center"
+                                android:text="@string/num_default"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                tools:ignore="RtlHardcoded,SmallSp" />
                         </FrameLayout>
 
                         <TextView
@@ -435,6 +477,20 @@
                                 android:src="@drawable/ic_delivered"
                                 app:tint="@color/reduced_price"
                                 tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tv_num_order_delivered"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:visibility="gone"
+                                android:layout_gravity="right|top"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/custom_dot_notifications"
+                                android:gravity="center"
+                                android:text="@string/num_default"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                tools:ignore="RtlHardcoded,SmallSp" />
                         </FrameLayout>
 
                         <TextView
@@ -471,6 +527,20 @@
                                 android:src="@drawable/ic_package_return"
                                 app:tint="@color/reduced_price"
                                 tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tv_num_packet_return"
+                                android:layout_width="17dp"
+                                android:layout_height="17dp"
+                                android:visibility="gone"
+                                android:layout_gravity="right|top"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/custom_dot_notifications"
+                                android:gravity="center"
+                                android:text="@string/num_default"
+                                android:textColor="@color/white"
+                                android:textSize="9sp"
+                                tools:ignore="RtlHardcoded,SmallSp" />
                         </FrameLayout>
 
                         <TextView
@@ -543,6 +613,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_buy_again">
+
+                <TextView
+                    android:id="@+id/tv_store_manager"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="50dp"
+                    android:drawablePadding="10dp"
+                    android:text="@string/store_manager"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_store"
+                    app:drawableEndCompat="@drawable/ic_next"/>
+
+                <View
+                    android:id="@+id/view_store_manager"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="0.5dp"
+                    android:background="@color/text_hint"/>
 
                 <TextView
                     android:id="@+id/tv_favorite_item"

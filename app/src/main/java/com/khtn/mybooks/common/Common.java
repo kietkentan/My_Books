@@ -22,10 +22,11 @@ public class Common {
         modeLogin = 0;
     }
 
-    public static void signIn(User user, int mode){
+    public static void signIn(Context context, User user, int mode){
         currentUser = user;
-        currentUser.setPassword(null);
         modeLogin = mode;
+        saveUser(context);
+        currentUser.setPassword(null);
         addressNow = (currentUser.getAddressList() == null) ? null:currentUser.getAddressList().get(0);
     }
 

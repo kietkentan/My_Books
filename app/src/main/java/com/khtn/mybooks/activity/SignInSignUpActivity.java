@@ -342,12 +342,12 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
-                            User user_gg = new User(finalAvatar, null, acct.getDisplayName(), null, acct.getId(), acct.getEmail(), null);
-                            Common.signIn(user_gg, 2);
+                            User user_gg = new User(finalAvatar, null, acct.getDisplayName(), null, acct.getId(), acct.getEmail(), null, null);
+                            Common.signIn(SignInSignUpActivity.this, user_gg, 2);
                             reference.child("google").child(acct.getId()).getRef().setValue(user_gg);
                         }
                         else {
-                            Common.signIn(snapshot.getValue(User.class), 2);
+                            Common.signIn(SignInSignUpActivity.this, snapshot.getValue(User.class), 2);
                             getMoreData();
                         }
                         btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
@@ -390,12 +390,12 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (!snapshot.exists()) {
-                                    User user_fb = new User(user.getPhotoUrl().toString(), null, user.getDisplayName(), null, user.getUid(), user.getEmail(), user.getPhoneNumber());
-                                    Common.signIn(user_fb, 3);
+                                    User user_fb = new User(user.getPhotoUrl().toString(), null, user.getDisplayName(), null, user.getUid(), user.getEmail(), user.getPhoneNumber(), null);
+                                    Common.signIn(SignInSignUpActivity.this, user_fb, 3);
                                     reference.child("facebook").child(user.getUid()).getRef().setValue(user_fb);
                                 }
                                 else {
-                                    Common.signIn(snapshot.getValue(User.class), 3);
+                                    Common.signIn(SignInSignUpActivity.this, snapshot.getValue(User.class), 3);
                                     getMoreData();
                                 }
                                 btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);

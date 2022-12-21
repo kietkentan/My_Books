@@ -80,6 +80,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
 
     private static final String FILE_NAME = "history.txt";
     private boolean remove = false;
+    int widthView;
     float maxWidthPixel;
     float maxHeightPixel;
 
@@ -118,6 +119,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
     public void init(){
         maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
         maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
+        widthView = AppUtil.dpToPx(182, this);
 
         ibBack = findViewById(R.id.ib_exit_search_page);
         tvNumCart = findViewById(R.id.tv_num_cart);
@@ -142,7 +144,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
         recListHistorySearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recListSearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-        int spanCount = (int) (maxWidthPixel/450);
+        int spanCount = (int) (maxWidthPixel/widthView);
         recListItemSearch.setLayoutManager(new GridLayoutManager(this, spanCount));
 
         databaseCart = new DatabaseCart(this);

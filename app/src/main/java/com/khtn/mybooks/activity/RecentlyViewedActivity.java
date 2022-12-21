@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -39,6 +38,7 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
     private List<BookItem> bookList;
     private BookItemAdapter adapter;
 
+    int widthView;
     float xDown = 0, yDown = 0;
     float maxWidthPixel;
     float maxHeightPixel;
@@ -63,6 +63,12 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
     }
 
     @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setupCart();
+    }
+
+    @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
@@ -71,7 +77,7 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
     public void init(){
         maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
         maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
-        Log.i("TAG_U", "init: " + maxWidthPixel + "|" + maxHeightPixel);
+        widthView = AppUtil.dpToPx(182, this);
 
         databaseCart = new DatabaseCart(RecentlyViewedActivity.this);
         databaseViewed = new DatabaseViewed(RecentlyViewedActivity.this);
@@ -83,7 +89,7 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
         recListRecentlyViewed = findViewById(R.id.rec_list_recently_viewed);
         layoutCart = findViewById(R.id.layout_shopping_cart);
 
-        int spanCount = (int) (maxWidthPixel/450);
+        int spanCount = (int) (maxWidthPixel/widthView);
         recListRecentlyViewed.setLayoutManager(new GridLayoutManager(this, spanCount));
     }
 

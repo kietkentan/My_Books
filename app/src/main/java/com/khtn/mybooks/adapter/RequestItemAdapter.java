@@ -1,7 +1,10 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.khtn.mybooks.activity.OrderDetailActivity;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.model.Order;
@@ -45,7 +51,6 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
             quantity += order1.getBookQuantity();
 
         Picasso.get().load(requestList.get(position).getOrderList().get(0).getBookImage()).into(holder.ivReview);
-        holder.tvStatus.setText(String.valueOf(status));
         if (status == 4)
             holder.btnBuyAgain.setVisibility(View.VISIBLE);
         else
@@ -66,6 +71,24 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
             holder.tvMoreOrderProducts.setText(String.format(context.getString(R.string.more_order_products), requestList.get(position).getOrderList().size() - 1));
         } else
             holder.tvMoreOrderProducts.setVisibility(View.GONE);
+
+        holder.layoutRequestItem.setOnClickListener(v -> {
+            startDetailRequest(position);
+        });
+        holder.btnMoreDetail.setOnClickListener(v -> {
+            startDetailRequest(position);
+        });
+    }
+
+    public void startDetailRequest(int position){
+        Intent intent = new Intent(context, OrderDetailActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putString("request", new Gson().toJson(requestList.get(position)));
+
+        intent.putExtras(bundle);
+        context.startActivity(intent);
+        ((Activity) context).overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     @Override
@@ -85,6 +108,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
         AppCompatButton btnMoreDetail;
         AppCompatButton btnBuyAgain;
         ImageView ivReview;
+        ConstraintLayout layoutRequestItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,6 +123,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
             btnMoreDetail = itemView.findViewById(R.id.btn_see_more_detail);
             btnBuyAgain = itemView.findViewById(R.id.btn_buy_again);
             ivReview = itemView.findViewById(R.id.iv_cart_logo);
+            layoutRequestItem = itemView.findViewById(R.id.layout_request_item);
         }
     }
 }

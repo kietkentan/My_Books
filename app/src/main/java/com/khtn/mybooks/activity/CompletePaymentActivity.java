@@ -1,12 +1,15 @@
 package com.khtn.mybooks.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.CartConfirmAdapter;
@@ -28,6 +32,8 @@ import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Request;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,6 +65,7 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
 
     private int tempTotal = 0;
     private int shipCost = 0;
+    private boolean buyNow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +84,6 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
     }
 
     public void init(){
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        buyList = bundle.getIntegerArrayList("list_buy");
-
         ibBack = findViewById(R.id.ib_exit_complete_payment);
         tvNameUser = findViewById(R.id.tv_name_user);
         tvPhoneUser = findViewById(R.id.tv_phone_user);
@@ -103,7 +106,19 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
         reference = database.getReference("book");
         dataBaseOrder = new DatabaseCart(this);
 
-        getListOrder();
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        buyNow = bundle.getBoolean("buy_now");
+        if (buyNow) {
+            String myGson = bundle.getString("order");
+            orderList.add(new Gson().fromJson(myGson, Order.class));
+            mapOrder.put(orderList.get(0).getPublisherId(), new ArrayList<>());
+            mapOrder.get(orderList.get(0).getPublisherId()).add(orderList.get(0));
+        }
+        else {
+            buyList = bundle.getIntegerArrayList("list_buy");
+            getListOrder();
+        }
     }
 
     public void getListOrder(){
@@ -173,12 +188,21 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
         tvTotalPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(shipCost + tempTotal)));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setupData(){
         progressBar.setVisibility(View.VISIBLE);
         btnOrder.setVisibility(View.INVISIBLE);
 
-        for (Request request : requestList)
-            database.getReference("request").child(String.valueOf(System.currentTimeMillis())).setValue(request);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        String date = dtf.format(now);
+        for (Request request : requestList) {
+            String idRequest = String.valueOf(System.currentTimeMillis());
+            request.setIdRequest(idRequest);
+            request.setDateTime(date);
+            database.getReference("request").child(idRequest).setValue(request);
+        }
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -188,6 +212,39 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
                     dataBaseOrder.removeCarts(order.getBookId());
                 }
                 pullRequest();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setupSingleData(){
+        progressBar.setVisibility(View.VISIBLE);
+        btnOrder.setVisibility(View.INVISIBLE);
+
+        String idRequest = String.valueOf(System.currentTimeMillis());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        String date = dtf.format(now);
+        requestList.get(0).setIdRequest(idRequest);
+        requestList.get(0).setDateTime(date);
+        database.getReference("request").child(idRequest).setValue(requestList.get(0));
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int amount = snapshot.child(orderList.get(0).getBookId()).child("amount").getValue(Integer.class);
+                snapshot.child(orderList.get(0).getBookId()).child("amount").getRef().setValue(amount - orderList.get(0).getBookQuantity());
+
+                progressBar.setVisibility(View.GONE);
+                btnOrder.setVisibility(View.VISIBLE);
+                Toast.makeText(CompletePaymentActivity.this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+
+                finish();
             }
 
             @Override
@@ -221,14 +278,24 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.ib_exit_complete_payment)
-            finish();
-        if (v.getId() == R.id.layout_start_address_page)
-            startAddressPage();
-        if (v.getId() == R.id.btn_order)
-            setupData();
+        switch (v.getId()) {
+            case R.id.ib_exit_complete_payment:
+                finish();
+                break;
+            case R.id.layout_start_address_page:
+                startAddressPage();
+                break;
+            case R.id.btn_order:
+                if (buyNow)
+                    setupSingleData();
+                else
+                    setupData();
+                break;
+        }
     }
 
     @Override

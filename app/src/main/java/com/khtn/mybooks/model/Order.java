@@ -27,6 +27,16 @@ public class Order {
         this.bookDiscount = bookDiscount;
     }
 
+    public Order(Book book, int bookQuantity){
+        bookId = book.getId();
+        bookName = book.getName();
+        bookImage = book.getImage().get(0);
+        publisherId = book.getPublisher();
+        this.bookQuantity = bookQuantity;
+        bookPrice = book.getOriginalPrice();
+        bookDiscount = book.getDiscount();
+    }
+
     public String getBookId() {
         return bookId;
     }

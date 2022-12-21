@@ -3,12 +3,14 @@ package com.khtn.mybooks.model;
 import java.util.List;
 
 public class Request {
+    private String idRequest;
     private String idUser;
     private String idPublisher;
     private String namePublisher;
     private String address;
     private String name;
     private String phone;
+    private String dateTime;
     private List<Order> orderList;
     private int tempTotal;
     private int shipCost;
@@ -36,6 +38,14 @@ public class Request {
         this.shipCost = shipCost;
         this.total = total;
         this.status = status;
+    }
+
+    public String getIdRequest() {
+        return idRequest;
+    }
+
+    public void setIdRequest(String idRequest) {
+        this.idRequest = idRequest;
     }
 
     public String getIdUser() {
@@ -84,6 +94,14 @@ public class Request {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public List<Order> getOrderList() {

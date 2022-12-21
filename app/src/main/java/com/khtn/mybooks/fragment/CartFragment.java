@@ -191,6 +191,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         Intent intent = new Intent(getActivity(), CompletePaymentActivity.class);
         Bundle bundle = new Bundle();
 
+        bundle.putBoolean("buy_now", false);
         bundle.putIntegerArrayList("list_buy", (ArrayList<Integer>) adapter.getSelectedCart());
         intent.putExtras(bundle);
         startActivity(intent);

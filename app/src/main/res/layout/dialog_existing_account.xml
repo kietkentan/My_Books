@@ -46,14 +46,14 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_accept_dialog"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="36dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_button_continue_appear"
             android:text="@string/accept"
-            android:textColor="@color/white"
             android:textAllCaps="false"
-            android:textSize="17sp"
-            android:background="@drawable/custom_button_continue_appear"/>
+            android:textColor="@color/white"
+            android:textSize="17sp" />
     </LinearLayout>
 </LinearLayout>

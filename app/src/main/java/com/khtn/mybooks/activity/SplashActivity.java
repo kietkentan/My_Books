@@ -83,7 +83,7 @@ public class SplashActivity extends AppCompatActivity {
                         if (snapshot.exists()){
                             User user = snapshot.getValue(User.class);
                             if (user.getPassword().equals(password)) {
-                                Common.signIn(user, 1);
+                                Common.signIn(SplashActivity.this, user, 1);
                                 getMoreData();
                             }
                         }
@@ -99,7 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Common.signIn(snapshot.getValue(User.class), 2);
+                            Common.signIn(SplashActivity.this, snapshot.getValue(User.class), 2);
                             getMoreData();
                         }
                     }
@@ -114,7 +114,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Common.signIn(snapshot.getValue(User.class), 3);
+                            Common.signIn(SplashActivity.this, snapshot.getValue(User.class), 3);
                             getMoreData();
                         }
                     }

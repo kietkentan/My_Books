@@ -40,6 +40,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.khtn.mybooks.databases.DatabaseViewed;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
@@ -113,6 +114,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         layoutCart.setOnClickListener(BookDetailActivity.this);
         ibBack.setOnClickListener(BookDetailActivity.this);
         btnAddCart.setOnClickListener(BookDetailActivity.this);
+        btnBuyNow.setOnClickListener(BookDetailActivity.this);
         ibAddFavorite.setOnClickListener(BookDetailActivity.this);
     }
 
@@ -378,6 +380,9 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             case R.id.tv_search_item:
                 startSearchItemPage();
                 break;
+            case R.id.btn_buy_now:
+                startCompletePayment();
+                break;
         }
     }
 
@@ -441,6 +446,21 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void startSearchItemPage(){
         Intent intent = new Intent(BookDetailActivity.this, SearchItemActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
+    public void startCompletePayment(){
+        if (Common.currentUser == null){
+            AppUtil.startLoginPage(this);
+            return;
+        }
+        Intent intent = new Intent(BookDetailActivity.this, CompletePaymentActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putBoolean("buy_now", true);
+        bundle.putString("order", new Gson().toJson(new Order(dataBook, 1)));
+        intent.putExtras(bundle);
         startActivity(intent);
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }

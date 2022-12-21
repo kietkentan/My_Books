@@ -1,6 +1,11 @@
 package com.khtn.mybooks.model;
 
+import android.annotation.SuppressLint;
+import android.icu.number.Scale;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 public class Book {
     private List<String> images; // ảnh review
