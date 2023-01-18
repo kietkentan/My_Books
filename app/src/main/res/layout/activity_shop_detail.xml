@@ -12,8 +12,8 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:background="@color/background_shop"
-            android:layout_height="300dp">
+            android:layout_height="200dp"
+            android:background="@color/background_shop">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -24,14 +24,14 @@
                     android:id="@+id/ib_exit_shop_detail"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="3dp"
+                    android:paddingStart="3dp"
                     android:background="null"
-                    app:srcCompat="@drawable/ic_back"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription,RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck"
-                    app:tint="@color/white" />
+                    app:srcCompat="@drawable/ic_back"
+                    app:tint="@color/white"
+                    tools:ignore="ContentDescription,RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/tv_search_item_in_the_shop"
@@ -40,18 +40,19 @@
                     android:layout_marginHorizontal="10dp"
                     android:background="@drawable/custom_search_bar"
                     android:gravity="fill"
-                    android:textColorHint="@color/original_price"
                     android:hint="@string/search_in_the_shop"
                     android:importantForAutofill="no"
                     android:paddingHorizontal="12dp"
-                    android:textSize="15sp"
-                    app:drawableEndCompat="@drawable/ic_search"
+                    android:textColorHint="@color/original_price"
+                    android:textSize="11sp"
+                    android:drawablePadding="5dp"
+                    app:drawableStartCompat="@drawable/ic_search"
+                    app:drawableTint="@color/original_price"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/layout_shopping_cart"
                     app:layout_constraintStart_toEndOf="@+id/ib_exit_shop_detail"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="TouchTargetSizeCheck"
-                    app:drawableTint="@color/original_price" />
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <ImageView
                     android:id="@+id/iv_home_page"
@@ -62,8 +63,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    tools:ignore="ContentDescription" />
 
                 <FrameLayout
                     android:id="@+id/layout_shopping_cart"
@@ -97,13 +98,120 @@
                 </FrameLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_publisher_avatar"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/logo"
+                    android:background="@color/text_hint"
+                    android:scaleType="centerInside"
+                    app:strokeWidth="0.5dp"
+                    app:strokeColor="@color/text_hint"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ImageStyle_Avatar" />
+
+                <TextView
+                    android:id="@+id/tv_name_publisher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:text="@string/app_name"
+                    app:layout_constraintStart_toEndOf="@+id/iv_publisher_avatar"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_total_rating_publisher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/rating_score"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    app:drawableStartCompat="@drawable/ic_star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_publisher_avatar" />
+
+                <View
+                    android:id="@+id/view7"
+                    android:layout_width="0.7dp"
+                    android:layout_height="7dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_total_rating_publisher" />
+
+                <TextView
+                    android:id="@+id/tv_total_follows"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_follows"
+                    android:textColor="@color/white"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="10dp"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view7" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_follow"
+                    android:layout_width="80dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/follow"
+                    android:textColor="@color/white"
+                    android:textSize="11sp"
+                    android:textStyle="normal"
+                    android:background="@drawable/custom_button_continue_appear"
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="30dp">
+                android:layout_height="wrap_content"
+                >
 
 
             </Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="400dp"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

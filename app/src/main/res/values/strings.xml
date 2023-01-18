@@ -243,6 +243,8 @@
     <string name="email">Email</string>
     <string name="save">Lưu</string>
     <string name="search_in_the_shop">Tìm kiếm trong cửa hàng</string>
+    <string name="total_follows">%d Người theo dõi</string>
+    <string name="followed_this">Đang theo</string>
     <string-array name="status">
         <item>Đang xác nhận</item>
         <item>Chờ vận chuyển</item>

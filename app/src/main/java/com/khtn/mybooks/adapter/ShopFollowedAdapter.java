@@ -2,6 +2,7 @@ package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -19,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.R;
+import com.khtn.mybooks.activity.ShopDetailActivity;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.model.Publisher;
 import com.squareup.picasso.Picasso;
@@ -69,6 +72,12 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
                 holder.btnFollow.setTextColor(Color.parseColor("#E32127"));
             }
         });
+        holder.layoutPublisher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, ShopDetailActivity.class));
+            }
+        });
     }
 
     public void updateFollowed(){
@@ -105,6 +114,7 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
         TextView tvName;
         TextView tvLocation;
         AppCompatButton btnFollow;
+        ConstraintLayout layoutPublisher;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +123,7 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
             tvName = itemView.findViewById(R.id.tv_shop_name);
             tvLocation = itemView.findViewById(R.id.tv_location_shop);
             btnFollow = itemView.findViewById(R.id.btn_follow);
+            layoutPublisher = itemView.findViewById(R.id.layout_publisher);
         }
     }
 }
