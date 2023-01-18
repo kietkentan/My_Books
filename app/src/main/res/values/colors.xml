@@ -20,4 +20,5 @@
     <color name="background">#F7F7F7</color>
     <color name="active">#37CB4B</color>
     <color name="done">#008000</color>
+    <color name="background_shop">#ff9646</color>
 </resources>

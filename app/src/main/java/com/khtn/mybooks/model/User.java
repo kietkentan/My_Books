@@ -1,6 +1,11 @@
 package com.khtn.mybooks.model;
 
+import android.util.Log;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class User {
     private String avatar;
@@ -11,7 +16,9 @@ public class User {
     private String id;
     private String email;
     private String phone;
+    private String dateOfBirth;
     private boolean staff;
+    private int gender;
     private List<Order> cartList;
     private List<Address> addressList;
     private List<Book> list_favorite;
@@ -86,6 +93,18 @@ public class User {
         return email;
     }
 
+    public String getHiddenEmail(){
+        char[] chars = email.toCharArray();
+        StringBuilder str = new StringBuilder("" + chars[0]);
+        int i = email.indexOf('@');
+        for (int j = 1; j < i - 1; ++j)
+            str.append('*');
+
+        for (int j = i - 1; j < chars.length; ++j)
+            str.append(chars[j]);
+        return String.valueOf(str);
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -94,8 +113,20 @@ public class User {
         return phone;
     }
 
+    public String getHiddenPhone(){
+        return "********" + phone.charAt(8) + phone.charAt(9);
+    }
+
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public boolean isStaff() {
@@ -104,6 +135,14 @@ public class User {
 
     public void setStaff(boolean staff) {
         this.staff = staff;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public List<Order> getCartList() {
@@ -146,3 +185,4 @@ public class User {
         this.list_shopFollow = list_shopFollow;
     }
 }
+

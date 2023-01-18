@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.khtn.mybooks.activity.InformationUserActivity;
 import com.khtn.mybooks.activity.RecentlyViewedActivity;
 import com.khtn.mybooks.activity.ShopFollowedActivity;
 import com.khtn.mybooks.databases.DatabaseViewed;
@@ -87,6 +88,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
 
         tvAddress.setOnClickListener(this);
         tvFavorite.setOnClickListener(this);
+        tvMyInformation.setOnClickListener(this);
         layoutListAllOrder.setOnClickListener(this);
         layoutListOrderWaitConfirm.setOnClickListener(this);
         layoutListOderWaitShipping.setOnClickListener(this);
@@ -304,6 +306,12 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    public void startInformationPage(){
+        Intent intent = new Intent(getContext(), InformationUserActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -342,6 +350,9 @@ public class UserFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.layout_shop_followed:
                 startShopFollowed();
+                break;
+            case R.id.tv_my_information:
+                startInformationPage();
                 break;
         }
     }

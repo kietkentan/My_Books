@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ShopDetailActivity">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:background="@color/background_shop"
+            android:layout_height="300dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="null">
+
+                <ImageButton
+                    android:id="@+id/ib_exit_shop_detail"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="3dp"
+                    android:background="null"
+                    app:srcCompat="@drawable/ic_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription,RtlSymmetry,SpeakableTextPresentCheck,TouchTargetSizeCheck"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_search_item_in_the_shop"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/custom_search_bar"
+                    android:gravity="fill"
+                    android:textColorHint="@color/original_price"
+                    android:hint="@string/search_in_the_shop"
+                    android:importantForAutofill="no"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="15sp"
+                    app:drawableEndCompat="@drawable/ic_search"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/layout_shopping_cart"
+                    app:layout_constraintStart_toEndOf="@+id/ib_exit_shop_detail"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TouchTargetSizeCheck"
+                    app:drawableTint="@color/original_price" />
+
+                <ImageView
+                    android:id="@+id/iv_home_page"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_home"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription"
+                    app:tint="@color/white" />
+
+                <FrameLayout
+                    android:id="@+id/layout_shopping_cart"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_home_page"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_shopping_cart"
+                        app:tint="@color/white"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/tv_num_cart"
+                        android:layout_width="17dp"
+                        android:layout_height="17dp"
+                        android:layout_gravity="right|top"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/custom_dot_notifications"
+                        android:gravity="center"
+                        android:text="@string/num_default"
+                        android:textColor="@color/white"
+                        android:textSize="9sp"
+                        tools:ignore="RtlHardcoded,SmallSp" />
+                </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+
+            </Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

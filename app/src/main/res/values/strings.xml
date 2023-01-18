@@ -54,7 +54,8 @@
     <string name="please_enter_your_password">Vui lòng nhập mật khẩu (từ 8 kí tự gồm cả chữ và số)</string>
     <string name="please_reenter_your_password">Vui lòng nhắc lại mật khẩu</string>
     <string name="password">Mật khẩu</string>
-    <string name="name"><![CDATA[Họ & Tên]]></string>
+    <string name="full_name"><![CDATA[Họ & Tên]]></string>
+    <string name="name">Tên</string>
     <string name="create_account">Tạo tài khoản</string>
     <string name="name_not_empty">Tên không được để trống!</string>
     <string name="password_not_empty">Mật khẩu không được để trống!</string>
@@ -236,6 +237,12 @@
     <string name="copy" tools:ignore="PrivateResource">Sao chép</string>
     <string name="date_submit_request">Đặt ngày</string>
     <string name="copied">Đã sao chép vào bộ nhớ tạm</string>
+    <string name="gender">Giới tính</string>
+    <string name="not_set_up_yet">Chưa thiết lập</string>
+    <string name="date_of_birth">Ngày sinh</string>
+    <string name="email">Email</string>
+    <string name="save">Lưu</string>
+    <string name="search_in_the_shop">Tìm kiếm trong cửa hàng</string>
     <string-array name="status">
         <item>Đang xác nhận</item>
         <item>Chờ vận chuyển</item>
@@ -243,6 +250,11 @@
         <item>Đã giao</item>
         <item>Đợi xác nhận hủy</item>
         <item>Đã hủy</item>
+    </string-array>
+    <string-array name="gender">
+        <item>Nam</item>
+        <item>Nữ</item>
+        <item>Khác</item>
     </string-array>
 
 </resources>
