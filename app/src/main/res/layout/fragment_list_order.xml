@@ -36,7 +36,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/reduced_price" />
+            app:tint="@color/reduced_price"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"

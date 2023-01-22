@@ -3,15 +3,18 @@ package com.khtn.mybooks.model;
 public class Publisher {
     private String logo;
     private String name;
-    private String location;
-    private Float rating;
+    private Address location;
+    private Rating rating;
     private String worked;
     private String id;
     private int reply;
+    private int product;
+    private String description;
+    private int followed;
 
     public Publisher() {}
 
-    public Publisher(String logo, String name, String location, Float rating, String worked, String id, int reply) {
+    public Publisher(String logo, String name, Address location, Rating rating, String worked, String id, int reply, int product, String description, int followed) {
         this.logo = logo;
         this.name = name;
         this.location = location;
@@ -19,6 +22,9 @@ public class Publisher {
         this.worked = worked;
         this.id = id;
         this.reply = reply;
+        this.product = product;
+        this.description = description;
+        this.followed = followed;
     }
 
     public String getLogo() {
@@ -37,19 +43,19 @@ public class Publisher {
         this.name = name;
     }
 
-    public String getLocation() {
+    public Address getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Address location) {
         this.location = location;
     }
 
-    public Float getRating() {
+    public Rating getRating() {
         return rating;
     }
 
-    public void setRating(Float rating) {
+    public void setRating(Rating rating) {
         this.rating = rating;
     }
 
@@ -75,5 +81,29 @@ public class Publisher {
 
     public void setReply(int reply) {
         this.reply = reply;
+    }
+
+    public int getProduct() {
+        return product;
+    }
+
+    public void setProduct(int product) {
+        this.product = product;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getFollowed() {
+        return followed;
+    }
+
+    public void setFollowed(int followed) {
+        this.followed = followed;
     }
 }

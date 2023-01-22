@@ -74,8 +74,8 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
             holder.tvDiscount.setVisibility(View.GONE);
         else
             holder.tvDiscount.setText(String.format(context.getString(R.string.book_discount), bookItemList.get(position).getDiscount()));
-        holder.ratingBar.setRating(bookItemList.get(position).getTotalRatingScore());
-        holder.tvPeopleRating.setText(String.format(context.getString(R.string.people_rating), bookItemList.get(position).getTotalRatings()));
+        holder.ratingBar.setRating(bookItemList.get(position).getRating().getScore());
+        holder.tvPeopleRating.setText(String.format(context.getString(R.string.people_rating), bookItemList.get(position).getRating().getTurn()));
 
         holder.ibAddToCart.setOnClickListener(v -> addCart(position));
         holder.ibRemoveFavorite.setOnClickListener(v -> removeFavorite(position));

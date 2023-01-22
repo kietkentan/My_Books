@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -203,6 +202,8 @@ public class UserFragment extends Fragment implements View.OnClickListener{
 
     @SuppressLint("DefaultLocale")
     public void setupTextViewRecentlyViewed(){
+        if (Common.currentUser == null)
+            return;
         DatabaseViewed databaseViewed = new DatabaseViewed(getActivity());
         int i = databaseViewed.getListsViewed().size();
         tvRecentlyViewed.setText(String.format("%d", i));
@@ -210,6 +211,8 @@ public class UserFragment extends Fragment implements View.OnClickListener{
 
     @SuppressLint("DefaultLocale")
     public void setupTextViewShopFollowed(){
+        if (Common.currentUser == null)
+            return;
         int i = 0;
         if (Common.currentUser.getList_shopFollow() != null)
             i = Common.currentUser.getList_shopFollow().size();
@@ -278,8 +281,8 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     public void startNoteAddress(){
         if (Common.currentUser != null) {
             Intent intent = new Intent(getActivity(), NoteAddressActivity.class);
-            getActivity().startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+            requireActivity().startActivity(intent);
+            requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         } else
             AppUtil.startLoginPage(getContext());
     }
@@ -288,8 +291,8 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         if (Common.currentUser != null) {
             Intent intent = new Intent(getContext(), OrderStatusActivity.class);
             intent.putExtra("tabSelect", tabSelect);
-            getActivity().startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+            requireActivity().startActivity(intent);
+            requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         } else
             AppUtil.startLoginPage(getContext());
     }
@@ -297,19 +300,19 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     public void startRecentlyViewed(){
         Intent intent = new Intent(getContext(), RecentlyViewedActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     public void startShopFollowed(){
         Intent intent = new Intent(getContext(), ShopFollowedActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     public void startInformationPage(){
         Intent intent = new Intent(getContext(), InformationUserActivity.class);
         startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     @SuppressLint("NonConstantResourceId")

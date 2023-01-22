@@ -13,8 +13,7 @@ public class Book {
     private int discount; // % giảm
     private int amount; // số lượng tồn kho
     private int sold;
-    private int totalRatings;
-    private float totalRatingScore;
+    private Rating rating;
     private String datePosted;
     private String name; // tên sách
     private String id;
@@ -22,14 +21,13 @@ public class Book {
 
     public Book() {}
 
-    public Book(List<String> images, int originalPrice, int discountPercentage, int amount, int sold, int totalRatings, float totalRatingScore, String name, String datePosted, String id, String publisher) {
+    public Book(List<String> images, int originalPrice, int discountPercentage, int amount, int sold, Rating rating, String name, String datePosted, String id, String publisher) {
         this.images = images;
         this.originalPrice = originalPrice;
         this.discount = discountPercentage;
         this.amount = amount;
         this.sold = sold;
-        this.totalRatings = totalRatings;
-        this.totalRatingScore = totalRatingScore;
+        this.rating = rating;
         this.datePosted = datePosted;
         this.name = name;
         this.id = id;
@@ -76,20 +74,12 @@ public class Book {
         this.sold = sold;
     }
 
-    public int getTotalRatings() {
-        return totalRatings;
+    public Rating getRating() {
+        return rating;
     }
 
-    public void setTotalRatings(int totalRatings) {
-        this.totalRatings = totalRatings;
-    }
-
-    public float getTotalRatingScore() {
-        return totalRatingScore;
-    }
-
-    public void setTotalRatingScore(float totalRatingScore) {
-        this.totalRatingScore = totalRatingScore;
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     public String getName() {

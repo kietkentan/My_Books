@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".fragment.ListProductFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/group_select_price_sort"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_increase"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:gravity="center"
+                android:checked="true"
+                android:paddingHorizontal="60dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/increase"
+                android:textColor="@drawable/custom_text_color"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/custom_checkbox_price"
+                android:background="@drawable/custom_background_checkbox"/>
+
+            <RadioButton
+                android:id="@+id/btn_decrease"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:gravity="center"
+                android:paddingHorizontal="60dp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/decrease"
+                android:textColor="@drawable/custom_text_color"
+                android:layout_weight="1"
+                android:drawableEnd="@drawable/custom_checkbox_price"
+                android:background="@drawable/custom_background_checkbox"
+                tools:ignore="RtlSymmetry" />
+        </RadioGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rec_list_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="10dp"
+            android:text="@string/end_the_list"
+            android:textColor="@color/reduced_price" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

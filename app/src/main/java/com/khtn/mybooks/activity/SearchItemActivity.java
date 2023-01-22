@@ -210,12 +210,12 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
             }
 
             if (remove)
-                adapterListHistorySearch = new StringSearchHistoryItemAdapter(listSearchHistory, this, stringHistorySearchClickInterface);
+                adapterListHistorySearch = new StringSearchHistoryItemAdapter(listSearchHistory, stringHistorySearchClickInterface);
             else {
                 List<String> listChild = new ArrayList<>();
                 for (int i = 0; i < 4; ++i)
                     listChild.add(listSearchHistory.get(i));
-                adapterListHistorySearch = new StringSearchHistoryItemAdapter(listChild, this, stringHistorySearchClickInterface);
+                adapterListHistorySearch = new StringSearchHistoryItemAdapter(listChild, stringHistorySearchClickInterface);
             }
             recListHistorySearch.setAdapter(adapterListHistorySearch);
             adapterListHistorySearch.notifyDataSetChanged();
@@ -230,7 +230,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
         layoutHistorySearch.setVisibility(View.GONE);
         layoutListItem.setVisibility(View.GONE);
 
-        StringSearchItemAdapter adapterListSearch = new StringSearchItemAdapter(listSearch, stringSearchClickInterface, this);
+        StringSearchItemAdapter adapterListSearch = new StringSearchItemAdapter(listSearch, stringSearchClickInterface);
         if (listSearch.size() > 0) {
             recListSearch.setAdapter(adapterListSearch);
             recListSearch.setVisibility(View.VISIBLE);

@@ -55,7 +55,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         init();
 
         ibBack.setOnClickListener(OTPVerificationActivity.this);
-        countdownResendOTP(TIME_RESEND_OTP, TICK);
+        countdownResendOTP();
         setupOTPInputs();
     }
 
@@ -82,8 +82,8 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
         tvTimeReSend = findViewById(R.id.tv_resend_OTP);
     }
 
-    private void countdownResendOTP(final long finish, final long tick) {
-        new CountDownTimer(finish, tick) {
+    private void countdownResendOTP() {
+        new CountDownTimer(30, 1000) {
             @SuppressLint("DefaultLocale")
             @Override
             public void onTick(long l) {
@@ -111,7 +111,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
 
             Toast.makeText(OTPVerificationActivity.this, R.string.resending, Toast.LENGTH_SHORT).show();
             resetOTPInputs();
-            countdownResendOTP(TIME_RESEND_OTP, TICK);
+            countdownResendOTP();
             // resendOTP();
         }
     }
@@ -159,7 +159,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
 
                         Toast.makeText(OTPVerificationActivity.this, R.string.resending, Toast.LENGTH_SHORT).show();
                         resetOTPInputs();
-                        countdownResendOTP(TIME_RESEND_OTP, TICK);
+                        countdownResendOTP();
                     }
                 })
                 .build());

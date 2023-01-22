@@ -1,8 +1,11 @@
 package com.khtn.mybooks.model;
 
+import com.khtn.mybooks.helper.AppUtil;
+
+import java.util.Comparator;
 import java.util.List;
 
-public class BookItem {
+public class BookItem implements Comparable<BookItem>{
     private List<String> images; // ảnh review
     private int originalPrice; // giá gốc
     private int discount; // % giảm
@@ -75,7 +78,7 @@ public class BookItem {
 
     public int getReducedPrice() {
         if (this.discount == 0)
-            return 0;
+            return originalPrice;
         else {
             return this.originalPrice - this.originalPrice*this.discount /100;
 
@@ -97,4 +100,13 @@ public class BookItem {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
+
+    @Override
+    public int compareTo(BookItem o) {
+        return (int) (AppUtil.numDays(this.getDatePosted()) - AppUtil.numDays(o.getDatePosted()));
+    }
+
+    public static Comparator<BookItem> ascendingPrice = (o1, o2) -> o1.getReducedPrice() - o2.getReducedPrice();
+
+    public static Comparator<BookItem> descendingPrice = (o1, o2) -> o2.getReducedPrice() - o1.getReducedPrice();
 }

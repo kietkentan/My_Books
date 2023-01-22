@@ -3,6 +3,7 @@ package com.khtn.mybooks.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,6 +80,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private TextView tvPosition;
     private TextView tvNumCart;
     private TextView tvSearch;
+    private TextView tvFollow;
     private ImageButton ibAddFavorite;
     private ImageButton ibBack;
     private RatingBar barRatingBook;
@@ -86,6 +88,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private RecyclerView viewListDetails;
     private FrameLayout layoutUpcoming;
     private FrameLayout layoutCart;
+    private ConstraintLayout layoutPublisher;
     private AppCompatButton btnAddCart;
     private AppCompatButton btnBuyNow;
 
@@ -110,8 +113,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         getData();
 
         tvSearch.setOnClickListener(BookDetailActivity.this);
+        tvFollow.setOnClickListener(BookDetailActivity.this);
         ivMenu.setOnClickListener(BookDetailActivity.this);
         layoutCart.setOnClickListener(BookDetailActivity.this);
+        layoutPublisher.setOnClickListener(BookDetailActivity.this);
         ibBack.setOnClickListener(BookDetailActivity.this);
         btnAddCart.setOnClickListener(BookDetailActivity.this);
         btnBuyNow.setOnClickListener(BookDetailActivity.this);
@@ -216,6 +221,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         tvPosition = findViewById(R.id.tv_position);
         tvNumCart = findViewById(R.id.tv_num_cart);
         tvSearch = findViewById(R.id.tv_search_item);
+        tvFollow = findViewById(R.id.tv_follow);
         barRatingBook = findViewById(R.id.bar_rating_book);
         ibAddFavorite = findViewById(R.id.ib_add_favorite);
         ibBack = findViewById(R.id.ib_exit_detail);
@@ -223,6 +229,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         viewListDetails = findViewById(R.id.list_details);
         layoutUpcoming = findViewById(R.id.layout_upcoming);
         layoutCart = findViewById(R.id.layout_shopping_cart);
+        layoutPublisher = findViewById(R.id.layout_publisher);
         btnAddCart = findViewById(R.id.btn_add_cart);
         btnBuyNow = findViewById(R.id.btn_buy_now);
     }
@@ -252,9 +259,9 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         }
 
         tvNameBook.setText(dataBook.getName());
-        barRatingBook.setRating(dataBook.getTotalRatingScore());
-        tvTotalRating.setText(String.format(getString(R.string.rating_score), dataBook.getTotalRatingScore()));
-        tvTotalNumberPeopleRating.setText(String.format(getString(R.string.people_rating), dataBook.getTotalRatings()));
+        barRatingBook.setRating(dataBook.getRating().getScore());
+        tvTotalRating.setText(String.format(getString(R.string.rating_score), dataBook.getRating().getScore()));
+        tvTotalNumberPeopleRating.setText(String.format(getString(R.string.people_rating), dataBook.getRating().getTurn()));
         tvQuantitySold.setText(String.format(getString(R.string.sold), dataBook.getSold()));
 
         if (dataBook.getAmount() == 0){
@@ -266,13 +273,13 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
         Picasso.get().load(dataPublisher.getLogo()).into(ivLogoPublisher);
         tvShopName.setText(dataPublisher.getName());
-        tvShopLocation.setText(dataPublisher.getLocation());
+        tvShopLocation.setText(dataPublisher.getLocation().getProvinces_cities().getName_with_type().replace("Thành phố", "TP"));
 
         if (dataPublisher.getReply() < 60)
             tvShopReplyWithin.setText(String.format(getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
         else
             tvShopReplyWithin.setText(String.format(getString(R.string.reply_within), dataPublisher.getReply() / 60, getString(R.string.hour)));
-        tvShopRating.setText(String.format(getString(R.string.rating_score), dataPublisher.getRating()));
+        tvShopRating.setText(String.format(getString(R.string.rating_score), dataPublisher.getRating().getScore()));
 
         if (AppUtil.numDays(dataPublisher.getWorked()) < 30)
             tvShopWorked.setText(String.format(getString(R.string.shop_worked), AppUtil.numDays(dataPublisher.getWorked()), getString(R.string.day)));
@@ -380,6 +387,10 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             case R.id.tv_search_item:
                 startSearchItemPage();
                 break;
+            case R.id.tv_follow:
+            case R.id.layout_publisher:
+                startShopDetail();
+                break;
             case R.id.btn_buy_now:
                 startCompletePayment();
                 break;
@@ -463,6 +474,15 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         intent.putExtras(bundle);
         startActivity(intent);
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
+    public void startShopDetail(){
+        Intent intent = new Intent(BookDetailActivity.this, ShopDetailActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putString("publisher", new Gson().toJson(dataPublisher));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     @SuppressLint("NonConstantResourceId")

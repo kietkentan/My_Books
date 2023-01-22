@@ -317,6 +317,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_publisher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -328,7 +329,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginEnd="30dp"
+                        android:layout_marginEnd="20dp"
                         android:text="@string/provider_information"
                         android:textColor="@color/black"
                         android:textSize="17sp"
@@ -392,13 +393,16 @@
                             tools:ignore="SmallSp" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageButton
-                        android:id="@+id/ib_follow"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <TextView
+                        android:id="@+id/tv_follow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_marginEnd="20dp"
-                        android:background="@color/button_hidden"
-                        android:src="@drawable/ic_follow"
+                        android:gravity="center"
+                        android:text="@string/go_shop"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="@color/reduced_price"
+                        android:background="@drawable/custom_button_close"
                         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView"
@@ -581,65 +585,33 @@
         android:background="@color/white">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:orientation="vertical"
             android:baselineAligned="false">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                tools:ignore="NestedWeights,UseCompoundDrawables">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_chat"
+                app:tint="@color/background_position"
+                tools:ignore="ContentDescription,ImageContrastCheck" />
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_stand"
-                    tools:ignore="ContentDescription,ImageContrastCheck" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/stand"
-                    android:textColor="@color/text_hint"
-                    android:textSize="10sp"
-                    tools:ignore="SmallSp,TextContrastCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_chat"
-                    app:tint="@color/background_position"
-                    tools:ignore="ContentDescription,ImageContrastCheck" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chat"
-                    android:textColor="@color/text_hint"
-                    android:textSize="10sp"
-                    tools:ignore="SmallSp,TextContrastCheck" />
-            </LinearLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chat"
+                android:textColor="@color/text_hint"
+                android:textSize="10sp"
+                tools:ignore="SmallSp,TextContrastCheck" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_buy_now"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
@@ -652,7 +624,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_cart"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"

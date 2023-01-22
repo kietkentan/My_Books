@@ -1,7 +1,6 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,10 @@ import java.util.List;
 public class StringSearchItemAdapter extends RecyclerView.Adapter<StringSearchItemAdapter.ViewHolder> {
     private final List<String> listSearch;
     private final StringSearchClickInterface stringSearchClickInterface;
-    private final Context context;
 
-    public StringSearchItemAdapter(List<String> listSearch, StringSearchClickInterface stringSearchClickInterface, Context context) {
+    public StringSearchItemAdapter(List<String> listSearch, StringSearchClickInterface stringSearchClickInterface) {
         this.listSearch = listSearch;
         this.stringSearchClickInterface = stringSearchClickInterface;
-        this.context = context;
     }
 
     @NonNull
@@ -35,12 +32,7 @@ public class StringSearchItemAdapter extends RecyclerView.Adapter<StringSearchIt
     @Override
     public void onBindViewHolder(@NonNull StringSearchItemAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.tvStringSearch.setText(listSearch.get(position));
-        holder.tvStringSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stringSearchClickInterface.OnClick(listSearch.get(position));
-            }
-        });
+        holder.tvStringSearch.setOnClickListener(v -> stringSearchClickInterface.OnClick(listSearch.get(position)));
     }
 
     @Override

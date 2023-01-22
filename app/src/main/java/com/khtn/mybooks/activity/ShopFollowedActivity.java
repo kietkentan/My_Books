@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -40,16 +41,26 @@ public class ShopFollowedActivity extends AppCompatActivity {
         AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
-        loadData();
 
         ibBack.setOnClickListener(v -> finish());
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     public void finish() {
-        super.finish();
-        adapter.updateFollowed();
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+        super.finish();
     }
 
     public void init(){
@@ -69,6 +80,7 @@ public class ShopFollowedActivity extends AppCompatActivity {
     }
 
     public void loadData(){
+        publisherList.clear();
         if (Common.currentUser.getList_shopFollow() != null && Common.currentUser.getList_shopFollow().size() > 0){
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

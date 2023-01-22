@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.khtn.mybooks.R;
@@ -59,6 +58,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         setAddress();
         setOrderList();
         setDetailRequest();
+        setUpCart();
 
         ibBack.setOnClickListener(v -> finish());
         tvTotalPrice1.setOnClickListener(v -> {
@@ -139,6 +139,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvStatus.setText(getResources().getStringArray(R.array.status)[request.getStatus() - 1]);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("ObsoleteSdkInt")
     private void setClipboard(String text) {
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
