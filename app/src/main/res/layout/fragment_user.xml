@@ -34,12 +34,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="260dp"
                     android:background="@color/white"
-                    android:src="@color/background_discount"
                     android:scaleType="centerCrop"
+                    android:src="@color/background_discount"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
                     app:shapeAppearanceOverlay="@style/ImageStyle_BackGround" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -276,7 +278,6 @@
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         app:drawableStartCompat="@drawable/ic_notepad"
-                        app:drawableTint="@color/reduced_price"
                         android:drawablePadding="10dp"/>
 
                     <TextView
@@ -604,12 +605,13 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:background="@color/white"
                 android:layout_marginTop="10dp"
+                android:background="@color/white"
                 android:orientation="vertical"
+                android:paddingHorizontal="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_buy_again">
@@ -617,66 +619,79 @@
                 <TextView
                     android:id="@+id/tv_store_manager"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="50dp"
                     android:drawablePadding="10dp"
-                    android:text="@string/store_manager"
                     android:gravity="center_vertical"
+                    android:text="@string/store_manager"
                     android:textSize="16sp"
-                    app:drawableStartCompat="@drawable/ic_store"
-                    app:drawableEndCompat="@drawable/ic_next"/>
+                    android:visibility="gone"
+                    app:drawableEndCompat="@drawable/ic_next"
+                    app:drawableStartCompat="@drawable/ic_store" />
 
                 <View
                     android:id="@+id/view_store_manager"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="0.5dp"
-                    android:background="@color/text_hint"/>
+                    android:background="@color/text_hint"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_favorite_item"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/favorite"
                     android:textSize="16sp"
-                    android:drawablePadding="10dp"
-                    app:drawableStartCompat="@drawable/ic_favorite_item"
-                    app:drawableEndCompat="@drawable/ic_next"/>
+                    app:drawableEndCompat="@drawable/ic_next"
+                    app:drawableStartCompat="@drawable/ic_favorite_item" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/text_hint"/>
+                    android:background="@color/text_hint" />
 
                 <TextView
                     android:id="@+id/tv_note_address"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/note_address"
                     android:textSize="16sp"
-                    android:drawablePadding="10dp"
-                    app:drawableStartCompat="@drawable/ic_note_address"
-                    app:drawableEndCompat="@drawable/ic_next"/>
+                    app:drawableEndCompat="@drawable/ic_next"
+                    app:drawableStartCompat="@drawable/ic_note_address" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:background="@color/text_hint"/>
+                    android:background="@color/text_hint" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:drawablePadding="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/info_payment"
                     android:textSize="16sp"
-                    android:drawablePadding="10dp"
-                    app:drawableStartCompat="@drawable/ic_card"
-                    app:drawableEndCompat="@drawable/ic_next" />
-
+                    app:drawableEndCompat="@drawable/ic_next"
+                    app:drawableStartCompat="@drawable/ic_card" />
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin='20dp'
+                android:background="@drawable/custom_button_close"
+                android:text="@string/logout"
+                android:textSize="16sp"
+                android:textColor="@color/reduced_price"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout11" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

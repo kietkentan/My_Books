@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -41,11 +43,13 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, ViewPublisherClickInterface {
     private View view;
-    private ImageView ig;
     private TextView tvSearch;
     private RecyclerView rcPublisher;
     private RecyclerView rcBestSellerBooks;
     private RecyclerView rcNewBooks;
+    private ShimmerFrameLayout shimmerBestSeller;
+    private ShimmerFrameLayout shimmerNews;
+    private ShimmerFrameLayout shimmerPublishers;
 
     private PublisherItemAdapter publisherItemAdapter;
     private BookItemAdapter bookItemAdapter;
@@ -56,7 +60,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private List<BookItem> listBookItem;
 
     private FirebaseDatabase database;
-    private GoogleSignInClient gsc;
 
     public HomeFragment() {}
 
@@ -68,7 +71,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
 
         init();
 
-        ig.setOnClickListener(this);
         tvSearch.setOnClickListener(this);
 
         setRecyclerViewBook();
@@ -78,18 +80,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     public void init(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(requireActivity(), gso);
         database = FirebaseDatabase.getInstance();
 
         publisherList = new ArrayList<>();
         bookList = new HashMap<>();
 
-        ig = view.findViewById(R.id.imageView);
         tvSearch = view.findViewById(R.id.tv_search_item);
         rcPublisher = view.findViewById(R.id.rec_publishers);
-        rcBestSellerBooks = view.findViewById(R.id.rec_bestSellers);
+        rcBestSellerBooks = view.findViewById(R.id.rec_best_sellers);
         rcNewBooks = view.findViewById(R.id.rec_news);
+        shimmerBestSeller = view.findViewById(R.id.shimmer_best_seller);
+        shimmerNews = view.findViewById(R.id.shimmer_news);
+        shimmerPublishers = view.findViewById(R.id.shimmer_publishers);
     }
 
     public void setRecyclerViewPublisher(){
@@ -113,9 +115,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.imageView:
-                signOut();
-                break;
             case R.id.tv_search_item:
                 startSearchItemPage();
                 break;
@@ -123,6 +122,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     }
 
     private void loadData(){
+        startShimmer();
         database.getReference("publisher").addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -132,6 +132,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                     publisherList.add(item);
                 }
                 publisherItemAdapter.notifyDataSetChanged();
+                stopPublisherShimmer();
                 loadBook(publisherList.get(0).getId());
             }
 
@@ -172,21 +173,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         rcBestSellerBooks.setAdapter(bookItemAdapter);
         bookItemAdapter2 = new BookItemAdapter(getContext(), listBookItem);
         rcNewBooks.setAdapter(bookItemAdapter2);
-    }
 
-    // because the user page is incomplete, it should be placed here temporarily
-    private void signOut(){
-        Common.clearUser(requireActivity());
-        if (Common.modeLogin == 2)
-            gsc.signOut().addOnCompleteListener(requireActivity(), task -> {});
-        else if (Common.modeLogin == 3)
-            FirebaseAuth.getInstance().signOut();
-        Common.signOut();
-        new DatabaseCart(getActivity()).cleanCarts();
+        stopShimmer();
     }
 
     @Override
     public void OnItemClick(String idPublisher) {
         loadBook(idPublisher);
+    }
+
+    public void startShimmer(){
+        shimmerBestSeller.startShimmer();
+        shimmerNews.startShimmer();
+        shimmerPublishers.startShimmer();
+
+        shimmerBestSeller.setVisibility(View.VISIBLE);
+        shimmerNews.setVisibility(View.VISIBLE);
+        shimmerPublishers.setVisibility(View.VISIBLE);
+
+        rcBestSellerBooks.setVisibility(View.GONE);
+        rcNewBooks.setVisibility(View.GONE);
+        rcPublisher.setVisibility(View.GONE);
+    }
+
+    public void stopPublisherShimmer(){
+        new Handler().postDelayed(() -> {
+            shimmerPublishers.stopShimmer();
+            shimmerPublishers.setVisibility(View.GONE);
+            rcPublisher.setVisibility(View.VISIBLE);
+        }, 500);
+    }
+
+    public void stopShimmer(){
+        new Handler().postDelayed(() -> {
+            shimmerBestSeller.stopShimmer();
+            shimmerNews.stopShimmer();
+
+            shimmerBestSeller.setVisibility(View.GONE);
+            shimmerNews.setVisibility(View.GONE);
+
+            rcBestSellerBooks.setVisibility(View.VISIBLE);
+            rcNewBooks.setVisibility(View.VISIBLE);
+        }, 500);
     }
 }

@@ -1,5 +1,7 @@
 package com.khtn.mybooks.model;
 
+import java.util.List;
+
 public class Publisher {
     private String logo;
     private String name;
@@ -11,6 +13,7 @@ public class Publisher {
     private int product;
     private String description;
     private int followed;
+    private List<String> staff;
 
     public Publisher() {}
 
@@ -105,5 +108,13 @@ public class Publisher {
 
     public void setFollowed(int followed) {
         this.followed = followed;
+    }
+
+    public List<String> getStaff() {
+        return staff;
+    }
+
+    public void setStaff(List<String> staff) {
+        this.staff = staff;
     }
 }

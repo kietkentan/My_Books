@@ -86,11 +86,12 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private RatingBar barRatingBook;
     private ShapeableImageView ivLogoPublisher;
     private RecyclerView viewListDetails;
+    private AppCompatButton btnAddCart;
+    private AppCompatButton btnBuyNow;
     private FrameLayout layoutUpcoming;
     private FrameLayout layoutCart;
     private ConstraintLayout layoutPublisher;
-    private AppCompatButton btnAddCart;
-    private AppCompatButton btnBuyNow;
+    private FrameLayout layoutLoading;
 
     public String id;
     public String publisher;
@@ -130,6 +131,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void getData(){
+        layoutLoading.setVisibility(View.VISIBLE);
         database.getReference("publisher").child(publisher).
                 addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -227,11 +229,12 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         ibBack = findViewById(R.id.ib_exit_detail);
         ivLogoPublisher = findViewById(R.id.iv_avatar_publisher);
         viewListDetails = findViewById(R.id.list_details);
+        btnAddCart = findViewById(R.id.btn_add_cart);
+        btnBuyNow = findViewById(R.id.btn_buy_now);
         layoutUpcoming = findViewById(R.id.layout_upcoming);
         layoutCart = findViewById(R.id.layout_shopping_cart);
         layoutPublisher = findViewById(R.id.layout_publisher);
-        btnAddCart = findViewById(R.id.btn_add_cart);
-        btnBuyNow = findViewById(R.id.btn_buy_now);
+        layoutLoading = findViewById(R.id.layout_loading_detail);
     }
 
     @SuppressLint({"DefaultLocale", "ResourceType"})
@@ -342,6 +345,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         BookDetailAdapter detailAdapter = new BookDetailAdapter(listDetails, this);
         viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         viewListDetails.setAdapter(detailAdapter);
+        layoutLoading.setVisibility(View.GONE);
     }
 
     public void setButton(){
@@ -465,7 +469,11 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         if (Common.currentUser == null){
             AppUtil.startLoginPage(this);
             return;
+        } else if (Common.addressNow == null) {
+            openDialogAddAddress();
+            return;
         }
+
         Intent intent = new Intent(BookDetailActivity.this, CompletePaymentActivity.class);
         Bundle bundle = new Bundle();
 
@@ -623,6 +631,32 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             startCart();
         });
         dialog.show();
+    }
+
+    public void openDialogAddAddress(){
+        Dialog dialog = new Dialog(this, R.style.FullScreenDialog);
+        dialog.setContentView(R.layout.dialog_none_address);
+
+        AppCompatButton btnClose = dialog.findViewById(R.id.btn_close_dialog);
+        AppCompatButton btnAddAddress = dialog.findViewById(R.id.btn_accept_add_address);
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnAddAddress.setOnClickListener(v -> {
+            startAddAddressPage();
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    public void startAddAddressPage(){
+        Intent intent = new Intent(BookDetailActivity.this, AddAddressActivity.class);
+        Bundle bundle = new Bundle();
+
+        bundle.putInt("pos", -1);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     public static class URIImagePasser implements Html.ImageGetter {

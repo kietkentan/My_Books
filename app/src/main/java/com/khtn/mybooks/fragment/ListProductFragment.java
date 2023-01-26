@@ -101,12 +101,13 @@ public class ListProductFragment extends Fragment {
 
     public void setProductForPrice(){
         radioGroup.setVisibility(View.VISIBLE);
+        List<BookItem> items = new ArrayList<>(bookItems);
 
         if (checkButton())
-            Collections.sort(bookItems, BookItem.ascendingPrice);
+            Collections.sort(items, BookItem.ascendingPrice);
         else
-            Collections.sort(bookItems, BookItem.descendingPrice);
-        setAdapter(bookItems);
+            Collections.sort(items, BookItem.descendingPrice);
+        setAdapter(items);
     }
 
     public boolean checkButton(){

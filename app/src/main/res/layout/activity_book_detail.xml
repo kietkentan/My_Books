@@ -590,7 +590,8 @@
             android:layout_weight="0.5"
             android:gravity="center"
             android:orientation="vertical"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="25dp"
@@ -635,4 +636,16 @@
             android:textColor="@color/white"
             tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_loading_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,32 +1,26 @@
 package com.khtn.mybooks.model;
 
-import android.util.Log;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class User {
     private String avatar;
     private String background;
     private String name;
     private String password;
-    private String staffFrom;
     private String id;
     private String email;
     private String phone;
     private String dateOfBirth;
-    private boolean staff;
     private int gender;
     private List<Order> cartList;
     private List<Address> addressList;
     private List<Book> list_favorite;
     private List<String> list_shopFollow;
+    private Staff staff;
 
     public User() {}
 
-    public User(String avatar, String background, String name, String password, String id, String email, String phone, String staffFrom) {
+    public User(String avatar, String background, String name, String password, String id, String email, String phone, Staff staff) {
         this.avatar = avatar;
         this.background = background;
         this.name = name;
@@ -34,11 +28,7 @@ public class User {
         this.id = id;
         this.email = email;
         this.phone = phone;
-        if (staffFrom != null){
-            this.staffFrom = staffFrom;
-            this.staff = true;
-        } else
-            this.staff = false;
+        this.staff = staff;
     }
 
     public String getAvatar() {
@@ -71,14 +61,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getStaffFrom() {
-        return staffFrom;
-    }
-
-    public void setStaffFrom(String staffFrom) {
-        this.staffFrom = staffFrom;
     }
 
     public String getId() {
@@ -129,14 +111,6 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isStaff() {
-        return staff;
-    }
-
-    public void setStaff(boolean staff) {
-        this.staff = staff;
-    }
-
     public int getGender() {
         return gender;
     }
@@ -183,6 +157,14 @@ public class User {
 
     public void setList_shopFollow(List<String> list_shopFollow) {
         this.list_shopFollow = list_shopFollow;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 }
 

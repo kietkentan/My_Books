@@ -1,5 +1,7 @@
 package com.khtn.mybooks.fragment;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,9 +17,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.activity.InformationUserActivity;
 import com.khtn.mybooks.activity.RecentlyViewedActivity;
 import com.khtn.mybooks.activity.ShopFollowedActivity;
+import com.khtn.mybooks.activity.StaffHomePageActivity;
+import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.databases.DatabaseViewed;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.Interface.SwitchFavoritePageInterface;
@@ -67,11 +76,13 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     private ShapeableImageView ivBackground;
     private ShapeableImageView ivAvatar;
     private AppCompatButton btnLogin;
+    private AppCompatButton btnLogout;
     private final SwitchFavoritePageInterface switchFavoritePageInterface;
 
     private List<Request> requestList;
     private FirebaseDatabase database;
     private DatabaseReference reference;
+    private GoogleSignInClient gsc;
 
     public UserFragment(SwitchFavoritePageInterface switchFavoritePageInterface) {
         this.switchFavoritePageInterface = switchFavoritePageInterface;
@@ -134,21 +145,46 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         ivBackground = view.findViewById(R.id.iv_background_user);
         ivAvatar = view.findViewById(R.id.iv_avatar_user);
         btnLogin = view.findViewById(R.id.btn_login_user);
+        btnLogout = view.findViewById(R.id.btn_logout);
 
         requestList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("request");
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gsc = GoogleSignIn.getClient(requireActivity(), gso);
+    }
+
+    private void defaultUser(){
+        ivAvatar.setImageResource(R.drawable.avatar_user_default);
+        ivBackground.setImageResource(R.color.background_discount);
+        ivBackground.clearColorFilter();
+        ivMenuSetting.getDrawable().setTint(Color.BLACK);
+        ivChat.getDrawable().setTint(Color.BLACK);
+
+        btnLogin.setVisibility(View.VISIBLE);
+        btnLogout.setVisibility(View.GONE);
+        tvMyInformation.setVisibility(View.GONE);
+        tvName.setText(R.string.well_come);
+        tvName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        layoutSeeMore.setVisibility(View.GONE);
+        tvStoreManager.setVisibility(View.GONE);
+        viewStoreManager.setVisibility(View.GONE);
+
+        setupNumStatus();
     }
 
     private void checkUser(){
         if (Common.currentUser != null) {
             getData();
             loadUser();
+
+            btnLogout.setVisibility(View.VISIBLE);
+            btnLogout.setOnClickListener(this);
         }
         else {
+            defaultUser();
             btnLogin.setOnClickListener(this);
-            tvMyInformation.setVisibility(View.GONE);
-            layoutSeeMore.setVisibility(View.GONE);
         }
     }
 
@@ -185,12 +221,12 @@ public class UserFragment extends Fragment implements View.OnClickListener{
 
         ivBackground.setColorFilter(new LightingColorFilter(0xaaaaaaaa, 0x11111111));
         tvName.setText(Common.currentUser.getName());
-        tvName.setTextColor(Color.parseColor("#FFFFFFFF"));
+        tvName.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
         setupStaff();
     }
 
     public void setupStaff(){
-        if (Common.currentUser.isStaff()){
+        if (Common.currentUser != null && Common.currentUser.getStaff() != null){
             tvStoreManager.setVisibility(View.VISIBLE);
             tvStoreManager.setOnClickListener(this);
             viewStoreManager.setVisibility(View.VISIBLE);
@@ -315,6 +351,12 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    public void startStaffHomePage(){
+        Intent intent = new Intent(getContext(), StaffHomePageActivity.class);
+        startActivity(intent);
+        requireActivity().overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -357,6 +399,24 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             case R.id.tv_my_information:
                 startInformationPage();
                 break;
+            case R.id.tv_store_manager:
+                startStaffHomePage();
+                break;
+            case R.id.btn_logout:
+                logout();
+                checkUser();
+                break;
         }
+    }
+
+    private void logout(){
+        Common.clearUser(requireActivity());
+        if (Common.modeLogin == 2)
+            gsc.signOut().addOnCompleteListener(requireActivity(), task -> {});
+        else if (Common.modeLogin == 3)
+            FirebaseAuth.getInstance().signOut();
+        Common.signOut();
+        new DatabaseCart(getActivity()).cleanCarts();
+        requestList.clear();
     }
 }

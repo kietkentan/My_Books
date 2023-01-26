@@ -1,6 +1,7 @@
 package com.khtn.mybooks.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -84,6 +85,7 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
             bundle.putString("publisher", new Gson().toJson(publisherList.get(position)));
             intent.putExtras(bundle);
             context.startActivity(intent);
+            ((Activity) context).overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
         });
     }
 

@@ -205,14 +205,14 @@
                     <TextView
                         android:id="@+id/tv_total_price1"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="20dp"
+                        android:gravity="center_vertical"
                         android:text="@string/book_price"
                         android:textColor="@color/black"
-                        android:gravity="center_vertical"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:drawableEndCompat="@drawable/ic_down"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:drawableEndCompat="@drawable/ic_down" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout

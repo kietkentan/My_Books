@@ -280,4 +280,22 @@
     <string name="go_shop">Xem Shop</string>
     <string name="increase">Tăng</string>
     <string name="decrease">Giảm</string>
+    <string name="staff">Nhân viên</string>
+    <string name="store_info">Thông tin cửa hàng</string>
+    <string name="orders">Đơn hàng</string>
+    <string name="add_string">Thêm</string>
+    <string name="all_product">Tất cả sản phẩm</string>
+    <string name="waiting">Chờ duyệt</string>
+    <string name="order_cancel">Hủy đơn</string>
+    <string name="staff_manager">Quản lí nhân viên</string>
+    <string name="name_is">Tên:</string>
+    <string name="id">Id:</string>
+    <string name="order_manager">Quản lí đơn hàng</string>
+    <string name="product_manager">Quản lí sản phẩm</string>
+    <string name="shop_manager">Sửa thông tin shop</string>
+    <string name="current_setup">Thiết lập cũ</string>
+    <string name="uncheck_all">Bỏ tất cả</string>
+    <string name="remove_staff">Xóa nhân viên</string>
+    <string name="confirm_remove_this_staff">Bạn muốn xóa nhân viên này?</string>
+    <string name="logout">Đăng xuất</string>
 </resources>

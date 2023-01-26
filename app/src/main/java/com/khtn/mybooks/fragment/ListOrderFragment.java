@@ -187,8 +187,8 @@ public class ListOrderFragment extends Fragment {
     }
 
     public void setupRecyclerListRequest(){
+        progressBar.setVisibility(View.GONE);
         if (requestList.size() == 0){
-            progressBar.setVisibility(View.GONE);
             layoutNoneRequest.setVisibility(View.VISIBLE);
             recListRequest.setVisibility(View.INVISIBLE);
         } else {
