@@ -57,7 +57,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class BookDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageView ivMenu;
@@ -91,6 +90,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private FrameLayout layoutUpcoming;
     private FrameLayout layoutCart;
     private ConstraintLayout layoutPublisher;
+    private ConstraintLayout layoutSeeData;
     private FrameLayout layoutLoading;
 
     public String id;
@@ -98,7 +98,6 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private Book dataBook;
     private Publisher dataPublisher;
     private List<List<String>> listDetails;
-    private String describe;
     private final String[] mode = {"mybooks", "google", "facebook"};
 
     private DatabaseCart databaseCart;
@@ -132,6 +131,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void getData(){
         layoutLoading.setVisibility(View.VISIBLE);
+        layoutSeeData.setVisibility(View.GONE);
         database.getReference("publisher").child(publisher).
                 addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -154,28 +154,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                                     dataBook.getId(),
                                     dataBook.getPublisher()));
 
-                            snapshot.getRef().child("detail").
-                                    addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for (DataSnapshot dataSnapshot2:snapshot.getChildren()) {
-                                        if (Objects.equals(dataSnapshot2.getKey(), "describe")){
-                                            describe = dataSnapshot2.getValue(String.class);
-                                        } else {
-                                            List<String> list = new ArrayList<>();
-                                            list.add(dataSnapshot2.getKey());
-                                            list.add(dataSnapshot2.getValue(String.class));
-                                            listDetails.add(list);
-                                        }
-                                    }
-                                    setAboutDetails();
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                            listDetails = dataBook.getListDetail();
+                            setAboutDetails();
                         }
                         setDetails();
                     }
@@ -235,6 +215,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         layoutCart = findViewById(R.id.layout_shopping_cart);
         layoutPublisher = findViewById(R.id.layout_publisher);
         layoutLoading = findViewById(R.id.layout_loading_detail);
+        layoutSeeData = findViewById(R.id.layout_see_detail);
     }
 
     @SuppressLint({"DefaultLocale", "ResourceType"})
@@ -341,11 +322,12 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void setAboutDetails(){
         tvDescribe.setMovementMethod(LinkMovementMethod.getInstance());
-        tvDescribe.setText(Html.fromHtml(describe, new URIImagePasser(BookDetailActivity.this, tvDescribe), null));
+        tvDescribe.setText(Html.fromHtml(dataBook.getDetail().getDescribe(), new URIImagePasser(BookDetailActivity.this, tvDescribe), null));
         BookDetailAdapter detailAdapter = new BookDetailAdapter(listDetails, this);
         viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         viewListDetails.setAdapter(detailAdapter);
         layoutLoading.setVisibility(View.GONE);
+        layoutSeeData.setVisibility(View.VISIBLE);
     }
 
     public void setButton(){
@@ -526,7 +508,12 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                     finish();
                     break;
                 case R.id.m_help:
-                    Toast.makeText(BookDetailActivity.this, "Help Page", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(BookDetailActivity.this, EditProductActivity.class);
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString("book", new Gson().toJson(dataBook));
+                    intent1.putExtras(bundle1);
+                    startActivity(intent1);
+                    //Toast.makeText(BookDetailActivity.this, "Help Page", Toast.LENGTH_SHORT).show();
                     break;
             }
             return true;

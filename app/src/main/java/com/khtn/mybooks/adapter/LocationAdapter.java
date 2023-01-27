@@ -28,11 +28,14 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     @NonNull
     @Override
     public LocationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_location, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_string_view, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull LocationAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder.tvName.getLayoutParams();
+        layoutParams.setMargins(20, 15, 20, 15);
+        holder.tvName.setLayoutParams(layoutParams);
         holder.tvName.setText(locationList.get(position).getName_with_type());
 
         holder.viewLocationItem.setOnClickListener(v -> clickInterface.OnClick(locationList.get(position)));
@@ -48,8 +51,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         TextView tvName;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            viewLocationItem = itemView.findViewById(R.id.view_location_item);
-            tvName = itemView.findViewById(R.id.tv_location_item);
+            viewLocationItem = itemView.findViewById(R.id.view_string_item);
+            tvName = itemView.findViewById(R.id.tv_string_item);
         }
     }
 }

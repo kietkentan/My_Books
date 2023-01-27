@@ -62,6 +62,7 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
         ivStore.setOnClickListener(this);
         tvStaff.setOnClickListener(this);
         tvProduct.setOnClickListener(this);
+        tvAddProduct.setOnClickListener(this);
         tvOrder.setOnClickListener(this);
     }
 
@@ -170,6 +171,15 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    public void startAddProduct(){
+        Intent intent = new Intent(StaffHomePageActivity.this, EditProductActivity.class);
+        Bundle bundle = new Bundle();
+
+        intent.putExtras(bundle);
+        startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -185,6 +195,9 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.tv_product:
                 clickTextViewProduct();
+                break;
+            case R.id.tv_option_add_product:
+                startAddProduct();
                 break;
             case R.id.tv_order:
                 clickTextViewOrder();

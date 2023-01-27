@@ -298,4 +298,18 @@
     <string name="remove_staff">Xóa nhân viên</string>
     <string name="confirm_remove_this_staff">Bạn muốn xóa nhân viên này?</string>
     <string name="logout">Đăng xuất</string>
+    <string name="cancel">Hủy</string>
+    <string name="name_product">Tên sản phẩm</string>
+    <string name="price">Giá:</string>
+    <string name="discount">Giảm giá (%):</string>
+    <string name="date_posted">Ngày đăng:</string>
+    <string name="now">Hiện tại</string>
+    <string name="date_of_sell">Ngày mở bán:</string>
+    <string name="unselected">Chưa chọn</string>
+    <string name="time_of_sell">Giờ mở bán:</string>
+    <string name="amount">Số lượng:</string>
+    <string name="add_picture">Thêm ảnh</string>
+    <string name="remove_picture">Xóa ảnh</string>
+    <string name="remove_all_picture">Xóa tất cả</string>
+    <string name="add_new">Thêm</string>
 </resources>
