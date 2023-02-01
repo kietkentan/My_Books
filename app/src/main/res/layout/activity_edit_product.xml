@@ -49,6 +49,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <FrameLayout
@@ -229,6 +230,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
+                            android:layout_marginStart="10dp"
                             android:inputType="numberDecimal"
                             tools:ignore="Autofill,LabelFor" />
                     </LinearLayout>
@@ -249,6 +251,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"
+                            android:hint="0"
+                            android:layout_marginStart="10dp"
                             tools:ignore="Autofill,LabelFor" />
                     </LinearLayout>
                 </LinearLayout>
@@ -317,7 +321,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -351,11 +356,193 @@
                                 android:background="@drawable/custom_button_close"
                                 android:drawablePadding="-10dp"
                                 android:paddingHorizontal="15dp"
+                                android:textColor="@color/reduced_price"
                                 android:gravity="center"
                                 app:drawableEndCompat="@drawable/ic_add" />
                         </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="@string/ageRange"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="3">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rec_list_age_range"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/tv_chose_age_range"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:text="@string/change"
+                                android:layout_marginHorizontal="50dp"
+                                android:layout_marginVertical="5dp"
+                                android:textColor="@color/reduced_price"
+                                android:background="@drawable/custom_button_close"
+                                android:drawablePadding="-10dp"
+                                android:paddingHorizontal="15dp"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="@string/type"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"/>
+
+                        <EditText
+                            android:id="@+id/edt_enter_type"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="3"
+                            android:inputType="textPersonName"
+                            tools:ignore="Autofill,LabelFor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="@string/pages"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"/>
+
+                        <EditText
+                            android:id="@+id/edt_enter_pages"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="3"
+                            android:inputType="numberDecimal"
+                            tools:ignore="Autofill,LabelFor" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="@string/weight"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_weight="3">
+
+                            <EditText
+                                android:id="@+id/edt_enter_weight"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:inputType="numberDecimal"
+                                android:layout_weight="5"
+                                tools:ignore="Autofill,LabelFor,NestedWeights"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:text="g"
+                                android:gravity="end|clip_vertical"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:text="@string/size"
+                            android:gravity="center_vertical"
+                            android:layout_weight="1"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal"
+                            android:layout_weight="3">
+
+                            <EditText
+                                android:id="@+id/edt_enter_height"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:inputType="numberDecimal|numberSigned"
+                                android:layout_weight="2"
+                                android:textColor="@color/black"
+                                tools:ignore="Autofill,LabelFor,NestedWeights" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:text="x"
+                                android:gravity="center"
+                                android:layout_weight="1"/>
+
+                            <EditText
+                                android:id="@+id/edt_enter_width"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:textColor="@color/black"
+                                android:inputType="numberDecimal|numberSigned"
+                                android:layout_weight="2"
+                                tools:ignore="Autofill,LabelFor" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:text="cm"
+                                android:gravity="end|clip_vertical"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/describe"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edt_enter_describe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:gravity="top"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:scrollHorizontally="false"/>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

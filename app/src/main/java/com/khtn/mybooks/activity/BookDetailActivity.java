@@ -22,6 +22,7 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -331,7 +332,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setButton(){
-        if (dataBook.getAmount() > 0){
+        boolean check = AppUtil.checkDateTimeSell(dataBook.getTimeSell());
+        if (dataBook.getAmount() > 0 && check){
             btnAddCart.setEnabled(true);
             btnAddCart.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
             btnAddCart.setBackgroundResource(R.drawable.custom_button_add_shopping_cart);
@@ -348,6 +350,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             btnBuyNow.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
             btnBuyNow.setBackgroundResource(R.drawable.custom_button_hidden);
 
+            btnBuyNow.setText(String.format("%s", check ? getString(R.string.buy_now) : getString(R.string.coming_soon)));
+            btnAddCart.setText(String.format("%s", check ? getString(R.string.add_shopping_cart) : getString(R.string.coming_soon)));
         }
     }
 
@@ -508,12 +512,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                     finish();
                     break;
                 case R.id.m_help:
-                    Intent intent1 = new Intent(BookDetailActivity.this, EditProductActivity.class);
-                    Bundle bundle1 = new Bundle();
-                    bundle1.putString("book", new Gson().toJson(dataBook));
-                    intent1.putExtras(bundle1);
-                    startActivity(intent1);
-                    //Toast.makeText(BookDetailActivity.this, "Help Page", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BookDetailActivity.this, "Help Page", Toast.LENGTH_SHORT).show();
                     break;
             }
             return true;

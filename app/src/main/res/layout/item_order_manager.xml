@@ -13,56 +13,12 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout11"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingHorizontal="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tv_name_publisher"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:drawablePadding="10dp"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_store"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:drawableTint="@color/black" />
-
-            <TextView
-                android:id="@+id/tv_status_request"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/status"
-                android:textColor="@color/reduced_price"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/background"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_editor_absoluteX="20dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout11">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_cart_logo"
@@ -95,8 +51,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="@string/quantity"
                 android:layout_marginBottom="5dp"
+                android:text="@string/quantity"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_cart_logo"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cart_name" />
@@ -125,19 +81,20 @@
                 android:id="@+id/tv_more_order_products"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:visibility="gone"
                 android:text="@string/more_order_products"
+                android:textSize="10sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cart_name"
                 tools:ignore="SmallSp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/background"
                 android:layout_marginHorizontal="10dp"
+                android:background="@color/background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:layout_editor_absoluteX="20dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -196,43 +153,60 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout14">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_see_more_detail"
+            <TextView
+                android:id="@+id/tv_status_order"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:text="@string/status"
+                android:gravity="center_vertical"
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginVertical="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_button_close"
-                android:text="@string/see_more_detail_request"
-                android:textAllCaps="false"
-                android:textColor="@color/reduced_price" />
+                android:textColor="@color/reduced_price"
+                android:textSize="16sp"
+                android:layout_weight="1"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_buy_again"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:visibility="gone"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_button_close"
-                android:text="@string/buy_again"
-                android:textAllCaps="false"
-                android:textColor="@color/reduced_price" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_cancel_request"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="10dp"
-                android:layout_weight="1"
-                android:visibility="gone"
-                android:background="@drawable/custom_button_close"
-                android:text="@string/cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/reduced_price" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_accept_request"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_button_close"
+                    android:text="@string/confirm"
+                    android:textAllCaps="false"
+                    android:textColor="@color/reduced_price"
+                    tools:ignore="NestedWeights" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cancel_request"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_button_close"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/reduced_price" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_see_more_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_button_close"
+                    android:text="@string/see_more_detail_request"
+                    android:textAllCaps="false"
+                    android:textColor="@color/reduced_price" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

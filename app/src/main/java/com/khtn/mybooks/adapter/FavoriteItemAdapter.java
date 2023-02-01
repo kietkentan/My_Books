@@ -257,7 +257,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivReview = itemView.findViewById(R.id.iv_review_favorite_item);
+            ivReview = itemView.findViewById(R.id.iv_review_item);
             ibRemoveFavorite = itemView.findViewById(R.id.ib_remove_favorite_item);
             ibAddToCart = itemView.findViewById(R.id.ib_add_to_cart);
             tvName = itemView.findViewById(R.id.tv_name_favorite_item);

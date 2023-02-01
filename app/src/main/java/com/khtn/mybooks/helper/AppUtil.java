@@ -19,8 +19,10 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.khtn.mybooks.activity.SignInSignUpActivity;
 import com.khtn.mybooks.model.Address;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class AppUtil {
@@ -127,6 +129,22 @@ public class AppUtil {
         }
         long days = dateNow.getTime() - (datePosted != null ? datePosted.getTime() : 0);
         return days/(3600*1000*24);
+    }
+
+    public static boolean checkDateTimeSell(String dateTime){
+        @SuppressLint("SimpleDateFormat") DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        if (dateTime == null)
+            return true;
+        Date date = new Date();
+        Date dateCheck = null;
+
+        try {
+            dateCheck = format.parse(dateTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return (dateCheck.getTime() - date.getTime()) > 0;
     }
 
     public static String getStringResourceByName(String aString, Context context) {

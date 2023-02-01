@@ -63,7 +63,12 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
         tvStaff.setOnClickListener(this);
         tvProduct.setOnClickListener(this);
         tvAddProduct.setOnClickListener(this);
+        tvAllProduct.setOnClickListener(this);
         tvOrder.setOnClickListener(this);
+        tvOrderWaiting.setOnClickListener(this);
+        tvOrderShipping.setOnClickListener(this);
+        tvOrderCancel.setOnClickListener(this);
+        tvAllOrder.setOnClickListener(this);
     }
 
     public void init(){
@@ -99,6 +104,13 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
 
             }
         });
+    }
+
+    public void startOrderManagerPage(int tabSelect){
+        Intent intent = new Intent(StaffHomePageActivity.this, OrderManagerActivity.class);
+        intent.putExtra("tabSelect", tabSelect);
+        startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
     public void fullPermission(){
@@ -180,6 +192,13 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    public void startAllProductActivity(){
+        Intent intent = new Intent(StaffHomePageActivity.this, ProductManagerActivity.class);
+
+        startActivity(intent);
+        overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -199,8 +218,23 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
             case R.id.tv_option_add_product:
                 startAddProduct();
                 break;
+            case R.id.tv_option_all_product:
+                startAllProductActivity();
+                break;
             case R.id.tv_order:
                 clickTextViewOrder();
+                break;
+            case R.id.tv_option_order_waiting:
+                startOrderManagerPage(0);
+                break;
+            case R.id.tv_option_order_shipping:
+                startOrderManagerPage(1);
+                break;
+            case R.id.tv_option_order_cancel:
+                startOrderManagerPage(2);
+                break;
+            case R.id.tv_option_all_order:
+                startOrderManagerPage(4);
                 break;
         }
     }

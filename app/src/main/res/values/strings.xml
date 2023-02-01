@@ -93,11 +93,6 @@
     <string name="stand">Gian hàng</string>
     <string name="chat">Tin nhắn</string>
     <string name="information">Thông tin sản phẩm</string>
-    <string name="kindergarten" tools:ignore="TypographyDashes">Nhà trẻ – Mẫu giáo (0-6 tuổi)</string>
-    <string name="children" tools:ignore="TypographyDashes">Thiếu nhi (6-11 tuổi)</string>
-    <string name="teenager" tools:ignore="TypographyDashes">Thiếu niên (11-15 tuổi)</string>
-    <string name="awkward_age" tools:ignore="TypographyDashes">Tuổi mới lớn (15-18 tuổi)</string>
-    <string name="youth">Thanh niên (Trên 18 tuổi)</string>
     <string name="author">Tác giả</string>
     <string name="size">Kích thước</string>
     <string name="pages">Số trang</string>
@@ -110,6 +105,7 @@
     <string name="num_default">0</string>
     <string name="setting">Cài đặt</string>
     <string name="language">Ngôn ngữ</string>
+    <string name="coming_soon">Sắp ra mắt</string>
     <string name="policy">Chính sách</string>
     <string name="well_come">Chào mừng bạn đến với My Books!</string>
     <string name="press_back_again_to_exit">Nhấn Back một lần nữa để thoát</string>
@@ -146,10 +142,6 @@
     <string name="add_new_address">Thêm địa chỉ mới</string>
     <string name="chose">Chọn</string>
     <string name="string_default">Mặc định</string>
-    <string-array name="lists_language">
-        <item>Tiếng Việt</item>
-        <item>Tiếng Anh</item>
-    </string-array>
     <string name="confirm">Xác nhận</string>
     <string name="enter_new_address">Nhập địa chỉ mới</string>
     <string name="recipient_name">Tên người nhận</string>
@@ -161,6 +153,8 @@
     <string name="chose_districts">Chọn Quận/Huyện</string>
     <string name="districts">Quận/Huyện</string>
     <string name="precinct">Phường/Xã</string>
+    <string name="enter_info">Vui lòng nhập thông tin</string>
+    <string name="please_enter_full">Vui lòng nhập cả 2</string>
     <string name="chose_precinct">Chọn Phường/Xã</string>
     <string name="delivery_address">Địa chỉ nhận hàng</string>
     <string name="delivery_detail">Tòa nhà, số nhà, tên đường</string>
@@ -254,6 +248,13 @@
         <item>Đợi xác nhận hủy</item>
         <item>Đã hủy</item>
     </string-array>
+    <string-array name="status_manager">
+        <item>Xác nhận</item>
+        <item>Vận chuyển</item>
+        <item>Chờ hủy</item>
+        <item>Đã hủy</item>
+        <item>Tất cả</item>
+    </string-array>
     <string-array name="gender">
         <item>Nam</item>
         <item>Nữ</item>
@@ -264,6 +265,17 @@
         <item>Mới</item>
         <item>Giá</item>
         <item>Hồ Sơ Cửa Hàng</item>
+    </string-array>
+    <string-array name="ageRange">
+        <item tools:ignore="TypographyDashes">Nhà trẻ – Mẫu giáo (0-6 tuổi)</item>
+        <item tools:ignore="TypographyDashes">Thiếu nhi (6-11 tuổi)</item>
+        <item tools:ignore="TypographyDashes">Thiếu niên (11-15 tuổi)</item>
+        <item tools:ignore="TypographyDashes">Tuổi mới lớn (15-18 tuổi)</item>
+        <item>Thanh niên (Trên 18 tuổi)</item>
+    </string-array>
+    <string-array name="lists_language">
+        <item>Tiếng Việt</item>
+        <item>Tiếng Anh</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -312,4 +324,8 @@
     <string name="remove_picture">Xóa ảnh</string>
     <string name="remove_all_picture">Xóa tất cả</string>
     <string name="add_new">Thêm</string>
+    <string name="change">Thay đổi</string>
+    <string name="product_sold">Sản phẩm đã bán</string>
+    <string name="sended">Đã gửi hàng</string>
+    <string name="search_product">Tìm tên, id sản phẩm</string>
 </resources>

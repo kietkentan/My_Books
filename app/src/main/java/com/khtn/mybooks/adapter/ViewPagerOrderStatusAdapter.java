@@ -5,20 +5,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
 import com.khtn.mybooks.fragment.ListOrderFragment;
 
 public class ViewPagerOrderStatusAdapter extends FragmentStateAdapter {
     private final String keyword;
+    private final OnOrderChangeSizeInterface anInterface;
 
-    public ViewPagerOrderStatusAdapter(@NonNull FragmentActivity fragmentActivity, String keyword) {
+    public ViewPagerOrderStatusAdapter(@NonNull FragmentActivity fragmentActivity, String keyword, OnOrderChangeSizeInterface anInterface) {
         super(fragmentActivity);
         this.keyword = keyword;
+        this.anInterface = anInterface;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new ListOrderFragment(position, keyword);
+        return new ListOrderFragment(position, keyword, anInterface);
     }
 
     @Override

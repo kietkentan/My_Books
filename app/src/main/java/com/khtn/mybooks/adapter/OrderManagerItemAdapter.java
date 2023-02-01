@@ -16,25 +16,29 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
+import com.khtn.mybooks.R;
 import com.khtn.mybooks.activity.OrderDetailActivity;
 import com.khtn.mybooks.helper.AppUtil;
-import com.khtn.mybooks.R;
+import com.khtn.mybooks.model.Book;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Request;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.ViewHolder> {
+public class OrderManagerItemAdapter extends RecyclerView.Adapter<OrderManagerItemAdapter.ViewHolder> {
     private final List<Request> requestList;
     private final Context context;
     private final OnOrderChangeSizeInterface anInterface;
 
-    public RequestItemAdapter(List<Request> requestList, Context context, OnOrderChangeSizeInterface anInterface) {
+    public OrderManagerItemAdapter(List<Request> requestList, Context context, OnOrderChangeSizeInterface anInterface) {
         this.requestList = requestList;
         this.context = context;
         this.anInterface = anInterface;
@@ -42,13 +46,13 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
 
     @NonNull
     @Override
-    public RequestItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_request, parent, false));
+    public OrderManagerItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_manager, parent, false));
     }
 
     @SuppressLint("ResourceType")
     @Override
-    public void onBindViewHolder(@NonNull RequestItemAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderManagerItemAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Order order = requestList.get(position).getOrderList().get(0);
         int quantity = 0;
         int status = requestList.get(position).getStatus();
@@ -57,11 +61,69 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
 
         Picasso.get().load(requestList.get(position).getOrderList().get(0).getBookImage()).into(holder.ivReview);
 
-        holder.btnBuyAgain.setVisibility(status == 4 ? View.VISIBLE : View.GONE);
-        holder.btnCancel.setVisibility((status == 2 || status == 3) ? View.VISIBLE : View.GONE);
+        if (status == 1 || status == 2 || status == 5) {
+            holder.btnAccept.setVisibility(View.VISIBLE);
+            if (status == 2)
+                holder.btnAccept.setText(context.getText(R.string.sended));
+            holder.btnAccept.setOnClickListener(v -> {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("request");
+                reference.child(requestList.get(position).getIdRequest()).child("status").setValue(status + 1);
+
+                if (status == 5) {
+                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("book");
+                    reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (Order order1 : requestList.get(position).getOrderList()){
+                                snapshot.child(order1.getBookId()).child("amount").getRef().setValue(snapshot.child(order1.getBookId()).child("amount").getValue(Integer.class) + order1.getBookQuantity());
+                            }
+                            requestList.remove(position);
+                            notifyItemRemoved(position);
+                            anInterface.onZero();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                } else {
+                    requestList.remove(position);
+                    notifyItemRemoved(position);
+                    anInterface.onZero();
+                }
+            });
+        } else
+            holder.btnAccept.setVisibility(View.GONE);
+
+        if (status <= 3) {
+            holder.btnCancel.setVisibility(View.VISIBLE);
+            holder.btnCancel.setOnClickListener(v -> {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("request");
+                reference.child(requestList.get(position).getIdRequest()).child("status").setValue(6);
+
+                DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("book");
+                reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (Order order1 : requestList.get(position).getOrderList()){
+                            snapshot.child(order1.getBookId()).child("amount").getRef().setValue(snapshot.child(order1.getBookId()).child("amount").getValue(Integer.class) + order1.getBookQuantity());
+                        }
+                        requestList.remove(position);
+                        notifyItemRemoved(position);
+                        anInterface.onZero();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            });
+        } else
+            holder.btnCancel.setVisibility(View.GONE);
 
         holder.tvStatus.setText(context.getResources().getStringArray(R.array.status)[requestList.get(position).getStatus() - 1]);
-        holder.tvNamePublisher.setText(requestList.get(position).getNamePublisher());
         holder.tvNameCart.setText(order.getBookName());
         holder.tvQuantityCart.setText(String.format(context.getString(R.string.quantity), order.getBookQuantity()));
         holder.tvTotalPriceCart.setText(String.format(context.getString(R.string.book_price),
@@ -76,22 +138,11 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
         } else
             holder.tvMoreOrderProducts.setVisibility(View.GONE);
 
-        holder.layoutRequestItem.setOnClickListener(v -> {
-            startDetailRequest(position);
-        });
-        holder.btnMoreDetail.setOnClickListener(v -> {
-            startDetailRequest(position);
-        });
-        holder.btnCancel.setOnClickListener(v -> {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("request");
-            reference.child(requestList.get(position).getIdRequest()).child("status").setValue(5);
-            requestList.remove(position);
-            notifyItemRemoved(position);
-            anInterface.onZero();
-        });
+        holder.layoutRequestItem.setOnClickListener(v -> startDetailOrder(position));
+        holder.btnMoreDetail.setOnClickListener(v -> startDetailOrder(position));
     }
 
-    public void startDetailRequest(int position){
+    public void startDetailOrder(int position){
         Intent intent = new Intent(context, OrderDetailActivity.class);
         Bundle bundle = new Bundle();
 
@@ -108,7 +159,6 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNamePublisher;
         TextView tvStatus;
         TextView tvNameCart;
         TextView tvQuantityCart;
@@ -117,15 +167,14 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
         TextView tvTotalPriceRequest;
         TextView tvMoreOrderProducts;
         AppCompatButton btnMoreDetail;
-        AppCompatButton btnBuyAgain;
+        AppCompatButton btnAccept;
         AppCompatButton btnCancel;
         ImageView ivReview;
         ConstraintLayout layoutRequestItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvNamePublisher = itemView.findViewById(R.id.tv_name_publisher);
-            tvStatus = itemView.findViewById(R.id.tv_status_request);
+            tvStatus = itemView.findViewById(R.id.tv_status_order);
             tvNameCart = itemView.findViewById(R.id.tv_cart_name);
             tvQuantityCart = itemView.findViewById(R.id.tv_cart_quantity);
             tvTotalPriceCart = itemView.findViewById(R.id.tv_cart_total_price);
@@ -133,7 +182,7 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
             tvTotalPriceRequest = itemView.findViewById(R.id.tv_total_price);
             tvMoreOrderProducts = itemView.findViewById(R.id.tv_more_order_products);
             btnMoreDetail = itemView.findViewById(R.id.btn_see_more_detail);
-            btnBuyAgain = itemView.findViewById(R.id.btn_buy_again);
+            btnAccept = itemView.findViewById(R.id.btn_accept_request);
             btnCancel = itemView.findViewById(R.id.btn_cancel_request);
             ivReview = itemView.findViewById(R.id.iv_cart_logo);
             layoutRequestItem = itemView.findViewById(R.id.layout_request_item);

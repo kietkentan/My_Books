@@ -71,6 +71,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     private LinearLayout layoutListOderWaitShipping;
     private LinearLayout layoutListOrdersInTransit;
     private LinearLayout layoutListDelivered;
+    private LinearLayout layoutPacketReturn;
     private LinearLayout layoutRecentlyViewed;
     private LinearLayout layoutShopFollowed;
     private ShapeableImageView ivBackground;
@@ -104,6 +105,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         layoutListOderWaitShipping.setOnClickListener(this);
         layoutListOrdersInTransit.setOnClickListener(this);
         layoutListDelivered.setOnClickListener(this);
+        layoutPacketReturn.setOnClickListener(this);
         layoutRecentlyViewed.setOnClickListener(this);
         layoutShopFollowed.setOnClickListener(this);
 
@@ -140,6 +142,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         layoutListOderWaitShipping = view.findViewById(R.id.layout_list_oder_wait_shipping);
         layoutListOrdersInTransit = view.findViewById(R.id.layout_list_orders_in_transit);
         layoutListDelivered = view.findViewById(R.id.layout_list_delivered);
+        layoutPacketReturn = view.findViewById(R.id.layout_packet_return);
         layoutRecentlyViewed = view.findViewById(R.id.layout_recently_viewed);
         layoutShopFollowed = view.findViewById(R.id.layout_shop_followed);
         ivBackground = view.findViewById(R.id.iv_background_user);
@@ -304,13 +307,14 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         int[] num = {0, 0, 0, 0, 0};
 
         for (Request request:requestList) {
-            num[request.getStatus() - 1] += 1;
+            if (request.getStatus() < 6)
+                num[request.getStatus() - 1] += 1;
         }
 
         setNumWaitConfirm(num[0]);
         setNumWaitShipping(num[1]);
-        setNumDelivered(num[2]);
-        setNumInTransit(num[3]);
+        setNumInTransit(num[2]);
+        setNumDelivered(num[3]);
         setNumPacketReturn(num[4]);
     }
 
@@ -383,6 +387,9 @@ public class UserFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.layout_list_delivered:
                 startOrderStatusPage(4);
+                break;
+            case R.id.layout_packet_return:
+                startOrderStatusPage(5);
                 break;
             case R.id.layout_recently_viewed:
                 startRecentlyViewed();

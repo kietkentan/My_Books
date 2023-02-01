@@ -17,6 +17,22 @@
         android:theme="@style/Theme.MyBooks"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ProductManagerActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activity.OrderManagerActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activity.EditProductActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false">

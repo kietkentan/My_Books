@@ -32,21 +32,28 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull BookDetailAdapter.ViewHolder holder, int position) {
         holder.tvDetailName.setText(AppUtil.getStringResourceByName(list.get(position).get(0), context));
-        if (list.get(position).get(0).equals("ageRange"))
-            holder.tvDetailAbout.setText(getAgeRange(position));
-        else if (list.get(position).get(0).equals("weight"))
-            holder.tvDetailAbout.setText(String.format("%s g", list.get(position).get(1)));
-        else
-            holder.tvDetailAbout.setText(list.get(position).get(1));
+        switch (list.get(position).get(0)) {
+            case "ageRange":
+                holder.tvDetailAbout.setText(getAgeRange(position));
+                break;
+            case "weight":
+                holder.tvDetailAbout.setText(String.format("%s g", list.get(position).get(1)));
+                break;
+            case "size":
+                holder.tvDetailAbout.setText(String.format("%s cm", list.get(position).get(1)));
+                break;
+            default:
+                holder.tvDetailAbout.setText(list.get(position).get(1));
+                break;
+        }
     }
 
     public String getAgeRange(int position){
         String detail = "";
-        String[] ageRange = {"kindergarten", "children", "teenager", "awkward_age", "youth"};
         int num = Integer.parseInt(list.get(position).get(1));
 
         while (true){
-            detail = String.format("%s%s", detail, AppUtil.getStringResourceByName(ageRange[(num % 10) - 1], context));
+            detail = String.format("%s%s", detail, AppUtil.getStringResourceByName(context.getResources().getStringArray(R.array.ageRange)[(num % 10) - 1], context));
             num /= 10;
             if (num != 0) detail += "\n";
             else break;

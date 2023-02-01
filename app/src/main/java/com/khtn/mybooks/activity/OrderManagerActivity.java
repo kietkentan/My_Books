@@ -5,6 +5,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,16 +15,17 @@ import android.widget.ImageButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
-import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
+import com.khtn.mybooks.adapter.ViewPagerOrderManagerAdapter;
 import com.khtn.mybooks.adapter.ViewPagerOrderStatusAdapter;
+import com.khtn.mybooks.helper.AppUtil;
 
-public class OrderStatusActivity extends AppCompatActivity implements OnOrderChangeSizeInterface{
+public class OrderManagerActivity extends AppCompatActivity implements OnOrderChangeSizeInterface {
     private ImageButton ibBack;
     private EditText edtSearchRequest;
     private TabLayout tabStatus;
     private ViewPager2 viewStatus;
-    private ViewPagerOrderStatusAdapter adapter;
+    private ViewPagerOrderManagerAdapter adapter;
 
     private String search = "";
     private int currentSelectedTab;
@@ -31,7 +33,7 @@ public class OrderStatusActivity extends AppCompatActivity implements OnOrderCha
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_status);
+        setContentView(R.layout.activity_order_manager);
         AppUtil.changeStatusBarColor(this, "#E32127");
 
         init();
@@ -55,7 +57,7 @@ public class OrderStatusActivity extends AppCompatActivity implements OnOrderCha
             if (search.isEmpty())
                 viewStatus.setAdapter(adapter);
             else
-                viewStatus.setAdapter(new ViewPagerOrderStatusAdapter(this, edtSearchRequest.getText().toString(), this));
+                viewStatus.setAdapter(new ViewPagerOrderManagerAdapter(this, edtSearchRequest.getText().toString(), this));
 
             setCurrentItem();
             return true;
@@ -69,23 +71,18 @@ public class OrderStatusActivity extends AppCompatActivity implements OnOrderCha
     }
 
     private void setupTabLayout() {
-        new TabLayoutMediator(tabStatus, viewStatus, (tab, position) -> {
-            if (position == 0)
-                tab.setText(R.string.all_request);
-            else
-                tab.setText(getResources().getStringArray(R.array.status)[position - 1]);
-        }).attach();
+        new TabLayoutMediator(tabStatus, viewStatus, (tab, position) -> tab.setText(getResources().getStringArray(R.array.status_manager)[position])).attach();
     }
 
     public void init(){
         currentSelectedTab = getIntent().getIntExtra("tabSelect", 0);
 
-        ibBack = findViewById(R.id.ib_exit_order_status);
+        ibBack = findViewById(R.id.ib_exit_order_manager);
         edtSearchRequest = findViewById(R.id.edt_search_by_order_code);
-        tabStatus = findViewById(R.id.tab_order_status);
-        viewStatus = findViewById(R.id.vp_order_status);
+        tabStatus = findViewById(R.id.tab_order_manager);
+        viewStatus = findViewById(R.id.vp_order_manager);
 
-        adapter = new ViewPagerOrderStatusAdapter(this, null, this);
+        adapter = new ViewPagerOrderManagerAdapter(this, null, this);
         viewStatus.setAdapter(adapter);
     }
 
@@ -99,9 +96,9 @@ public class OrderStatusActivity extends AppCompatActivity implements OnOrderCha
     public void onZero() {
         currentSelectedTab = tabStatus.getSelectedTabPosition();
         if (edtSearchRequest.getText().toString().isEmpty())
-            viewStatus.setAdapter(new ViewPagerOrderStatusAdapter(this, null, this));
+            viewStatus.setAdapter(new ViewPagerOrderManagerAdapter(this, null, this));
         else
-            viewStatus.setAdapter(new ViewPagerOrderStatusAdapter(this, edtSearchRequest.getText().toString(), this));
+            viewStatus.setAdapter(new ViewPagerOrderManagerAdapter(this, edtSearchRequest.getText().toString(), this));
         setCurrentItem();
     }
 }

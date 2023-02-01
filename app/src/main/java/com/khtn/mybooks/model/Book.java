@@ -2,6 +2,7 @@ package com.khtn.mybooks.model;
 
 import android.annotation.SuppressLint;
 import android.icu.number.Scale;
+import android.net.Uri;
 
 import java.io.IOException;
 import java.util.ArrayList;

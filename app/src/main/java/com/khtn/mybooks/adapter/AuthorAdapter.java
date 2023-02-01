@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.khtn.mybooks.Interface.ImageClickInterface;
 import com.khtn.mybooks.Interface.ItemChangedInterface;
 import com.khtn.mybooks.R;
 

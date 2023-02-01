@@ -1,5 +1,6 @@
 package com.khtn.mybooks.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -16,8 +18,11 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.model.User;
@@ -105,12 +110,26 @@ public class CompleteRegistrationActivity extends AppCompatActivity implements V
 
     private void createAccount(){
         String uniqueID = UUID.randomUUID().toString();
+        Log.i("TAG_U", "createAccount: " + uniqueID);
         User user = new User(null, null, edtEnterName.getText().toString(), edtEnterPassword.getText().toString(),
-                    uniqueID, email, phoneNumber, null);
-        databaseReference.child("mybooks").child(uniqueID).getRef().setValue(user);
+                    uniqueID, email == null ? null : email, phoneNumber == null ? null : phoneNumber, null);
+        databaseReference.child("mybooks").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                snapshot.getRef().child("mybooks").setValue(user);
+                btnComplete.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                returnLoginPage();
+            }
 
-        btnComplete.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void returnLoginPage() {
         Intent intent1 = new Intent(CompleteRegistrationActivity.this, SignInSignUpActivity.class);
         intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent1);

@@ -4,7 +4,10 @@ public class Rating {
     private float score;
     private int turn;
 
-    public Rating() {}
+    public Rating() {
+        this.score = 0f;
+        this.turn = 0;
+    }
 
     public float getScore() {
         return score;

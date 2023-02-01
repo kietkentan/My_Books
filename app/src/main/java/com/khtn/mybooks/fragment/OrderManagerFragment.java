@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
-import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.R;
+import com.khtn.mybooks.adapter.OrderManagerItemAdapter;
 import com.khtn.mybooks.adapter.RequestItemAdapter;
 import com.khtn.mybooks.common.Common;
+import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.helper.VNCharacterUtils;
 import com.khtn.mybooks.model.Request;
 
@@ -32,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInterface {
+public class OrderManagerFragment extends Fragment implements OnOrderChangeSizeInterface {
     private View view;
     private ProgressBar progressBar;
     private RecyclerView recListRequest;
@@ -42,13 +44,13 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
     private DatabaseReference reference;
 
     private List<Request> requestList;
-    private RequestItemAdapter adapter;
+    private OrderManagerItemAdapter adapter;
     private final int status;
     private final String keyword;
 
-    private OnOrderChangeSizeInterface anInterface;
+    private final OnOrderChangeSizeInterface anInterface;
 
-    public ListOrderFragment(int status, String keyword, OnOrderChangeSizeInterface anInterface) {
+    public OrderManagerFragment(int status, String keyword, OnOrderChangeSizeInterface anInterface) {
         this.status = status;
         this.keyword = keyword;
         this.anInterface = anInterface;
@@ -57,7 +59,7 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_list_order, container, false);
+        view = inflater.inflate(R.layout.fragment_order_manager, container, false);
 
         init();
         setupRecyclerViewListRequest();
@@ -78,7 +80,7 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
     }
 
     public void setupRecyclerViewListRequest(){
-        adapter = new RequestItemAdapter(requestList, getContext(), this);
+        adapter = new OrderManagerItemAdapter(requestList, getContext(), this);
         recListRequest.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recListRequest.setAdapter(adapter);
     }
@@ -94,57 +96,60 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
 
     private void loadDataWithKey() {
         progressBar.setVisibility(View.VISIBLE);
-        reference.orderByChild("idUser")
-                .equalTo(Common.currentUser.getId())
+        reference.orderByChild("idPublisher")
+                .equalTo(Common.currentUser.getStaff().getPublisherId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    boolean addedList = false;
-                    for (int i = 0; i < dataSnapshot.child("orderList").getChildrenCount(); ++i){
-                        if (addedList)
-                            break;
-                        int thisStatus = dataSnapshot.child("status").getValue(Integer.class);
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            boolean addedList = false;
+                            for (int i = 0; i < dataSnapshot.child("orderList").getChildrenCount(); ++i){
+                                if (addedList)
+                                    break;
+                                int thisStatus = dataSnapshot.child("status").getValue(Integer.class);
 
-                        if (!(status == 0 || status == thisStatus))
-                            break;
-                        String bookName = VNCharacterUtils.removeAccent(dataSnapshot.child("orderList").child(String.valueOf(i)).child("bookName").getValue(String.class)).toLowerCase();
-                        List<String> keyList = VNCharacterUtils.removeAccent(Arrays.asList(keyword.trim().toLowerCase().split("\\s+")));
+                                if (!(status == 0 || status == thisStatus))
+                                    break;
+                                String bookName = VNCharacterUtils.removeAccent(dataSnapshot.child("orderList").child(String.valueOf(i)).child("bookName").getValue(String.class)).toLowerCase();
+                                List<String> keyList = VNCharacterUtils.removeAccent(Arrays.asList(keyword.trim().toLowerCase().split("\\s+")));
 
-                        for (String key : keyList)
-                            if (bookName.contains(key)){
-                                requestList.add(dataSnapshot.getValue(Request.class));
-                                addedList = true;
-                                break;
+                                for (String key : keyList)
+                                    if (bookName.contains(key)){
+                                        requestList.add(dataSnapshot.getValue(Request.class));
+                                        addedList = true;
+                                        break;
+                                    }
                             }
+                        }
+                        adapter.notifyDataSetChanged();
+                        setupRecyclerListRequest();
                     }
-                }
-                setupRecyclerListRequest();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                    }
+                });
     }
 
     private void loadDataWithCode() {
         progressBar.setVisibility(View.VISIBLE);
         reference.child(keyword).addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
                     if (status == 0) {
-                        if (snapshot.child("idUser").getValue(String.class).equals(Common.currentUser.getId()))
+                        if (snapshot.child("idPublisher").getValue(String.class).equals(Common.currentUser.getId()))
                             requestList.add(snapshot.getValue(Request.class));
                     } else {
-                        if (snapshot.child("idUser").getValue(String.class).equals(Common.currentUser.getId())
+                        if (snapshot.child("idPublisher").getValue(String.class).equals(Common.currentUser.getStaff().getPublisherId())
                                 && snapshot.child("status").getValue(Integer.class) == status)
                             requestList.add(snapshot.getValue(Request.class));
                     }
                 }
-
+                adapter.notifyDataSetChanged();
                 setupRecyclerListRequest();
             }
 
@@ -158,7 +163,8 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
     public void loadData() {
         progressBar.setVisibility(View.VISIBLE);
 
-        reference.orderByChild("idUser").equalTo(Common.currentUser.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.orderByChild("idPublisher").equalTo(Common.currentUser.getStaff().getPublisherId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (status == 0) {
@@ -169,7 +175,7 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
                         if (dataSnapshot.child("status").getValue(Integer.class) == status)
                             requestList.add(dataSnapshot.getValue(Request.class));
                 }
-
+                adapter.notifyDataSetChanged();
                 setupRecyclerListRequest();
             }
 
@@ -178,7 +184,6 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
 
             }
         });
-
     }
 
     public void setupRecyclerListRequest(){
@@ -189,29 +194,7 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
         } else {
             layoutNoneRequest.setVisibility(View.GONE);
             recListRequest.setVisibility(View.VISIBLE);
-            getNamePublisher();
         }
-    }
-
-    public void getNamePublisher(){
-        DatabaseReference reference = database.getReference("publisher");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (int i = 0; i < requestList.size(); ++i) {
-                    requestList.get(i).setNamePublisher(snapshot.child(requestList.get(i).getIdPublisher()).child("name").getValue(String.class));
-                    adapter.notifyItemChanged(i);
-                }
-                progressBar.setVisibility(View.GONE);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     @Override

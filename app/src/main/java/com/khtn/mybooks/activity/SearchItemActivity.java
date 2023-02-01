@@ -418,7 +418,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void readDataItem(String strKey){
-        String key = VNCharacterUtils.removeAccent(strKey);
+        String[] keyList = VNCharacterUtils.removeAccent(strKey).toLowerCase().split(" ");
         bookItemList.clear();
         progressBar.setVisibility(View.VISIBLE);
         layoutHistorySearch.setVisibility(View.GONE);
@@ -429,15 +429,16 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     String nameBook = VNCharacterUtils.removeAccent(dataSnapshot.child("name").getValue(String.class).trim().toLowerCase());
 
-                    if (nameBook.contains(key)){
-                        if (nameBook.substring(0, key.length() - 1).equals(key))
-                            bookItemList.add(0, dataSnapshot.getValue(BookItem.class));
-                        else
-                            bookItemList.add(dataSnapshot.getValue(BookItem.class));
+                    for (String key : keyList)
+                        if (nameBook.contains(key)){
+                            if (nameBook.substring(0, key.length() - 1).equals(key))
+                                bookItemList.add(0, dataSnapshot.getValue(BookItem.class));
+                            else
+                                bookItemList.add(dataSnapshot.getValue(BookItem.class));
 
-                        if (bookItemList.size() > 30)
-                            break;
-                    }
+                            if (bookItemList.size() > 30)
+                                break;
+                        }
                 }
                 progressBar.setVisibility(View.GONE);
                 setupListItemSearch();
