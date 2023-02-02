@@ -17,8 +17,8 @@ import com.khtn.mybooks.model.Location;
 import java.util.List;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder>{
-    private List<Location> locationList;
-    private ChoseLocationClickInterface clickInterface;
+    private final List<Location> locationList;
+    private final ChoseLocationClickInterface clickInterface;
 
     public LocationAdapter(List<Location> locationList, ChoseLocationClickInterface clickInterface) {
         this.locationList = locationList;

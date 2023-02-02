@@ -144,7 +144,7 @@ public class AppUtil {
             e.printStackTrace();
         }
 
-        return (dateCheck.getTime() - date.getTime()) > 0;
+        return (dateCheck.getTime() - date.getTime()) < 0;
     }
 
     public static String getStringResourceByName(String aString, Context context) {
@@ -162,11 +162,11 @@ public class AppUtil {
         context.startActivity(intent);
     }
 
-    public static void changeStatusBarColor(Context context, String color){
+    public static void changeStatusBarColor(Context context, int color){
         Window window = ((Activity) context).getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.setStatusBarColor(Color.parseColor(color));
+        window.setStatusBarColor(color);
         window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 

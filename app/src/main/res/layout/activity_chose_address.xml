@@ -47,7 +47,8 @@
         android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+        android:baselineAligned="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -63,7 +64,8 @@
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextContrastCheck,TextContrastCheck" />
 
             <View
                 android:id="@+id/view_cities"

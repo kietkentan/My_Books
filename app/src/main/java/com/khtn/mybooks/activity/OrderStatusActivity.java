@@ -32,7 +32,7 @@ public class OrderStatusActivity extends AppCompatActivity implements OnOrderCha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
         setupTabLayout();

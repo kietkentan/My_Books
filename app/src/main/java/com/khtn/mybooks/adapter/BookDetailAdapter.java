@@ -37,10 +37,10 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Vi
                 holder.tvDetailAbout.setText(getAgeRange(position));
                 break;
             case "weight":
-                holder.tvDetailAbout.setText(String.format("%s g", list.get(position).get(1)));
+                holder.tvDetailAbout.setText(String.format(context.getString(R.string.format_weight), list.get(position).get(1)));
                 break;
             case "size":
-                holder.tvDetailAbout.setText(String.format("%s cm", list.get(position).get(1)));
+                holder.tvDetailAbout.setText(String.format(context.getString(R.string.format_size), list.get(position).get(1)));
                 break;
             default:
                 holder.tvDetailAbout.setText(list.get(position).get(1));

@@ -48,6 +48,7 @@ public class ShopInformationFragment extends Fragment {
         tvFollowed = view.findViewById(R.id.tv_people_followed);
     }
 
+    @SuppressWarnings("UnnecessaryCallToStringValueOf")
     public void setupInfo(){
         tvSince.setText(String.format(getContext().getString(R.string.status),
                 publisher.getWorked().substring(publisher.getWorked().lastIndexOf('/') + 1)));

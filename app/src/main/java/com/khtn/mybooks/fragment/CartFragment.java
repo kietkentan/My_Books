@@ -57,7 +57,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     private List<Order> orderList;
     private List<Integer> listChecked;
     private DatabaseCart dataBaseOrder;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private String[] mode;
     private final SwitchFavoritePageInterface continueShoppingClickInterface;
     private DatabaseReference referenceUser;
 
@@ -69,7 +69,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart, container, false);
-        AppUtil.changeStatusBarColor(getContext(), "#E32127");
+        AppUtil.changeStatusBarColor(getContext(), getContext().getColor(R.color.reduced_price));
 
         init();
         getData();
@@ -102,6 +102,7 @@ public class CartFragment extends Fragment implements View.OnClickListener, View
         layoutViewCart = view.findViewById(R.id.layout_view_cart);
 
         referenceUser = FirebaseDatabase.getInstance().getReference("user");
+        mode = getContext().getResources().getStringArray(R.array.mode_login);
     }
 
     public void getData(){

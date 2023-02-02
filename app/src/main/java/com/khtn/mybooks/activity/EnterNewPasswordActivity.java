@@ -110,11 +110,12 @@ public class EnterNewPasswordActivity extends AppCompatActivity implements View.
     }
 
     private void changePassword(String newPassword){
+        String mode = getResources().getStringArray(R.array.mode_login)[0];
         btnChangePassword.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user");
-        reference.child("mybooks").orderByChild("phone").equalTo(phone).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.child(mode).orderByChild("phone").equalTo(phone).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()) {

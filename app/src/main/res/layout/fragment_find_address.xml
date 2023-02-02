@@ -16,15 +16,15 @@
         android:backgroundTint="@color/background"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="10dp"
+        android:drawableTint="@color/text_hint"
+        android:hint="@string/search"
+        android:importantForAutofill="no"
         android:paddingHorizontal="10dp"
         android:textSize="14sp"
-        android:hint="@string/search"
-        android:drawableTint="@color/text_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:importantForAutofill="no"
-        tools:ignore="TextFields" />
+        tools:ignore="TextFields,TouchTargetSizeCheck,TextContrastCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_search_address"

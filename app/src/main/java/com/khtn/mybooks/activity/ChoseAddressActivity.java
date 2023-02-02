@@ -39,7 +39,7 @@ public class ChoseAddressActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chose_address);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
 

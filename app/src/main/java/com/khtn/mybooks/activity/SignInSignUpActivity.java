@@ -72,6 +72,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
 
     private String tmpPhone = "";
     private String tmpEmail = "";
+    private String[] mode;
 
     private FirebaseDatabase database;
     private DatabaseReference reference;
@@ -125,6 +126,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void init(){
+        mode = getResources().getStringArray(R.array.mode_login);
         // Google
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -210,7 +212,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
         bundle.putString("user", edtEnterPhoneNumberOrEmail.getText().toString());
 
         if (AppUtil.isPhoneNumber(edtEnterPhoneNumberOrEmail.getText().toString())) {
-            reference.child("mybooks").orderByChild("phone").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            reference.child(mode[0]).orderByChild("phone").equalTo(edtEnterPhoneNumberOrEmail.getText().toString())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){
@@ -234,7 +237,8 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 }
             });
         } else if (AppUtil.isEmail(edtEnterPhoneNumberOrEmail.getText().toString())) {
-            reference.child("mybooks").orderByChild("email").equalTo(edtEnterPhoneNumberOrEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            reference.child(mode[0]).orderByChild("email").equalTo(edtEnterPhoneNumberOrEmail.getText().toString())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
@@ -299,6 +303,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                 .build());
     }
 
+    @SuppressWarnings("deprecation")
     private void loginWithGoogle(){
         btnContinueLoginPhoneNumber.setVisibility(View.INVISIBLE);
         progressBarContinue.setVisibility(View.VISIBLE);
@@ -328,6 +333,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
+            //noinspection unused
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
             String avatar = null;
@@ -338,13 +344,13 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             }
             if (acct != null) {
                 String finalAvatar = avatar;
-                reference.child("google").child(acct.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                reference.child(mode[1]).child(acct.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (!snapshot.exists()) {
                             User user_gg = new User(finalAvatar, null, acct.getDisplayName(), null, acct.getId(), acct.getEmail(), null, null);
                             Common.signIn(SignInSignUpActivity.this, user_gg, 2);
-                            reference.child("google").child(acct.getId()).getRef().setValue(user_gg);
+                            reference.child(mode[1]).child(acct.getId()).getRef().setValue(user_gg);
                         }
                         else {
                             Common.signIn(SignInSignUpActivity.this, snapshot.getValue(User.class), 2);
@@ -374,6 +380,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.i("TAG_U", "signInResult:failed code=" + e.getStatusCode());
+            Toast.makeText(this, "signInResult:failed code=" + e.getStatusCode(), Toast.LENGTH_SHORT).show();
             btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
             progressBarContinue.setVisibility(View.GONE);
         }
@@ -386,13 +393,13 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
 
-                        reference.child("facebook").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        reference.child(mode[2]).child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (!snapshot.exists()) {
                                     User user_fb = new User(user.getPhotoUrl().toString(), null, user.getDisplayName(), null, user.getUid(), user.getEmail(), user.getPhoneNumber(), null);
                                     Common.signIn(SignInSignUpActivity.this, user_fb, 3);
-                                    reference.child("facebook").child(user.getUid()).getRef().setValue(user_fb);
+                                    reference.child(mode[2]).child(user.getUid()).getRef().setValue(user_fb);
                                 }
                                 else {
                                     Common.signIn(SignInSignUpActivity.this, snapshot.getValue(User.class), 3);
@@ -419,7 +426,7 @@ public class SignInSignUpActivity extends AppCompatActivity implements View.OnCl
                         });
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(SignInSignUpActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInSignUpActivity.this, R.string.fail_connected_facebook, Toast.LENGTH_SHORT).show();
                         btnContinueLoginPhoneNumber.setVisibility(View.VISIBLE);
                         progressBarContinue.setVisibility(View.GONE);
                     }

@@ -174,14 +174,14 @@
                     android:id="@+id/btn_accept_request"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_marginHorizontal="5dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_button_close"
                     android:text="@string/confirm"
                     android:textAllCaps="false"
                     android:textColor="@color/reduced_price"
-                    tools:ignore="NestedWeights" />
+                    tools:ignore="NestedWeights,TouchTargetSizeCheck" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_cancel_request"
@@ -193,19 +193,21 @@
                     android:background="@drawable/custom_button_close"
                     android:text="@string/cancel"
                     android:textAllCaps="false"
-                    android:textColor="@color/reduced_price" />
+                    android:textColor="@color/reduced_price"
+                    tools:ignore="TouchTargetSizeCheck" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_see_more_detail"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_marginHorizontal="5dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/custom_button_close"
                     android:text="@string/see_more_detail_request"
                     android:textAllCaps="false"
-                    android:textColor="@color/reduced_price" />
+                    android:textColor="@color/reduced_price"
+                    tools:ignore="TouchTargetSizeCheck" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

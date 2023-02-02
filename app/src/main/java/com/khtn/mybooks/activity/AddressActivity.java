@@ -40,7 +40,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
         setRecyclerViewAddress();
@@ -106,7 +106,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
         }
         Common.currentUser.setAddressList(list);
 
-        String[] mode = {"mybooks", "google", "facebook"};
+        String[] mode = getResources().getStringArray(R.array.mode_login);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user");
         reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("addressList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -115,7 +115,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                 if (Common.currentUser.getAddressList().size() == 0)
                     return;
                 for (int i = 0; i < Common.currentUser.getAddressList().size(); ++i) {
-                    @SuppressLint("DefaultLocale") String count = String.format("%d", i);
+                    @SuppressLint("DefaultLocale") String count = String.format(getString(R.string.num), i);
                     snapshot.child(count).getRef().setValue(Common.currentUser.getAddressList().get(i));
                 }
             }

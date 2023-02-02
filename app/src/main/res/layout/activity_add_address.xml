@@ -103,13 +103,13 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/custom_edit_text"
                     android:hint="@string/enter_name"
+                    android:importantForAutofill="no"
                     android:paddingHorizontal="10dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView9"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
+                    tools:ignore="TextFields,TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/textView10"
@@ -129,13 +129,13 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/custom_edit_text"
                     android:hint="@string/enter_phone_number"
+                    android:importantForAutofill="no"
                     android:paddingHorizontal="10dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
+                    tools:ignore="TextFields,TouchTargetSizeCheck" />
 
                 <TextView
                     android:id="@+id/textView11"
@@ -238,13 +238,13 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/custom_edit_text"
                     android:hint="@string/delivery_detail"
+                    android:importantForAutofill="no"
                     android:paddingHorizontal="10dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView14"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
+                    tools:ignore="TextFields,TouchTargetSizeCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

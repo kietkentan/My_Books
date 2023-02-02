@@ -24,31 +24,32 @@
                 android:id="@+id/btn_increase"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:button="@null"
-                android:gravity="center"
-                android:checked="true"
-                android:paddingHorizontal="60dp"
                 android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_background_checkbox"
+                android:button="@null"
+                android:checked="true"
+                android:drawableEnd="@drawable/custom_checkbox_price"
+                android:gravity="center"
+                android:paddingHorizontal="60dp"
                 android:text="@string/increase"
                 android:textColor="@drawable/custom_text_color"
-                android:layout_weight="1"
-                android:drawableEnd="@drawable/custom_checkbox_price"
-                android:background="@drawable/custom_background_checkbox"/>
+                tools:ignore="TouchTargetSizeCheck" />
 
             <RadioButton
                 android:id="@+id/btn_decrease"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_background_checkbox"
                 android:button="@null"
+                android:drawableEnd="@drawable/custom_checkbox_price"
                 android:gravity="center"
                 android:paddingHorizontal="60dp"
-                android:layout_marginHorizontal="10dp"
                 android:text="@string/decrease"
                 android:textColor="@drawable/custom_text_color"
-                android:layout_weight="1"
-                android:drawableEnd="@drawable/custom_checkbox_price"
-                android:background="@drawable/custom_background_checkbox"
-                tools:ignore="RtlSymmetry" />
+                tools:ignore="RtlSymmetry,TouchTargetSizeCheck" />
         </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -65,6 +66,7 @@
             android:layout_gravity="center"
             android:paddingBottom="10dp"
             android:text="@string/end_the_list"
-            android:textColor="@color/reduced_price" />
+            android:textColor="@color/reduced_price"
+            tools:ignore="TextContrastCheck" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

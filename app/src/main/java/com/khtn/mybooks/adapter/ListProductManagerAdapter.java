@@ -98,7 +98,7 @@ public class ListProductManagerAdapter extends RecyclerView.Adapter<ListProductM
         else
             holder.tvDiscount.setText(String.format(context.getString(R.string.book_discount), book.getDiscount()));
         holder.tvId.setText(book.getId());
-        holder.tvAmount.setText(String.format("%d", book.getAmount()));
+        holder.tvAmount.setText(String.format(context.getString(R.string.num), book.getAmount()));
 
         holder.layoutInfo.setVisibility(View.VISIBLE);
         holder.layoutShimmer.stopShimmer();
@@ -116,7 +116,7 @@ public class ListProductManagerAdapter extends RecyclerView.Adapter<ListProductM
         btnRemove.setOnClickListener(v -> {
             dialog.dismiss();
             reference.child(id).removeValue((error, ref) -> {
-                Toast.makeText(context, "Đã xóa sản phẩm có id: " + id, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, String.format(context.getString(R.string.removed_product_by_id), id), Toast.LENGTH_SHORT).show();
                 idList.remove(position);
                 notifyItemRemoved(position);
             });

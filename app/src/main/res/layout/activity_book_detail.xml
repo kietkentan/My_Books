@@ -595,6 +595,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:baselineAligned="false"
                 tools:ignore="UseCompoundDrawables">

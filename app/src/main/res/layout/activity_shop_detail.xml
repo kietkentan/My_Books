@@ -56,7 +56,8 @@
                         android:textColor="@color/white"
                         android:textSize="17sp"
                         app:layout_constraintStart_toEndOf="@+id/iv_publisher_avatar"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="TextContrastCheck" />
 
                     <TextView
                         android:id="@+id/tv_total_rating_publisher"
@@ -69,7 +70,8 @@
                         android:textSize="11sp"
                         app:drawableStartCompat="@drawable/ic_small_star"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iv_publisher_avatar" />
+                        app:layout_constraintStart_toEndOf="@+id/iv_publisher_avatar"
+                        tools:ignore="TextContrastCheck" />
 
                     <View
                         android:id="@+id/view7"
@@ -91,7 +93,8 @@
                         android:textColor="@color/white"
                         android:textSize="11sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/view7" />
+                        app:layout_constraintStart_toEndOf="@+id/view7"
+                        tools:ignore="TextContrastCheck" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_follow"
@@ -107,7 +110,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.506" />
+                        app:layout_constraintVertical_bias="0.506"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.Toolbar
@@ -137,7 +141,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:srcCompat="@drawable/ic_back"
                             app:tint="@color/white"
-                            tools:ignore="ContentDescription,RtlSymmetry" />
+                            tools:ignore="ContentDescription,RtlSymmetry,SpeakableTextPresentCheck,ImageContrastCheck" />
 
                         <TextView
                             android:id="@+id/tv_search_item_in_the_shop"
@@ -158,7 +162,7 @@
                             app:layout_constraintEnd_toStartOf="@+id/layout_shopping_cart"
                             app:layout_constraintStart_toEndOf="@+id/ib_exit_shop_detail"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="TouchTargetSizeCheck" />
+                            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
                         <ImageView
                             android:id="@+id/iv_home_page"
@@ -170,7 +174,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:tint="@color/white"
-                            tools:ignore="ContentDescription" />
+                            tools:ignore="ContentDescription,ImageContrastCheck" />
 
                         <FrameLayout
                             android:id="@+id/layout_shopping_cart"
@@ -187,7 +191,7 @@
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_shopping_cart"
                                 app:tint="@color/white"
-                                tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription,ImageContrastCheck" />
 
                             <TextView
                                 android:id="@+id/tv_num_cart"
@@ -200,7 +204,7 @@
                                 android:text="@string/num_default"
                                 android:textColor="@color/white"
                                 android:textSize="9sp"
-                                tools:ignore="RtlHardcoded,SmallSp" />
+                                tools:ignore="RtlHardcoded,SmallSp,TextContrastCheck" />
                         </FrameLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.appcompat.widget.Toolbar>
@@ -240,7 +244,8 @@
                             android:background="@color/white"
                             app:tabGravity="center"
                             app:tabMode="scrollable"
-                            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"/>
+                            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+                            tools:ignore="SpeakableTextPresentCheck" />
                     </androidx.appcompat.widget.Toolbar>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>

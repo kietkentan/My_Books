@@ -16,5 +16,5 @@
         android:layout_gravity="center"
         android:background="@color/background_shimmer"
         android:scaleType="centerInside"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription,ImageContrastCheck" />
 </androidx.cardview.widget.CardView>

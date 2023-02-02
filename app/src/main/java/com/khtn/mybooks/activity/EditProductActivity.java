@@ -22,7 +22,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -38,8 +37,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -50,8 +47,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.google.gson.Gson;
 import com.khtn.mybooks.Interface.ImageClickInterface;
 import com.khtn.mybooks.Interface.ItemChangedInterface;
 import com.khtn.mybooks.R;
@@ -120,7 +115,6 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
     private ImageAdapter imageAdapter;
     private AuthorAdapter authorAdapter;
     private AgeRangeAdapter ageRangeAdapter;
-    private FirebaseDatabase database;
     private DatabaseReference reference;
     private StorageReference storageReference;
 
@@ -193,7 +187,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
         recListAuthor.setLayoutManager(new LinearLayoutManager(EditProductActivity.this, RecyclerView.VERTICAL, false));
         recListAgeRange.setLayoutManager(new LinearLayoutManager(EditProductActivity.this, RecyclerView.VERTICAL, false));
 
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         reference = database.getReference("book");
         storageReference = FirebaseStorage.getInstance().getReference("src_book");
 
@@ -210,12 +204,16 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
             uriList.add(Uri.parse(str));
             imageAdapter.notifyItemInserted(uriList.size() - 1);
         }
-        authorList.addAll(Arrays.asList(book.getDetail().getAuthor().split("\n")));
-        authorAdapter.notifyItemRangeInserted(0, authorList.size() - 1);
-        for (String s : book.getDetail().getAgeRange().split("")) {
-            ageRangeList.add(Integer.parseInt(s));
-            ageRangeAdapter.notifyItemInserted(ageRangeList.size() - 1);
-        }
+        if (book.getDetail().getAuthor() != null)
+            for (String s : book.getDetail().getAuthor().split("\n")) {
+                authorList.add(s);
+                authorAdapter.notifyItemInserted(authorList.size() - 1);
+            }
+        if (book.getDetail().getAgeRange() != null)
+            for (String s : book.getDetail().getAgeRange().split("")) {
+                ageRangeList.add(Integer.parseInt(s));
+                ageRangeAdapter.notifyItemInserted(ageRangeList.size() - 1);
+            }
         layoutLoading.setVisibility(View.GONE);
         setData();
     }
@@ -368,21 +366,22 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
     public void setData(){
         positionPictureSelected = 0;
         checkImageView();
-        tvId.setText(String.format("%s", book.getId()));
+        tvId.setText(String.format(getString(R.string.status), book.getId()));
         edtEnterName.setText(book.getName());
-        edtEnterPrice.setText(String.format("%d", book.getOriginalPrice()));
-        edtEnterDiscount.setText(String.format("%d", book.getDiscount()));
-        edtEnterAmount.setText(String.format("%d", book.getAmount()));
-        tvSelectDateSell.setText(String.format("%s", book.getTimeSell() == null ? getString(R.string.unselected) : book.getTimeSell().split(" ")[0]));
-        tvSelectTimeSell.setText(String.format("%s", book.getTimeSell() == null ? getString(R.string.unselected) : book.getTimeSell().split(" ")[1]));
-        edtEnterType.setText(book.getDetail().getType() == null ? "" : String.format("%s", book.getDetail().getType()));
-        edtEnterPages.setText(book.getDetail().getPages() <= 0 ? "" : String.format("%d", book.getDetail().getPages()));
-        edtEnterWeight.setText(book.getDetail().getWeight() <= 0 ? "" : String.format("%d", book.getDetail().getWeight()));
-        edtEnterHeight.setText(book.getDetail().getSize() == null ? "" : String.format("%s", book.getDetail().getSize().split("x")[0]));
-        edtEnterWidth.setText(book.getDetail().getSize() == null ? "" : String.format("%s", book.getDetail().getSize().split("x")[1]));
-        edtEnterDescribe.setText(String.format("%s", book.getDetail().getDescribe().replace("<br>", "\n")));
+        edtEnterPrice.setText(String.format(getString(R.string.num), book.getOriginalPrice()));
+        edtEnterDiscount.setText(String.format(getString(R.string.num), book.getDiscount()));
+        edtEnterAmount.setText(String.format(getString(R.string.num), book.getAmount()));
+        tvSelectDateSell.setText(String.format(getString(R.string.status), book.getTimeSell() == null ? getString(R.string.unselected) : book.getTimeSell().split(" ")[0]));
+        tvSelectTimeSell.setText(String.format(getString(R.string.status), book.getTimeSell() == null ? getString(R.string.unselected) : book.getTimeSell().split(" ")[1]));
+        edtEnterType.setText(book.getDetail().getType() == null ? "" : String.format(getString(R.string.status), book.getDetail().getType()));
+        edtEnterPages.setText(book.getDetail().getPages() <= 0 ? "" : String.format(getString(R.string.num), book.getDetail().getPages()));
+        edtEnterWeight.setText(book.getDetail().getWeight() <= 0 ? "" : String.format(getString(R.string.num), book.getDetail().getWeight()));
+        edtEnterHeight.setText(book.getDetail().getSize() == null ? "" : String.format(getString(R.string.status), book.getDetail().getSize().split("x")[0]));
+        edtEnterWidth.setText(book.getDetail().getSize() == null ? "" : String.format(getString(R.string.status), book.getDetail().getSize().split("x")[1]));
+        edtEnterDescribe.setText(book.getDetail().getDescribe() == null ? "" : String.format(getString(R.string.status), book.getDetail().getDescribe().replace("<br>", "\n")));
     }
 
+    @SuppressWarnings("deprecation")
     public void selectNewImage(){
         Intent intent = new Intent();
 
@@ -394,6 +393,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    @SuppressWarnings("deprecation")
     public void selectAddImage(){
         Intent intent = new Intent();
 
@@ -407,7 +407,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
 
     public void removePicture(){
         uriList.remove(positionPictureSelected);
-        imageAdapter.notifyItemRemoved(positionPictureSelected);
+        setUriAdapter();
         positionPictureSelected = uriList.size() > 0 ? 0 : -1;
         checkImageView();
     }
@@ -460,7 +460,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
     public void checkDataEnter(){
         boolean check = true;
         if (uriList.size() <= 0) {
-            Toast.makeText(this, "Vui lòng chọn ảnh sản phẩm.!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.please_chose_image, Toast.LENGTH_SHORT).show();
             check = false;
         }
         if (edtEnterName.getText().toString().isEmpty()) {
@@ -487,7 +487,6 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
             edtEnterWeight.setError(getString(R.string.enter_info));
             check = false;
         }
-        Log.i("TAG_U", "checkDataEnter end: " + check);
         if (check)
             upLoadDataImage();
     }
@@ -502,21 +501,20 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
 
                 snapshot.getRef().setValue(bookNew);
                 progressDialog.dismiss();
-                Toast.makeText(EditProductActivity.this, "Thêm sản phẩm thành công.!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProductActivity.this, R.string.add_successful_product, Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditProductActivity.this, "Thêm sản phẩm thất bại.! Thử lại sau...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProductActivity.this, R.string.adding_failed_products, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void upLoadDataImage() {
-        Log.i("TAG_U", "upLoadDataImage: ");
         progressDialog = new ProgressDialog(EditProductActivity.this);
-        progressDialog.setTitle("Đang lưu sản phẩm...");
+        progressDialog.setTitle(getString(R.string.saving_product));
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
@@ -537,7 +535,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
                     });
                 }).addOnFailureListener(e -> {
                             progressDialog.dismiss();
-                            Toast.makeText(EditProductActivity.this, book == null ? "Thêm sản phẩm thất bại.!" : "Lưu sản phẩm thất bại.!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditProductActivity.this, book == null ? getString(R.string.adding_failed_product) : getString(R.string.saving_failed_product), Toast.LENGTH_SHORT).show();
                         });
             }
         }
@@ -625,7 +623,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year1, month1, dayOfMonth) -> {
             month1 += 1;
-            @SuppressLint("DefaultLocale") String date1 = String.format("%d/%d/%d", dayOfMonth, month1, year1);
+            @SuppressLint("DefaultLocale") String date1 = String.format(getString(R.string.format_date), dayOfMonth, month1, year1);
             tvSelectDateSell.setText(date1);
         }, year, month - 1, day);
         datePickerDialog.setCancelable(false);
@@ -644,7 +642,7 @@ public class EditProductActivity extends AppCompatActivity implements View.OnCli
         minute = Integer.parseInt(num[1]);
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute1) -> {
-            @SuppressLint("DefaultLocale") String time1 = String.format("%d:%d:0", hourOfDay, minute1);
+            @SuppressLint("DefaultLocale") String time1 = String.format(getString(R.string.format_time), hourOfDay, minute1);
             tvSelectTimeSell.setText(time1);
         }, hour, minute, true);
         timePickerDialog.setCancelable(false);

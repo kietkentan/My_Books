@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.firebase.database.DataSnapshot;
@@ -28,17 +26,19 @@ public class ShopFollowedActivity extends AppCompatActivity {
     private ImageButton ibBack;
     private RecyclerView recListShopFollowed;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
     private List<Publisher> publisherList;
+    @SuppressWarnings("FieldCanBeLocal")
     private ShopFollowedAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_followed);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
 

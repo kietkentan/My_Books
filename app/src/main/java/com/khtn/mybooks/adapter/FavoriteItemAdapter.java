@@ -48,7 +48,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
 
     private final DatabaseCart databaseCart;
     private final FirebaseDatabase database;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private final String[] mode;
     private Publisher dataPublisher;
 
     public FavoriteItemAdapter(List<Book> bookItemList, Context context, FavoriteClickInterface clickInterface) {
@@ -57,6 +57,7 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
         this.clickInterface = clickInterface;
         this.databaseCart = new DatabaseCart(context);
         this.database = FirebaseDatabase.getInstance();
+        this.mode = context.getResources().getStringArray(R.array.mode_login);
     }
 
     @NonNull
@@ -105,10 +106,8 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
                             snapshot.getRef().setValue(books);
                         Toast.makeText(context, R.string.un_added_favorite, Toast.LENGTH_SHORT).show();
                         bookItemList.remove(position);
-                        notifyItemRemoved(position);
                         Common.currentUser.setList_favorite(bookItemList);
-                        if (bookItemList.size() == 0)
-                            clickInterface.OnRemove();
+                        clickInterface.OnRemove();
                     }
 
                     @Override
@@ -136,8 +135,11 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
                     @SuppressLint("DefaultLocale")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String date = snapshot.child("timeSell").exists() ? snapshot.child("timeSell").getValue(String.class) : null;
                         int amount = snapshot.child("amount").getValue(Integer.class);
-                        if (amount > finalQuantity) {
+                        boolean check = AppUtil.checkDateTimeSell(date);
+
+                        if (amount > finalQuantity && check) {
                             databaseCart.addCart(new Order(
                                     bookItemList.get(position).getId(),
                                     bookItemList.get(position).getName(),
@@ -188,9 +190,8 @@ public class FavoriteItemAdapter extends RecyclerView.Adapter<FavoriteItemAdapte
                                         }
                                     });
 
-                        } else {
-                            Toast.makeText(context, String.format(context.getString(R.string.limit_product), amount), Toast.LENGTH_SHORT).show();
-                        }
+                        } else
+                            Toast.makeText(context, String.format(check ? context.getString(R.string.limit_product) : context.getString(R.string.product_is_upcoming), amount), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

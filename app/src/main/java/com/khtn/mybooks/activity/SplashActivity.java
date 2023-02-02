@@ -39,6 +39,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private FirebaseDatabase database;
 
+    private String[] mode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,7 @@ public class SplashActivity extends AppCompatActivity {
         ivLogo = findViewById(R.id.iv_logo);
         tvSlogan = findViewById(R.id.tv_slogan);
         tvAboutFrom = findViewById(R.id.tv_about_info);
+        mode = getResources().getStringArray(R.array.mode_login);
     }
 
     public void setAction(){
@@ -77,7 +80,7 @@ public class SplashActivity extends AppCompatActivity {
             String id = preferences.getString("saved_id", null);
             String password = preferences.getString("saved_password", null);
             if (Common.modeLogin == 1){
-                database.getReference("user").child("mybooks").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                database.getReference("user").child(mode[0]).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()){
@@ -94,27 +97,12 @@ public class SplashActivity extends AppCompatActivity {
 
                     }
                 });
-            } else if (Common.modeLogin == 2){
-                database.getReference("user").child("google").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            } else if (Common.modeLogin > 0){
+                database.getReference("user").child(mode[Common.modeLogin - 1]).child(id).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            Common.signIn(SplashActivity.this, snapshot.getValue(User.class), 2);
-                            getMoreData();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            } else if (Common.modeLogin == 3){
-                database.getReference("user").child("facebook").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            Common.signIn(SplashActivity.this, snapshot.getValue(User.class), 3);
+                            Common.signIn(SplashActivity.this, snapshot.getValue(User.class), Common.modeLogin);
                             getMoreData();
                         }
                     }

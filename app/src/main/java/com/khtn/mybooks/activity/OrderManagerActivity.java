@@ -5,7 +5,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,7 +16,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.ViewPagerOrderManagerAdapter;
-import com.khtn.mybooks.adapter.ViewPagerOrderStatusAdapter;
 import com.khtn.mybooks.helper.AppUtil;
 
 public class OrderManagerActivity extends AppCompatActivity implements OnOrderChangeSizeInterface {
@@ -34,7 +32,7 @@ public class OrderManagerActivity extends AppCompatActivity implements OnOrderCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_manager);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
         setupTabLayout();

@@ -1,13 +1,7 @@
 package com.khtn.mybooks.model;
 
-import android.annotation.SuppressLint;
-import android.icu.number.Scale;
-import android.net.Uri;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Book {
     private List<String> images; // ảnh review
@@ -50,53 +44,6 @@ public class Book {
 
     public Detail getDetail() {
         return detail;
-    }
-
-    public List<List<String>> getListDetail(){
-        List<List<String>> lists = new ArrayList<>();
-        if (detail.getAuthor() != null){
-            List<String> list = new ArrayList<>();
-            list.add("author");
-            list.add(detail.getAuthor());
-            lists.add(list);
-        }
-
-        if (detail.getAgeRange() != null){
-            List<String> list = new ArrayList<>();
-            list.add("ageRange");
-            list.add(detail.getAgeRange());
-            lists.add(list);
-        }
-
-        if (detail.getPages() > 0){
-            List<String> list = new ArrayList<>();
-            list.add("pages");
-            list.add(String.valueOf(detail.getPages()));
-            lists.add(list);
-        }
-
-        if (detail.getSize() != null){
-            List<String> list = new ArrayList<>();
-            list.add("size");
-            list.add(detail.getSize());
-            lists.add(list);
-        }
-
-        if (detail.getType() != null){
-            List<String> list = new ArrayList<>();
-            list.add("type");
-            list.add(detail.getType());
-            lists.add(list);
-        }
-
-        if (detail.getWeight() > 0){
-            List<String> list = new ArrayList<>();
-            list.add("weight");
-            list.add(String.valueOf(detail.getWeight()));
-            lists.add(list);
-        }
-
-        return lists;
     }
 
     public void setDetail(Detail detail) {

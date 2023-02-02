@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -97,26 +96,30 @@ public class CompleteRegistrationActivity extends AppCompatActivity implements V
             @Override
             public void onTick(long l) {
                 long remindSec = l/1000;
-                tvComplete.setText(String.format("%s %ds", getString(R.string.return_login_page), remindSec % 60));
+                tvComplete.setText(String.format(getString(R.string.format_created), getString(R.string.return_login_page), remindSec % 60));
             }
 
             @Override
             public void onFinish() {
-                btnComplete.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
+                createAccount();
             }
         }.start();
     }
 
     private void createAccount(){
+        String mode = getResources().getStringArray(R.array.mode_login)[0];
         String uniqueID = UUID.randomUUID().toString();
-        Log.i("TAG_U", "createAccount: " + uniqueID);
-        User user = new User(null, null, edtEnterName.getText().toString(), edtEnterPassword.getText().toString(),
-                    uniqueID, email == null ? null : email, phoneNumber == null ? null : phoneNumber, null);
-        databaseReference.child("mybooks").addListenerForSingleValueEvent(new ValueEventListener() {
+        User user = new User();
+        user.setPassword(edtEnterPassword.getText().toString());
+        user.setName(edtEnterName.getText().toString());
+        user.setPhone(phoneNumber);
+        user.setId(uniqueID);
+        user.setEmail(email.equals("null") ? null : email);
+
+        databaseReference.child(mode).child(uniqueID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot.getRef().child("mybooks").setValue(user);
+                snapshot.getRef().setValue(user);
                 btnComplete.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 returnLoginPage();
@@ -160,7 +163,6 @@ public class CompleteRegistrationActivity extends AppCompatActivity implements V
 
                 complete = true;
                 countdownBackToLogin();
-                createAccount();
             } else
                 edtReEnterPassword.setError(getString(R.string.password_not_same));
         }

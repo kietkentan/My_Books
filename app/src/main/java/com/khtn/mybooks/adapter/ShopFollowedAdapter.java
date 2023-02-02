@@ -38,14 +38,16 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
     private final List<Boolean> check = new ArrayList<>();
     private final Context context;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final FirebaseDatabase database;
     private final DatabaseReference reference;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private final String[] mode;
 
     public ShopFollowedAdapter(List<Publisher> publisherList, Context context) {
         this.publisherList = publisherList;
         this.pubId = Common.currentUser.getList_shopFollow();
         this.context = context;
+        this.mode = context.getResources().getStringArray(R.array.mode_login);
 
         for (int i = 0; i < publisherList.size(); ++i)
             check.add(true);
@@ -64,7 +66,7 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
     public void onBindViewHolder(@NonNull ShopFollowedAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Picasso.get().load(publisherList.get(position).getLogo()).into(holder.ivAvatar);
         holder.tvName.setText(publisherList.get(position).getName());
-        holder.tvLocation.setText(publisherList.get(position).getLocation().getProvinces_cities().getName_with_type().replace("Thành phố", "TP"));
+        holder.tvLocation.setText(publisherList.get(position).getLocation().getProvinces_cities().getName_with_type().replace(context.getString(R.string.cities), context.getString(R.string.cities_sort)));
         holder.btnFollow.setOnClickListener(v -> {
             check.set(position, !check.get(position));
             if (!check.get(position)){
@@ -74,7 +76,7 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
             } else {
                 holder.btnFollow.setText(context.getText(R.string.followed));
                 holder.btnFollow.setBackgroundResource(R.drawable.custom_button_close);
-                holder.btnFollow.setTextColor(Color.parseColor("#E32127"));
+                holder.btnFollow.setTextColor(context.getColor(R.color.reduced_price));
             }
             updateFollowed();
         });
@@ -105,7 +107,7 @@ public class ShopFollowedAdapter extends RecyclerView.Adapter<ShopFollowedAdapte
                     return;
 
                 for (int i = 0; i < Common.currentUser.getList_shopFollow().size(); ++i)
-                    snapshot.getRef().child(String.format("%d", i)).setValue(Common.currentUser.getList_shopFollow().get(i));
+                    snapshot.getRef().child(String.format(context.getString(R.string.num), i)).setValue(Common.currentUser.getList_shopFollow().get(i));
             }
 
             @Override

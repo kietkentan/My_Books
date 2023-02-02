@@ -41,7 +41,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.ViewHold
         this.context = context;
     }
 
-
     @NonNull
     @Override
     public AddressAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

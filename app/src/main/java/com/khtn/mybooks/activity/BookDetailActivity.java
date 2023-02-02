@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,7 +21,6 @@ import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -52,6 +50,7 @@ import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.Book;
 import com.khtn.mybooks.model.BookItem;
+import com.khtn.mybooks.model.Detail;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Publisher;
 import com.squareup.picasso.Picasso;
@@ -99,7 +98,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     private Book dataBook;
     private Publisher dataPublisher;
     private List<List<String>> listDetails;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private String[] mode;
 
     private DatabaseCart databaseCart;
     private DatabaseViewed databaseViewed;
@@ -155,7 +154,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
                                     dataBook.getId(),
                                     dataBook.getPublisher()));
 
-                            listDetails = dataBook.getListDetail();
+                            listDetails = getListDetail(dataBook.getDetail());
                             setAboutDetails();
                         }
                         setDetails();
@@ -175,6 +174,53 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         });
     }
 
+    public List<List<String>> getListDetail(Detail detail){
+        List<List<String>> lists = new ArrayList<>();
+        if (detail.getAuthor() != null){
+            List<String> list = new ArrayList<>();
+            list.add("author");
+            list.add(detail.getAuthor());
+            lists.add(list);
+        }
+
+        if (detail.getAgeRange() != null){
+            List<String> list = new ArrayList<>();
+            list.add("ageRange");
+            list.add(detail.getAgeRange());
+            lists.add(list);
+        }
+
+        if (detail.getPages() > 0){
+            List<String> list = new ArrayList<>();
+            list.add("pages");
+            list.add(String.valueOf(detail.getPages()));
+            lists.add(list);
+        }
+
+        if (detail.getSize() != null){
+            List<String> list = new ArrayList<>();
+            list.add("size");
+            list.add(detail.getSize());
+            lists.add(list);
+        }
+
+        if (detail.getType() != null){
+            List<String> list = new ArrayList<>();
+            list.add("type");
+            list.add(detail.getType());
+            lists.add(list);
+        }
+
+        if (detail.getWeight() > 0){
+            List<String> list = new ArrayList<>();
+            list.add("weight");
+            list.add(String.valueOf(detail.getWeight()));
+            lists.add(list);
+        }
+
+        return lists;
+    }
+
     public void init(){
         databaseCart = new DatabaseCart(BookDetailActivity.this);
         databaseViewed = new DatabaseViewed(BookDetailActivity.this);
@@ -183,6 +229,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         id = intent.getStringExtra("id");
         publisher = intent.getStringExtra("publisher");
         listDetails = new ArrayList<>();
+        mode = getResources().getStringArray(R.array.mode_login);
 
         ivMenu = findViewById(R.id.iv_menu_in_detail);
         rcImages = findViewById(R.id.list_img);
@@ -233,7 +280,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
         if (dataBook.getDiscount() == 0){
             tvPrice.setText(String.format(getString(R.string.book_price), AppUtil.convertNumber(dataBook.getOriginalPrice())));
-            tvPrice.setTextColor(Color.parseColor("#FF000000"));
+            tvPrice.setTextColor(getColor(R.color.black));
             tvOriginalPrice.setVisibility(View.INVISIBLE);
             tvDiscount.setVisibility(View.INVISIBLE);
         } else {
@@ -251,14 +298,14 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
 
         if (dataBook.getAmount() == 0){
             tvInStockOrNot.setText(getString(R.string.out_of_stock));
-            tvInStockOrNot.setTextColor(Color.parseColor("#BDBDBD"));
+            tvInStockOrNot.setTextColor(getColor(R.color.text_hint));
         } else {
             tvInStockOrNot.setText(getString(R.string.in_stock));
         }
 
         Picasso.get().load(dataPublisher.getLogo()).into(ivLogoPublisher);
         tvShopName.setText(dataPublisher.getName());
-        tvShopLocation.setText(dataPublisher.getLocation().getProvinces_cities().getName_with_type().replace("Thành phố", "TP"));
+        tvShopLocation.setText(dataPublisher.getLocation().getProvinces_cities().getName_with_type().replace(getString(R.string.cities), getString(R.string.cities_sort)));
 
         if (dataPublisher.getReply() < 60)
             tvShopReplyWithin.setText(String.format(getString(R.string.reply_within), dataPublisher.getReply(), getString(R.string.minute)));
@@ -315,15 +362,17 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         int i = databaseCart.getCarts().size();
         if (i > 0) {
             tvNumCart.setVisibility(View.VISIBLE);
-            tvNumCart.setText(String.format("%d", i));
+            tvNumCart.setText(String.format(getString(R.string.num), i));
         }
         else
             tvNumCart.setVisibility(View.GONE);
     }
 
     public void setAboutDetails(){
-        tvDescribe.setMovementMethod(LinkMovementMethod.getInstance());
-        tvDescribe.setText(Html.fromHtml(dataBook.getDetail().getDescribe(), new URIImagePasser(BookDetailActivity.this, tvDescribe), null));
+        if (dataBook.getDetail().getDescribe() != null) {
+            tvDescribe.setMovementMethod(LinkMovementMethod.getInstance());
+            tvDescribe.setText(Html.fromHtml(dataBook.getDetail().getDescribe(), new URIImagePasser(BookDetailActivity.this, tvDescribe), null));
+        }
         BookDetailAdapter detailAdapter = new BookDetailAdapter(listDetails, this);
         viewListDetails.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         viewListDetails.setAdapter(detailAdapter);
@@ -350,8 +399,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             btnBuyNow.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
             btnBuyNow.setBackgroundResource(R.drawable.custom_button_hidden);
 
-            btnBuyNow.setText(String.format("%s", check ? getString(R.string.buy_now) : getString(R.string.coming_soon)));
-            btnAddCart.setText(String.format("%s", check ? getString(R.string.add_shopping_cart) : getString(R.string.coming_soon)));
+            btnBuyNow.setText(String.format(getString(R.string.status), check ? getString(R.string.buy_now) : getString(R.string.coming_soon)));
+            btnAddCart.setText(String.format(getString(R.string.status), check ? getString(R.string.add_shopping_cart) : getString(R.string.coming_soon)));
         }
     }
 
@@ -645,6 +694,7 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
         startActivity(intent);
     }
 
+    @SuppressWarnings("deprecation")
     public static class URIImagePasser implements Html.ImageGetter {
         Context context;
         TextView mTextView;

@@ -65,7 +65,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>{
             holder.tvReducedPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(orders.get(position).getBookPrice())));
             holder.tvOriginalPrice.setVisibility(View.GONE);
         }
-        holder.tvQuantity.setText(String.format("%d", orders.get(position).getBookQuantity()));
+        holder.tvQuantity.setText(String.format(context.getString(R.string.num), orders.get(position).getBookQuantity()));
         setOnClick(holder, position);
     }
 

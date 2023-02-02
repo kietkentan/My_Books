@@ -13,14 +13,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -31,8 +26,6 @@ import com.khtn.mybooks.Interface.ViewPublisherClickInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.BookItemAdapter;
 import com.khtn.mybooks.adapter.PublisherItemAdapter;
-import com.khtn.mybooks.common.Common;
-import com.khtn.mybooks.databases.DatabaseCart;
 import com.khtn.mybooks.model.BookItem;
 import com.khtn.mybooks.model.PublisherItem;
 
@@ -52,12 +45,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     private ShimmerFrameLayout shimmerPublishers;
 
     private PublisherItemAdapter publisherItemAdapter;
+    @SuppressWarnings("FieldCanBeLocal")
     private BookItemAdapter bookItemAdapter;
+    @SuppressWarnings("FieldCanBeLocal")
     private BookItemAdapter bookItemAdapter2;
 
     private List<PublisherItem> publisherList;
-    private Map<String, List<BookItem>> bookList;
-    private List<BookItem> listBookItem;
+    private Map<String, List<BookItem>> bookListBestSeller;
+    private Map<String, List<BookItem>> bookListNew;
+    @SuppressWarnings("FieldCanBeLocal")
+    private List<BookItem> listBookBestSeller;
+    @SuppressWarnings("FieldCanBeLocal")
+    private List<BookItem> listBookNew;
 
     private FirebaseDatabase database;
 
@@ -83,7 +82,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         database = FirebaseDatabase.getInstance();
 
         publisherList = new ArrayList<>();
-        bookList = new HashMap<>();
+        bookListBestSeller = new HashMap<>();
+        bookListNew = new HashMap<>();
 
         tvSearch = view.findViewById(R.id.tv_search_item);
         rcPublisher = view.findViewById(R.id.rec_publishers);
@@ -114,10 +114,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_search_item:
-                startSearchItemPage();
-                break;
+        if (view.getId() == R.id.tv_search_item) {
+            startSearchItemPage();
         }
     }
 
@@ -133,7 +131,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                 }
                 publisherItemAdapter.notifyDataSetChanged();
                 stopPublisherShimmer();
-                loadBook(publisherList.get(0).getId());
+                loadBookBestSeller(publisherList.get(0).getId());
+                loadBookNew(publisherList.get(0).getId());
             }
 
             @Override
@@ -143,9 +142,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         });
     }
 
-    private void loadBook(String idPublisher){
-        if (bookList.containsKey(idPublisher))
-            changeData(idPublisher);
+    private void loadBookBestSeller(String idPublisher){
+        if (bookListBestSeller.containsKey(idPublisher))
+            changeDataBestSeller(idPublisher);
         else {
             database.getReference("book").orderByChild("publisher").limitToFirst(10).equalTo(idPublisher).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -155,8 +154,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
                         BookItem item = dataSnapshot.getValue(BookItem.class);
                         newList.add(item);
                     }
-                    bookList.put(idPublisher, newList);
-                    changeData(idPublisher);
+                    bookListBestSeller.put(idPublisher, newList);
+                    changeDataBestSeller(idPublisher);
                 }
 
                 @Override
@@ -167,19 +166,57 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
-    private void changeData(String idPublisher){
-        listBookItem = bookList.get(idPublisher);
-        bookItemAdapter = new BookItemAdapter(getContext(), listBookItem);
+    private void loadBookNew(String idPublisher){
+        if (bookListNew.containsKey(idPublisher))
+            changeDataNew(idPublisher);
+        else {
+            database.getReference("book").orderByChild("publisher").equalTo(idPublisher).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<BookItem> newList = new ArrayList<>();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        String date = dataSnapshot.child("datePosted").getValue(String.class);
+                        if (AppUtil.numDays(date) < 90) {
+                            BookItem item = dataSnapshot.getValue(BookItem.class);
+                            newList.add(item);
+                        }
+                        if (newList.size() >= 10)
+                            break;
+                    }
+                    bookListNew.put(idPublisher, newList);
+                    changeDataNew(idPublisher);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+    }
+
+    private void changeDataBestSeller(String idPublisher) {
+        listBookBestSeller = bookListBestSeller.get(idPublisher);
+
+        bookItemAdapter = new BookItemAdapter(getContext(), listBookBestSeller);
         rcBestSellerBooks.setAdapter(bookItemAdapter);
-        bookItemAdapter2 = new BookItemAdapter(getContext(), listBookItem);
+
+        stopShimmerSheller();
+    }
+
+    private void changeDataNew(String idPublisher) {
+        listBookNew = bookListNew.get(idPublisher);
+
+        bookItemAdapter2 = new BookItemAdapter(getContext(), listBookNew);
         rcNewBooks.setAdapter(bookItemAdapter2);
 
-        stopShimmer();
+        stopShimmerNew();
     }
 
     @Override
     public void OnItemClick(String idPublisher) {
-        loadBook(idPublisher);
+        loadBookBestSeller(idPublisher);
+        loadBookNew(idPublisher);
     }
 
     public void startShimmer(){
@@ -201,19 +238,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             shimmerPublishers.stopShimmer();
             shimmerPublishers.setVisibility(View.GONE);
             rcPublisher.setVisibility(View.VISIBLE);
-        }, 500);
+        }, 200);
     }
 
-    public void stopShimmer(){
+    public void stopShimmerSheller(){
         new Handler().postDelayed(() -> {
             shimmerBestSeller.stopShimmer();
-            shimmerNews.stopShimmer();
-
             shimmerBestSeller.setVisibility(View.GONE);
-            shimmerNews.setVisibility(View.GONE);
-
             rcBestSellerBooks.setVisibility(View.VISIBLE);
+        }, 200);
+    }
+
+    public void stopShimmerNew(){
+        new Handler().postDelayed(() -> {
+            shimmerNews.stopShimmer();
+            shimmerNews.setVisibility(View.GONE);
             rcNewBooks.setVisibility(View.VISIBLE);
-        }, 500);
+        }, 200);
     }
 }

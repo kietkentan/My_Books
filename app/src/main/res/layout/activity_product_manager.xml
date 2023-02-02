@@ -53,14 +53,14 @@
         android:drawablePadding="10dp"
         android:drawableTint="@color/text_hint"
         android:hint="@string/search_product"
-        android:inputType="text"
         android:importantForAutofill="no"
+        android:inputType="text"
         android:paddingHorizontal="10dp"
         android:textSize="14sp"
-        tools:ignore="TextFields"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"/>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+        tools:ignore="TextFields,TouchTargetSizeCheck,TextContrastCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rec_list_product_manager"

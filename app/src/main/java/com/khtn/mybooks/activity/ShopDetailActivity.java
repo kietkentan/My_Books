@@ -41,7 +41,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
     private ImageButton ibBack;
     private ImageView ivLogo;
     private ImageView ivHome;
-    private TextView tvSearch;
+    private TextView tvSearch;              // not active
     private TextView tvNumCart;
     private TextView tvName;
     private TextView tvRatingScore;
@@ -52,10 +52,11 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
     private List<BookItem> bookItemList;
     private Publisher publisher;
     private boolean check = false;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private String[] mode;
     private int currentSelectedTab = 0;
 
     private DatabaseCart databaseCart;
+    @SuppressWarnings("FieldCanBeLocal")
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
@@ -63,7 +64,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
-        AppUtil.changeStatusBarColor(this, "#ff9646");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.background_shop));
 
         init();
         setupPublisher();
@@ -122,6 +123,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("book");
         bookItemList = new ArrayList<>();
+        mode = getResources().getStringArray(R.array.mode_login);
     }
 
     public void loadData(){
@@ -169,7 +171,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
         int i = databaseCart.getCarts().size();
         if (i > 0) {
             tvNumCart.setVisibility(View.VISIBLE);
-            tvNumCart.setText(String.format("%d", i));
+            tvNumCart.setText(String.format(getString(R.string.num), i));
         }
         else
             tvNumCart.setVisibility(View.GONE);
@@ -282,7 +284,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
                     return;
 
                 for (int i = 0; i < Common.currentUser.getList_shopFollow().size(); ++i)
-                    snapshot.getRef().child(String.format("%d", i)).setValue(Common.currentUser.getList_shopFollow().get(i));
+                    snapshot.getRef().child(String.format(getString(R.string.num), i)).setValue(Common.currentUser.getList_shopFollow().get(i));
             }
 
             @Override

@@ -35,8 +35,8 @@
                 android:layout_height="49.7dp"
                 android:background="@color/white"
                 android:src="@drawable/ic_close"
-                tools:ignore="ContentDescription"
-                app:tint="@color/text_hint" />
+                app:tint="@color/text_hint"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
         </LinearLayout>
 
         <View

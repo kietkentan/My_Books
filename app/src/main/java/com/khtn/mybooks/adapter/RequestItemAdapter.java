@@ -76,12 +76,8 @@ public class RequestItemAdapter extends RecyclerView.Adapter<RequestItemAdapter.
         } else
             holder.tvMoreOrderProducts.setVisibility(View.GONE);
 
-        holder.layoutRequestItem.setOnClickListener(v -> {
-            startDetailRequest(position);
-        });
-        holder.btnMoreDetail.setOnClickListener(v -> {
-            startDetailRequest(position);
-        });
+        holder.layoutRequestItem.setOnClickListener(v -> startDetailRequest(position));
+        holder.btnMoreDetail.setOnClickListener(v -> startDetailRequest(position));
         holder.btnCancel.setOnClickListener(v -> {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("request");
             reference.child(requestList.get(position).getIdRequest()).child("status").setValue(5);

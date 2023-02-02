@@ -150,12 +150,11 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     protected void login(){
         btnLogin.setVisibility(View.INVISIBLE);
         progressBarLogin.setVisibility(View.VISIBLE);
-        databaseReference.child("mybooks").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(getResources().getStringArray(R.array.mode_login)[0]).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                    if (Objects.requireNonNull(dataSnapshot.child("phone").getValue(String.class)).equals(strUser)
-                            || Objects.requireNonNull(dataSnapshot.child("email").getValue(String.class)).equals(strUser)) {
+                    if (Objects.requireNonNull(dataSnapshot.child(AppUtil.isPhoneNumber(strUser) ? "phone" : "email").getValue(String.class)).equals(strUser)) {
                         User user = dataSnapshot.getValue(User.class);
                         if (Objects.requireNonNull(user).getPassword().equals(edtPassword.getText().toString())) {
                             Common.signIn(SignInActivity.this, user, 1);

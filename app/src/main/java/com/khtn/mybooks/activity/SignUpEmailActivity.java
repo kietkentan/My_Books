@@ -104,7 +104,7 @@ public class SignUpEmailActivity extends AppCompatActivity implements View.OnCli
 
     private void signup(){
         if (AppUtil.isPhoneNumber(edtEnterPhoneNumber.getText().toString())){
-            databaseReference.child("mybooks").orderByChild("phone").equalTo(edtEnterPhoneNumber.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child(getResources().getStringArray(R.array.mode_login)[0]).orderByChild("phone").equalTo(edtEnterPhoneNumber.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()){

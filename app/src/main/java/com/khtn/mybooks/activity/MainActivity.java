@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SwitchFavoritePag
                     // 1: Home Page
                     // 2: Favorite Page
                     // 3: User Page
-                    // 4: danh muc
+                    // 4: Directory Page        // not active
                     // 5: Cart Page
     private boolean backPress = false;
 

@@ -81,6 +81,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     private final SwitchFavoritePageInterface switchFavoritePageInterface;
 
     private List<Request> requestList;
+    @SuppressWarnings("FieldCanBeLocal")
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private GoogleSignInClient gsc;
@@ -245,7 +246,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
             return;
         DatabaseViewed databaseViewed = new DatabaseViewed(getActivity());
         int i = databaseViewed.getListsViewed().size();
-        tvRecentlyViewed.setText(String.format("%d", i));
+        tvRecentlyViewed.setText(String.format(getString(R.string.num), i));
     }
 
     @SuppressLint("DefaultLocale")
@@ -255,14 +256,14 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         int i = 0;
         if (Common.currentUser.getList_shopFollow() != null)
             i = Common.currentUser.getList_shopFollow().size();
-        tvShopFollowed.setText(String.format("%d", i));
+        tvShopFollowed.setText(String.format(getString(R.string.num), i));
     }
 
     @SuppressLint("DefaultLocale")
     public void setNumWaitConfirm(int num){
         if (num != 0){
             tvNumWaitConfirm.setVisibility(View.VISIBLE);
-            tvNumWaitConfirm.setText(String.format("%d", num));
+            tvNumWaitConfirm.setText(String.format(getString(R.string.num), num));
         } else
             tvNumWaitConfirm.setVisibility(View.GONE);
     }
@@ -271,7 +272,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     public void setNumWaitShipping(int num){
         if (num != 0){
             tvNumWaitShipping.setVisibility(View.VISIBLE);
-            tvNumWaitShipping.setText(String.format("%d", num));
+            tvNumWaitShipping.setText(String.format(getString(R.string.num), num));
         } else
             tvNumWaitShipping.setVisibility(View.GONE);
     }
@@ -280,7 +281,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     public void setNumDelivered(int num){
         if (num != 0){
             tvNumDelivered.setVisibility(View.VISIBLE);
-            tvNumDelivered.setText(String.format("%d", num));
+            tvNumDelivered.setText(String.format(getString(R.string.num), num));
         } else
             tvNumDelivered.setVisibility(View.GONE);
     }
@@ -289,7 +290,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     public void setNumInTransit(int num){
         if (num != 0){
             tvNumInTransit.setVisibility(View.VISIBLE);
-            tvNumInTransit.setText(String.format("%d", num));
+            tvNumInTransit.setText(String.format(getString(R.string.num), num));
         } else
             tvNumInTransit.setVisibility(View.GONE);
     }
@@ -298,7 +299,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     public void setNumPacketReturn(int num){
         if (num != 0){
             tvNumPacketReturn.setVisibility(View.VISIBLE);
-            tvNumPacketReturn.setText(String.format("%d", num));
+            tvNumPacketReturn.setText(String.format(getString(R.string.num), num));
         } else
             tvNumPacketReturn.setVisibility(View.GONE);
     }

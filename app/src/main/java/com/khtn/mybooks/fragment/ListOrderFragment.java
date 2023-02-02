@@ -46,7 +46,7 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
     private final int status;
     private final String keyword;
 
-    private OnOrderChangeSizeInterface anInterface;
+    private final OnOrderChangeSizeInterface anInterface;
 
     public ListOrderFragment(int status, String keyword, OnOrderChangeSizeInterface anInterface) {
         this.status = status;
@@ -178,7 +178,6 @@ public class ListOrderFragment extends Fragment implements OnOrderChangeSizeInte
 
             }
         });
-
     }
 
     public void setupRecyclerListRequest(){

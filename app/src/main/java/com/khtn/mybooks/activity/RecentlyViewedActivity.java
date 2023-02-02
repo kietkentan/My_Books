@@ -1,11 +1,13 @@
 package com.khtn.mybooks.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +37,9 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
     private DatabaseCart databaseCart;
     private DatabaseViewed databaseViewed;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private List<BookItem> bookList;
+    @SuppressWarnings("FieldCanBeLocal")
     private BookItemAdapter adapter;
 
     int widthView;
@@ -49,11 +53,10 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recently_viewed);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
         setupCart();
-        setupRecyclerViewListViewed();
 
         ibBack.setOnClickListener(this);
         ibSearch.setOnClickListener(this);
@@ -75,10 +78,6 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
     }
 
     public void init(){
-        maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
-        maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
-        widthView = AppUtil.dpToPx(182, this);
-
         databaseCart = new DatabaseCart(RecentlyViewedActivity.this);
         databaseViewed = new DatabaseViewed(RecentlyViewedActivity.this);
 
@@ -88,9 +87,22 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
         ibCleanViewed = findViewById(R.id.ib_clean_list_viewed);
         recListRecentlyViewed = findViewById(R.id.rec_list_recently_viewed);
         layoutCart = findViewById(R.id.layout_shopping_cart);
+        setupSpanCount();
+    }
 
+    public void setupSpanCount() {
+        maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
+        maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
+        widthView = AppUtil.dpToPx(182, this);
         int spanCount = (int) (maxWidthPixel/widthView);
         recListRecentlyViewed.setLayoutManager(new GridLayoutManager(this, spanCount));
+        setupRecyclerViewListViewed();
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setupSpanCount();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -162,7 +174,7 @@ public class RecentlyViewedActivity extends AppCompatActivity implements View.On
         int i = databaseCart.getCarts().size();
         if (i > 0) {
             tvNumCart.setVisibility(View.VISIBLE);
-            tvNumCart.setText(String.format("%d", i));
+            tvNumCart.setText(String.format(getString(R.string.num), i));
         }
         else
             tvNumCart.setVisibility(View.GONE);

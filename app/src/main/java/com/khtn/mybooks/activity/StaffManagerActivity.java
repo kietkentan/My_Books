@@ -31,8 +31,10 @@ public class StaffManagerActivity extends AppCompatActivity {
     private List<Boolean> booleanList;
     private int numClick = -1;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private ListStaffAdapter adapter;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
@@ -40,7 +42,7 @@ public class StaffManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_manager);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
 

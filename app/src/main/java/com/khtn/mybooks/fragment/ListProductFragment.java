@@ -1,5 +1,6 @@
 package com.khtn.mybooks.fragment;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;

@@ -26,7 +26,6 @@ import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.activity.OrderDetailActivity;
 import com.khtn.mybooks.helper.AppUtil;
-import com.khtn.mybooks.model.Book;
 import com.khtn.mybooks.model.Order;
 import com.khtn.mybooks.model.Request;
 import com.squareup.picasso.Picasso;

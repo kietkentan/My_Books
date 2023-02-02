@@ -9,18 +9,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<ImageView
-    android:id="@+id/imageView"
-    android:layout_width="162dp"
-    android:layout_height="240dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="10dp"
-    android:background="@color/background_shimmer"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:ignore="ContentDescription" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="162dp"
+        android:layout_height="240dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/background_shimmer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription,ImageContrastCheck" />
 
 <TextView
     android:id="@+id/textView"

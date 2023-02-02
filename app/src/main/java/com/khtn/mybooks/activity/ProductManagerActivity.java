@@ -33,6 +33,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
     private EditText edtSearch;
     private RecyclerView recListProduct;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private FirebaseDatabase database;
     private DatabaseReference reference;
 
@@ -46,7 +47,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_manager);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
         setupRecyclerViewProductList();
@@ -86,9 +87,9 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
             if (search.isEmpty()) {
                 modeLoad = 1;
                 getData();
-            } else if (search.startsWith("TN")) {
+            } else if (search.toUpperCase().startsWith("TN")) {
                 modeLoad = 2;
-                getDataById(search);
+                getDataById(search.toUpperCase());
             } else {
                 modeLoad = 3;
                 getDataByName(search);
@@ -104,8 +105,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 checkFinal = true;
                 if (snapshot.exists()) {
-                    Log.i("TAG_U", "onDataChange: " + snapshot.child("id").getValue(String.class));
-                    idList.add(snapshot.child("id").getValue(String.class));
+                    idList.add(id);
                     adapter.notifyItemInserted(idList.size() - 1);
                 }
             }
@@ -119,7 +119,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
 
     public void getDataByName(String str) {
         String[] keyList = VNCharacterUtils.removeAccent(str).toLowerCase().split(" ");
-        reference.orderByChild("id").startAfter(idList.size() > 0 ? idList.get(idList.size() - 1) : "TN000000").limitToFirst(10)
+        reference.orderByChild("id").startAfter(idList.size() > 0 ? idList.get(idList.size() - 1) : getString(R.string.start_id_book)).limitToFirst(10)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,7 +148,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
     }
 
     public void getData() {
-        reference.orderByChild("id").startAfter(idList.size() > 0 ? idList.get(idList.size() - 1) : "TN000000").limitToFirst(10)
+        reference.orderByChild("id").startAfter(idList.size() > 0 ? idList.get(idList.size() - 1) : getString(R.string.start_id_book)).limitToFirst(10)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {

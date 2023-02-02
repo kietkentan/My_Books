@@ -21,7 +21,7 @@
             android:background="@color/background_shimmer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription,ImageContrastCheck" />
 
         <TextView
             android:id="@+id/tv1"

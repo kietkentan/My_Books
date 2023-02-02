@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -36,7 +35,7 @@ public class InformationUserActivity extends AppCompatActivity implements View.O
     private ImageButton ibBack;
     private ImageView ivSearchItem;
     private TextView tvNumCart;
-    private TextView tvChangePassword;
+    private TextView tvChangePassword;          // not active
     private TextView tvNameUser;
     private TextView tvGenderUser;
     private TextView tvDateOfBirthUser;
@@ -46,13 +45,12 @@ public class InformationUserActivity extends AppCompatActivity implements View.O
     private LinearLayout layoutNameUser;
     private LinearLayout layoutGenderUser;
     private LinearLayout layoutDateOfBirthUser;
-    private LinearLayout layoutPhoneUser;
-    private LinearLayout layoutEmailUser;
+    private LinearLayout layoutPhoneUser;       // not active
+    private LinearLayout layoutEmailUser;       // not active
 
     private DatabaseCart databaseCart;
-    private FirebaseDatabase database;
     private DatabaseReference reference;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private String[] mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +87,9 @@ public class InformationUserActivity extends AppCompatActivity implements View.O
         layoutEmailUser = findViewById(R.id.layout_email_user);
 
         databaseCart = new DatabaseCart(InformationUserActivity.this);
-        database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         reference = database.getReference("user");
+        mode = getResources().getStringArray(R.array.mode_login);
     }
 
     public void setupUserInformation(){
@@ -98,8 +97,24 @@ public class InformationUserActivity extends AppCompatActivity implements View.O
         tvGenderUser.setText((Common.currentUser.getGender() < 1 || Common.currentUser.getGender() > 3) ? getText(R.string.not_set_up_yet) :
                 getResources().getStringArray(R.array.gender)[Common.currentUser.getGender() - 1]);
         tvDateOfBirthUser.setText(Common.currentUser.getDateOfBirth() != null ? Common.currentUser.getDateOfBirth() : getText(R.string.not_set_up_yet));
-        tvPhoneUser.setText(Common.currentUser.getPhone() != null ? Common.currentUser.getHiddenPhone() : getText(R.string.not_set_up_yet));
-        tvEmailUser.setText(Common.currentUser.getEmail() != null ? Common.currentUser.getHiddenEmail() : getText(R.string.not_set_up_yet));
+        tvPhoneUser.setText(Common.currentUser.getPhone() != null ? getHiddenPhone(Common.currentUser.getPhone()) : getText(R.string.not_set_up_yet));
+        tvEmailUser.setText(Common.currentUser.getEmail() != null ? getHiddenEmail(Common.currentUser.getEmail()) : getText(R.string.not_set_up_yet));
+    }
+
+    public String getHiddenPhone(String phone){
+        return "********" + phone.charAt(8) + phone.charAt(9);
+    }
+
+    public String getHiddenEmail(String email){
+        char[] chars = email.toCharArray();
+        StringBuilder str = new StringBuilder("" + chars[0]);
+        int i = email.indexOf('@');
+        for (int j = 1; j < i - 1; ++j)
+            str.append('*');
+
+        for (int j = i - 1; j < chars.length; ++j)
+            str.append(chars[j]);
+        return String.valueOf(str);
     }
 
     @SuppressLint("DefaultLocale")
@@ -107,7 +122,7 @@ public class InformationUserActivity extends AppCompatActivity implements View.O
         int i = databaseCart.getCarts().size();
         if (i > 0) {
             tvNumCart.setVisibility(View.VISIBLE);
-            tvNumCart.setText(String.format("%d", i));
+            tvNumCart.setText(String.format(getString(R.string.num), i));
         }
         else
             tvNumCart.setVisibility(View.GONE);
@@ -276,7 +291,7 @@ public class InformationUserActivity extends AppCompatActivity implements View.O
 
     public void setupGender(TextView[] tvSelect, ShapeableImageView[] ivSelect, int position){
         for (int i = 0; i < 3; ++i){
-            tvSelect[i].setTextColor(i == position ? Color.parseColor("#E32127") : Color.parseColor("#000000"));
+            tvSelect[i].setTextColor(i == position ? getColor(R.color.reduced_price) : getColor(R.color.black));
             ivSelect[i].setVisibility(i == position ? View.VISIBLE : View.GONE);
         }
     }

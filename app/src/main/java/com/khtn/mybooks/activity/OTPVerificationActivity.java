@@ -31,7 +31,7 @@ import com.khtn.mybooks.R;
 import java.util.concurrent.TimeUnit;
 
 public class OTPVerificationActivity extends AppCompatActivity implements View.OnClickListener{
-    public final long TIME_RESEND_OTP = 30;
+    public final long TIME_RESEND_OTP = 30; // not active
     public final long TICK = 1000;
 
     private TextView tvTextResend;
@@ -112,7 +112,7 @@ public class OTPVerificationActivity extends AppCompatActivity implements View.O
             Toast.makeText(OTPVerificationActivity.this, R.string.resending, Toast.LENGTH_SHORT).show();
             resetOTPInputs();
             countdownResendOTP();
-            // resendOTP();
+            // resendOTP();         // not working, try later
         }
     }
 

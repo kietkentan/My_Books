@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.Interface.OnOrderChangeSizeInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.OrderManagerItemAdapter;
-import com.khtn.mybooks.adapter.RequestItemAdapter;
 import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.helper.VNCharacterUtils;
@@ -40,6 +38,7 @@ public class OrderManagerFragment extends Fragment implements OnOrderChangeSizeI
     private RecyclerView recListRequest;
     private ConstraintLayout layoutNoneRequest;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private FirebaseDatabase database;
     private DatabaseReference reference;
 

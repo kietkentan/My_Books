@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -50,7 +51,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 public class SearchItemActivity extends AppCompatActivity implements View.OnClickListener{
     private ImageButton ibBack;
     private TextView tvNumCart;
@@ -90,6 +90,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_search_item);
 
         init();
+        setupSpanCount();
         loadSearchHistory();
         setupListHistorySearch();
 
@@ -117,10 +118,6 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void init(){
-        maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
-        maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
-        widthView = AppUtil.dpToPx(182, this);
-
         ibBack = findViewById(R.id.ib_exit_search_page);
         tvNumCart = findViewById(R.id.tv_num_cart);
         tvSeeMoreOrRemoveListSearch = findViewById(R.id.tv_see_more_remove_history_search);
@@ -144,10 +141,23 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
         recListHistorySearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recListSearch.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
+        databaseCart = new DatabaseCart(this);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setupSpanCount();
+    }
+
+    public void setupSpanCount() {
+        maxWidthPixel = getResources().getDisplayMetrics().widthPixels;
+        maxHeightPixel = getResources().getDisplayMetrics().heightPixels;
+        widthView = AppUtil.dpToPx(182, this);
         int spanCount = (int) (maxWidthPixel/widthView);
         recListItemSearch.setLayoutManager(new GridLayoutManager(this, spanCount));
 
-        databaseCart = new DatabaseCart(this);
+        setupListItemSearch();
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -264,7 +274,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
         int i = databaseCart.getCarts().size();
         if (i > 0) {
             tvNumCart.setVisibility(View.VISIBLE);
-            tvNumCart.setText(String.format("%d", i));
+            tvNumCart.setText(String.format(getString(R.string.num), i));
         }
         else
             tvNumCart.setVisibility(View.GONE);
@@ -427,15 +437,16 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    boolean checkAdd = false;
                     String nameBook = VNCharacterUtils.removeAccent(dataSnapshot.child("name").getValue(String.class).trim().toLowerCase());
 
                     for (String key : keyList)
-                        if (nameBook.contains(key)){
+                        if (nameBook.contains(key) && !checkAdd){
                             if (nameBook.substring(0, key.length() - 1).equals(key))
                                 bookItemList.add(0, dataSnapshot.getValue(BookItem.class));
                             else
                                 bookItemList.add(dataSnapshot.getValue(BookItem.class));
-
+                            checkAdd = true;
                             if (bookItemList.size() > 30)
                                 break;
                         }

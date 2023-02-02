@@ -17,12 +17,12 @@
             android:id="@+id/imageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="10dp"
             app:srcCompat="@drawable/logo"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription,ImageContrastCheck" />
 
         <TextView
             android:id="@+id/tv_search_item"
@@ -45,6 +45,7 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

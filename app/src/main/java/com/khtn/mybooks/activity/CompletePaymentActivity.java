@@ -71,7 +71,7 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_payment);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
         setupAddress();
@@ -242,7 +242,7 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
 
                 progressBar.setVisibility(View.GONE);
                 btnOrder.setVisibility(View.VISIBLE);
-                Toast.makeText(CompletePaymentActivity.this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompletePaymentActivity.this, R.string.successful_ordering, Toast.LENGTH_SHORT).show();
 
                 finish();
             }
@@ -255,7 +255,7 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
     }
 
     public void pullRequest(){
-        String[] mode = {"mybooks", "google", "facebook"};
+        String[] mode = getResources().getStringArray(R.array.mode_login);
         database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("cartList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -265,7 +265,7 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
 
                 progressBar.setVisibility(View.GONE);
                 btnOrder.setVisibility(View.VISIBLE);
-                Toast.makeText(CompletePaymentActivity.this, "Đặt hàng thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompletePaymentActivity.this, R.string.successful_ordering, Toast.LENGTH_SHORT).show();
 
                 finish();
             }

@@ -54,14 +54,14 @@
         android:drawablePadding="10dp"
         android:drawableTint="@color/text_hint"
         android:hint="@string/search_by_order_code"
-        android:inputType="text"
         android:importantForAutofill="no"
+        android:inputType="text"
         android:paddingHorizontal="10dp"
         android:textSize="14sp"
-        tools:ignore="TextFields"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"/>
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+        tools:ignore="TextFields,TouchTargetSizeCheck,TextContrastCheck" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_order_status"
@@ -73,7 +73,8 @@
         app:layout_constraintTop_toBottomOf="@+id/edt_search_by_order_code"
         app:tabGravity="fill"
         app:tabMode="scrollable"
-        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_order_status"

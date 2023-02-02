@@ -45,6 +45,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     private LinearLayout layoutTotalPrice2;
     private Request request;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private BookOrderItemAdapter adapter;
     private boolean copied = false;
     private DatabaseCart databaseCart;
@@ -106,7 +107,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         int i = databaseCart.getCarts().size();
         if (i > 0) {
             tvNumCart.setVisibility(View.VISIBLE);
-            tvNumCart.setText(String.format("%d", i));
+            tvNumCart.setText(String.format(getString(R.string.num), i));
         }
         else
             tvNumCart.setVisibility(View.GONE);
@@ -147,7 +148,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             clipboard.setText(text);
         } else {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText("Copied Text", text);
+            android.content.ClipData clip = android.content.ClipData.newPlainText(getString(R.string.copied_text), text);
             clipboard.setPrimaryClip(clip);
         }
     }

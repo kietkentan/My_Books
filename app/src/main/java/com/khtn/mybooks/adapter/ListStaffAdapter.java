@@ -5,7 +5,6 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

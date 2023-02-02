@@ -206,7 +206,8 @@
                 android:background="@drawable/custom_button_close"
                 android:text="@string/see_more_detail_request"
                 android:textAllCaps="false"
-                android:textColor="@color/reduced_price" />
+                android:textColor="@color/reduced_price"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_buy_again"

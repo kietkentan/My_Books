@@ -32,10 +32,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class FindAddressFragment extends Fragment{
     private View view;
-    private EditText edtSearch;
+    private EditText edtSearch;         // not active
     private RecyclerView recSearch;
     private ProgressBar progressSearch;
 

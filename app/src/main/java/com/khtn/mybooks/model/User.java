@@ -75,28 +75,12 @@ public class User {
         return email;
     }
 
-    public String getHiddenEmail(){
-        char[] chars = email.toCharArray();
-        StringBuilder str = new StringBuilder("" + chars[0]);
-        int i = email.indexOf('@');
-        for (int j = 1; j < i - 1; ++j)
-            str.append('*');
-
-        for (int j = i - 1; j < chars.length; ++j)
-            str.append(chars[j]);
-        return String.valueOf(str);
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
     public String getPhone() {
         return phone;
-    }
-
-    public String getHiddenPhone(){
-        return "********" + phone.charAt(8) + phone.charAt(9);
     }
 
     public void setPhone(String phone) {

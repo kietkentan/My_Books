@@ -54,7 +54,7 @@ public class FavoriteItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favorite_item, container, false);
-        AppUtil.changeStatusBarColor(getContext(), "#E32127");
+        AppUtil.changeStatusBarColor(getContext(), getContext().getColor(R.color.reduced_price));
 
         init();
 
@@ -76,20 +76,23 @@ public class FavoriteItemFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         listFavorite = new ArrayList<>();
         clickInterface = () -> {
-            layoutNoneItem.setVisibility(View.VISIBLE);
-            layoutListFavorite.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
+            setupRecyclerViewFavoriteList();
+            if (listFavorite.size() <= 0) {
+                layoutNoneItem.setVisibility(View.VISIBLE);
+                layoutListFavorite.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+            }
         };
+        recListItem.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 
     public void setupRecyclerViewFavoriteList(){
-        recListItem.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         adapter = new FavoriteItemAdapter(listFavorite, getContext(), clickInterface);
         recListItem.setAdapter(adapter);
     }
 
     public void loadData(){
-        String[] mode = {"mybooks", "google", "facebook"};
+        String[] mode = getContext().getResources().getStringArray(R.array.mode_login);
         database.getReference("user").child(mode[Common.modeLogin - 1]).
                 child(Common.currentUser.getId()).child("list_favorite").
                 addListenerForSingleValueEvent(new ValueEventListener() {

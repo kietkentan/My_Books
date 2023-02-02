@@ -38,6 +38,7 @@ import java.util.List;
 
 public class AddAddressActivity extends AppCompatActivity implements View.OnClickListener{
     private final int LENGTH_NAME = 50;
+    @SuppressWarnings("FieldCanBeLocal")
     private final int LENGTH_PHONE_NUMBER = 10;
     private final int REQUEST_CODE_1 = 1;
 
@@ -55,14 +56,14 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
 
     private DatabaseReference reference;
     private Address address;
-    private final String[] mode = {"mybooks", "google", "facebook"};
+    private String[] mode;
     private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_address);
-        AppUtil.changeStatusBarColor(this, "#E32127");
+        AppUtil.changeStatusBarColor(this, getColor(R.color.reduced_price));
 
         init();
 
@@ -79,6 +80,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         position = bundle.getInt("pos");
+        mode = getResources().getStringArray(R.array.mode_login);
 
         if (bundle.containsKey("address")) {
             String myGson = bundle.getString("address");
@@ -173,12 +175,12 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
                     Common.currentUser.setAddressList(addressList);
                     snapshot.getRef().removeValue();
                     for (int i = 0; i < Common.currentUser.getAddressList().size(); ++i) {
-                        @SuppressLint("DefaultLocale") String count = String.format("%d", i);
+                        @SuppressLint("DefaultLocale") String count = String.format(getString(R.string.num), i);
                         snapshot.child(count).getRef().setValue(Common.currentUser.getAddressList().get(i));
                     }
                 } else {
                     if (Common.currentUser.getAddressList() != null) {
-                        @SuppressLint("DefaultLocale") String count = String.format("%d", Common.currentUser.getAddressList().size());
+                        @SuppressLint("DefaultLocale") String count = String.format(getString(R.string.num), Common.currentUser.getAddressList().size());
                         reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("addressList").child(count).setValue(address);
                     }else {
                         address.setDefaultAddress(true);
@@ -284,6 +286,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void startChoseByCity(){
         Intent intent = new Intent(AddAddressActivity.this, ChoseAddressActivity.class);
         Bundle bundle = new Bundle();
@@ -292,6 +295,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    @SuppressWarnings("deprecation")
     public void startChoseByDistrict(){
         Intent intent = new Intent(AddAddressActivity.this, ChoseAddressActivity.class);
         Bundle bundle = new Bundle();
@@ -301,6 +305,7 @@ public class AddAddressActivity extends AppCompatActivity implements View.OnClic
         overridePendingTransition(R.anim.switch_enter_activity, R.anim.switch_exit_activity);
     }
 
+    @SuppressWarnings("deprecation")
     public void startChoseByPrecinct(){
         Intent intent = new Intent(AddAddressActivity.this, ChoseAddressActivity.class);
         Bundle bundle = new Bundle();

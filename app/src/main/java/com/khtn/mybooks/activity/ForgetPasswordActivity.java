@@ -43,6 +43,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     private ProgressBar progressBar;
 
     private DatabaseReference databaseReference;
+    private String mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
         tvContact = findViewById(R.id.tv_hotline);
         tvNotAccount = findViewById(R.id.tv_not_have_account);
         progressBar = findViewById(R.id.progress_forget_password);
+        mode = getResources().getStringArray(R.array.mode_login)[0];
     }
 
     @Override
@@ -113,7 +115,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void resetPasswordByPhone(){
-        databaseReference.child("mybooks").orderByChild(edtEnterUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(mode).orderByChild(edtEnterUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
@@ -135,7 +137,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     }
 
     private void resetPasswordByEmail(){
-        databaseReference.child("mybooks").orderByChild("email").equalTo(edtEnterUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(mode).orderByChild("email").equalTo(edtEnterUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){

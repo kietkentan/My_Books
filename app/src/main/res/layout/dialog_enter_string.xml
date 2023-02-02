@@ -10,11 +10,11 @@
         android:id="@+id/edt_enter_string"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textPersonName"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="Autofill,LabelFor"
-        android:inputType="textPersonName" />
+        tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

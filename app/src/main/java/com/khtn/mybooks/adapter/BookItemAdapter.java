@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,7 @@ public class BookItemAdapter extends RecyclerView.Adapter<BookItemAdapter.ViewHo
             holder.tvDiscount.setText(String.format(context.getString(R.string.book_discount), bookItemList.get(position).getDiscount()));
             holder.tvOriginalPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(bookItemList.get(position).getOriginalPrice())));
             holder.tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvOriginalPrice.setTextColor(Color.parseColor("#BDBDBD"));
+            holder.tvOriginalPrice.setTextColor(context.getColor(R.color.text_hint));
             holder.tvReducedPrice.setText(String.format(context.getString(R.string.book_price), AppUtil.convertNumber(bookItemList.get(position).getReducedPrice())));
         }
         if (!(bookItemList.get(position).getAmount() == 0))

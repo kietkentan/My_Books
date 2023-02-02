@@ -240,6 +240,11 @@
     <string name="search_in_the_shop">Tìm kiếm trong cửa hàng</string>
     <string name="total_follows">%d Người theo dõi</string>
     <string name="followed_this">Đang theo</string>
+    <string-array name="mode_login">
+        <item>mybooks</item>
+        <item>google</item>
+        <item>facebook</item>
+    </string-array>
     <string-array name="status">
         <item>Đang xác nhận</item>
         <item>Chờ vận chuyển</item>
@@ -328,4 +333,23 @@
     <string name="product_sold">Sản phẩm đã bán</string>
     <string name="sended">Đã gửi hàng</string>
     <string name="search_product">Tìm tên, id sản phẩm</string>
+    <string name="successful_ordering">Đặt hàng thành công</string>
+    <string name="cities">Thành phố</string>
+    <string name="cities_sort">TP</string>
+    <string name="format_created">%s %ds</string>
+    <string name="add_successful_product">Thêm sản phẩm thành công.!</string>
+    <string name="adding_failed_products" tools:ignore="TypographyEllipsis">Thêm sản phẩm thất bại.! Thử lại sau...</string>
+    <string name="saving_product" tools:ignore="TypographyEllipsis">Đang lưu sản phẩm...</string>
+    <string name="adding_failed_product">Thêm sản phẩm thất bại.!</string>
+    <string name="saving_failed_product">Lưu sản phẩm thất bại.!</string>
+    <string name="format_date">%d/%d/%d</string>
+    <string name="format_time">%d:%d:0</string>
+    <string name="please_chose_image">Vui lòng chọn ảnh sản phẩm.!</string>
+    <string name="copied_text">Copied Text</string>
+    <string name="start_id_book">TN000000</string>
+    <string name="fail_connected_facebook">Fail Connected to Facebook</string>
+    <string name="format_weight">%s g</string>
+    <string name="format_size">%s cm</string>
+    <string name="removed_product_by_id">Đã xóa sản phẩm có id: %s</string>
+    <string name="product_is_upcoming">Sản phẩm sắp được ra mắt</string>
 </resources>
