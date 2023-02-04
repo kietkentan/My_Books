@@ -275,7 +275,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
             reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("list_shopFollow").child(String.valueOf(Common.currentUser.getList_shopFollow().size() - 1)).setValue(publisher.getId());
             return;
         }
-        reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("list_shopFollow").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("list_shopFollow").addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("DefaultLocale")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
