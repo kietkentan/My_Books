@@ -83,6 +83,12 @@ public class CompletePaymentActivity extends AppCompatActivity implements View.O
         btnOrder.setOnClickListener(this);
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        setupAddress();
+    }
+
     public void init(){
         ibBack = findViewById(R.id.ib_exit_complete_payment);
         tvNameUser = findViewById(R.id.tv_name_user);

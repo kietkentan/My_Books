@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -56,6 +57,23 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
         edtSearch.setOnKeyListener(onEnter);
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        clearList();
+        onLoading();
+    }
+
+    public void clearList() {
+        checkFinal = false;
+        int size = idList.size() - 1;
+
+        idList.clear();
+        while (size >= 0) {
+            adapter.notifyItemRemoved(size--);
+        }
+    }
+
     public void init() {
         ibBack = findViewById(R.id.ib_exit_product_manager);
         edtSearch = findViewById(R.id.edt_search_by_product_name);
@@ -76,13 +94,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
                 return true;
 
             search = edtSearch.getText().toString();
-            checkFinal = false;
-            int size = idList.size() - 1;
-
-            idList.clear();
-            while (size >= 0) {
-                adapter.notifyItemRemoved(size--);
-            }
+            clearList();
             if (search.isEmpty()) {
                 modeLoad = 1;
                 getData();
@@ -99,6 +111,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
     };
 
     public void getDataById(String id) {
+        Log.i("TAG_U", "getDataById: " + id);
         reference.orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -182,7 +195,7 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
                     getData();
                     break;
                 case 2:
-                    getDataById(search);
+                    getDataById(search.toUpperCase());
                     break;
                 case 3:
                     getDataByName(search);
