@@ -88,6 +88,7 @@ public class StaffManagerActivity extends AppCompatActivity {
 
         if (numClick != -1)
             booleanList.set(numClick, true);
+
         adapter = new ListStaffAdapter(list, booleanList, anInterface, StaffManagerActivity.this);
         recListStaff.setLayoutManager(new LinearLayoutManager(StaffManagerActivity.this, RecyclerView.VERTICAL, false));
         recListStaff.setAdapter(adapter);
