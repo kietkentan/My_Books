@@ -346,7 +346,7 @@
     <string name="format_time">%d:%d:0</string>
     <string name="please_chose_image">Vui lòng chọn ảnh sản phẩm.!</string>
     <string name="copied_text">Copied Text</string>
-    <string name="start_id_book">TN000000</string>
+    <string name="start_id_book">TN00000000</string>
     <string name="fail_connected_facebook">Fail Connected to Facebook</string>
     <string name="format_weight">%s g</string>
     <string name="format_size">%s cm</string>

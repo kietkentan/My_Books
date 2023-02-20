@@ -510,7 +510,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
                         String nameBook = dataSnapshot.child("name").getValue(String.class);
 
                         if (VNCharacterUtils.removeAccent(nameBook.toLowerCase()).substring(0, key.length()).contains(key.toLowerCase())) {
-                            String str = nameBook.substring(0, nameBook.indexOf(" - ")).toLowerCase();
+                            String str = nameBook.contains("-") ? nameBook.substring(0, nameBook.indexOf(" - ")).toLowerCase() : nameBook.toLowerCase();
                             boolean contain = false;
 
                             for (String name : listSearch)

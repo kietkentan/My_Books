@@ -179,4 +179,8 @@ public class AppUtil {
     public static int dpToPx(float dp, Context context) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
+
+    public static int pxToDp(float px, Context context) {
+        return (int) (px / context.getResources().getDisplayMetrics().density);
+    }
 }

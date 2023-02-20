@@ -381,8 +381,24 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void setButton(){
-        boolean check = AppUtil.checkDateTimeSell(dataBook.getTimeSell());
-        if (dataBook.getAmount() > 0 && check){
+        if (Common.currentUser != null && Common.currentUser.getStaff() != null) {
+            btnAddCart.setEnabled(false);
+            btnAddCart.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
+            btnAddCart.setBackgroundResource(R.drawable.custom_button_hidden);
+
+            btnBuyNow.setEnabled(false);
+            btnBuyNow.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
+            btnBuyNow.setBackgroundResource(R.drawable.custom_button_hidden);
+
+            btnBuyNow.setText(String.format(getString(R.string.status), getString(R.string.buy_now)));
+            btnAddCart.setText(String.format(getString(R.string.status), getString(R.string.add_shopping_cart)));
+            return;
+        }
+
+        boolean checkDateTimeSell = AppUtil.checkDateTimeSell(dataBook.getTimeSell());
+        boolean checkStaffInShop = Common.currentUser != null && Common.currentUser.getStaff() != null;
+
+        if (dataBook.getAmount() > 0 && checkDateTimeSell && !checkStaffInShop){
             btnAddCart.setEnabled(true);
             btnAddCart.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
             btnAddCart.setBackgroundResource(R.drawable.custom_button_add_shopping_cart);
@@ -399,8 +415,8 @@ public class BookDetailActivity extends AppCompatActivity implements View.OnClic
             btnBuyNow.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.text_hint));
             btnBuyNow.setBackgroundResource(R.drawable.custom_button_hidden);
 
-            btnBuyNow.setText(String.format(getString(R.string.status), check ? getString(R.string.buy_now) : getString(R.string.coming_soon)));
-            btnAddCart.setText(String.format(getString(R.string.status), check ? getString(R.string.add_shopping_cart) : getString(R.string.coming_soon)));
+            btnBuyNow.setText(String.format(getString(R.string.status), checkDateTimeSell ? getString(R.string.buy_now) : getString(R.string.coming_soon)));
+            btnAddCart.setText(String.format(getString(R.string.status), checkDateTimeSell ? getString(R.string.add_shopping_cart) : getString(R.string.coming_soon)));
         }
     }
 

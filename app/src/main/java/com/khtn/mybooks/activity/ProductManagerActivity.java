@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.khtn.mybooks.Interface.ProductManagerInterface;
 import com.khtn.mybooks.R;
 import com.khtn.mybooks.adapter.ListProductManagerAdapter;
+import com.khtn.mybooks.common.Common;
 import com.khtn.mybooks.helper.AppUtil;
 import com.khtn.mybooks.helper.VNCharacterUtils;
 
@@ -111,15 +111,17 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
     };
 
     public void getDataById(String id) {
-        Log.i("TAG_U", "getDataById: " + id);
         reference.orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 checkFinal = true;
-                if (snapshot.exists()) {
-                    idList.add(id);
-                    adapter.notifyItemInserted(idList.size() - 1);
-                }
+                if (snapshot.exists())
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                        if (dataSnapshot.child("publisher").getValue(String.class).equals(Common.currentUser.getStaff().getPublisherId())) {
+                            idList.add(id);
+                            adapter.notifyItemInserted(idList.size() - 1);
+                            break;
+                        }
             }
 
             @Override
@@ -139,17 +141,17 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
                             checkFinal = true;
                             return;
                         }
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            String name = VNCharacterUtils.removeAccent(dataSnapshot.child("name").getValue(String.class)).toLowerCase();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                            if (dataSnapshot.child("publisher").getValue(String.class).equals(Common.currentUser.getStaff().getPublisherId())) {
+                                String name = VNCharacterUtils.removeAccent(dataSnapshot.child("name").getValue(String.class)).toLowerCase();
 
-                            for (String key : keyList){
-                                if (name.contains(key)){
-                                    idList.add(dataSnapshot.child("id").getValue(String.class));
-                                    adapter.notifyItemInserted(idList.size() - 1);
-                                    break;
-                                }
+                                for (String key : keyList)
+                                    if (name.contains(key)) {
+                                        idList.add(dataSnapshot.child("id").getValue(String.class));
+                                        adapter.notifyItemInserted(idList.size() - 1);
+                                        break;
+                                    }
                             }
-                        }
                     }
 
                     @Override
@@ -168,10 +170,11 @@ public class ProductManagerActivity extends AppCompatActivity implements Product
                             checkFinal = true;
                             return;
                         }
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            idList.add(dataSnapshot.child("id").getValue(String.class));
-                            adapter.notifyItemInserted(idList.size() - 1);
-                        }
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                            if (dataSnapshot.child("publisher").getValue(String.class).equals(Common.currentUser.getStaff().getPublisherId())) {
+                                idList.add(dataSnapshot.child("id").getValue(String.class));
+                                adapter.notifyItemInserted(idList.size() - 1);
+                            }
                     }
 
                     @Override

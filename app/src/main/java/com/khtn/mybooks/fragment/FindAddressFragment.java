@@ -95,7 +95,7 @@ public class FindAddressFragment extends Fragment{
     }
 
     public void setListViewSearch(){
-        listAdapter = new LocationAdapter(locationList, clickInterface);
+        listAdapter = new LocationAdapter(locationList, clickInterface, getContext());
         recSearch.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recSearch.setAdapter(listAdapter);
     }
