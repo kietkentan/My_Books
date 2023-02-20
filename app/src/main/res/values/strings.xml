@@ -69,9 +69,6 @@
     <string name="my_account">Tài khoản của tôi</string>
     <string name="help">Trợ giúp?</string>
     <string name="incorrect_password">Mật khẩu không đúng</string>
-    <string name="facebook_app_id">630015428788820</string>
-    <string name="fb_login_protocol_scheme">fb630015428788820</string>
-    <string name="facebook_client_token">668c5a956161d24890e3a25c2a0eb3c0</string>
     <string name="sold">%d đã bán</string>
     <string name="in_stock">Còn hàng</string>
     <string name="provider_information">Thông tin nhà cung cấp</string>
