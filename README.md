@@ -3,7 +3,7 @@
 APK file into app/release/app-release.apk
 
 ## Project Overview
-Đây là đồ án môn Lập trình Java tại trường và được thực hiện từ khâu thiết kế đến hoàn thiện về code bởi 1 mình bản thân mình. 
+Đây là đồ án môn Lập trình Java tại trường và được thực hiện từ khâu thiết kế đến hoàn thiện về code bởi 1 người nên có phần không thể hoàn thiện nhiều, do thời gian cho 1 môn khá gấp rút.
 Vì chưa có được kinh nghiệm nên có thể còn mắc một số lỗi trong đồ án. Đồ án chỉ mang tính chất tham khảo.
 Ban đầu đồ án nhận được chỉ ở mức mua/bán sản phẩm và tìm kiếm sản phẩm đang được bán. Nhưng trong quá trình làm đã thêm một vài chức năng để hoàn thiện sản phẩm hơn.
 
