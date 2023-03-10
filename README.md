@@ -27,7 +27,7 @@ Ban đầu đồ án nhận được chỉ ở mức mua/bán sản phẩm và t
 - Đi từ khâu thiết kế UI/UX đến việc đưa vào code.
 - Tìm hiểu thêm về animation tạo các hiệu ứng các view.
 - Cách thêm một RecyclerView và tạo Adapter kết nối giữa data và view.
-- Sử dụng dialog có sẵn và tạo mới.
+- Sử dụng dialog có sẵn và tạo mới tùy vào mục đích sử dụng.
 - ...
 
 ## Chi tiết và demo sản phẩm
