@@ -20,15 +20,15 @@ Ban đầu đồ án nhận được chỉ ở mức mua/bán sản phẩm và t
 - Người bán quản lí sản phẩm, nhân viên hợp tác, đơn hàng khởi tạo
 
 ## Kiến thức tiếp cận được
-Củng cố hơn về abstract class và interface.
-Tìm hiểu về Activity, Fragment. Hiểu về vòng đời và cách thức hoạt động.
-Các loại lắng nghe sự kiện như OnClick, OnLongClick, OnTextChange, OnTouch, OnKey...
-Sử dụng Firebase tích hợp vào sản phẩm, tìm hiểu về Auth và Storage.
-Đi từ khâu thiết kế UI/UX đến việc đưa vào code.
-Tìm hiểu thêm về animation tạo các hiệu ứng các view.
-Cách thêm một RecyclerView và tạo Adapter kết nối giữa data và view.
-Sử dụng dialog có sẵn và tạo mới.
-...
+- Củng cố hơn về abstract class và interface.
+- Tìm hiểu về Activity, Fragment. Hiểu về vòng đời và cách thức hoạt động.
+- Các loại lắng nghe sự kiện như OnClick, OnLongClick, OnTextChange, OnTouch, OnKey...
+- Sử dụng Firebase tích hợp vào sản phẩm, tìm hiểu về Auth và Storage.
+- Đi từ khâu thiết kế UI/UX đến việc đưa vào code.
+- Tìm hiểu thêm về animation tạo các hiệu ứng các view.
+- Cách thêm một RecyclerView và tạo Adapter kết nối giữa data và view.
+- Sử dụng dialog có sẵn và tạo mới.
+- ...
 
 ## Chi tiết và demo sản phẩm
 Xem chi tiết [tại đây](https://drive.google.com/drive/folders/1-ZP5qOwSLOpukuozpf2u-3raR4Pqkysa?usp=sharing)
