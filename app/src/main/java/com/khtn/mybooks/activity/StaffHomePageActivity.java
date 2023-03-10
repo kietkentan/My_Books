@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -175,6 +176,7 @@ public class StaffHomePageActivity extends AppCompatActivity implements View.OnC
     public void startStaffManager(){
         Intent intent = new Intent(StaffHomePageActivity.this, StaffManagerActivity.class);
         Bundle bundle = new Bundle();
+        Log.i("TAG_U", "startStaffManager: " + publisher.getStaff());
 
         bundle.putStringArrayList("staff", (ArrayList<String>) publisher.getStaff());
         intent.putExtras(bundle);

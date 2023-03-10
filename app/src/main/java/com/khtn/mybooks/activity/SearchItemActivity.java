@@ -500,7 +500,7 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
             if (stringBefore.equals(edtSearch.getText().toString().trim()))
                 return;
 
-            String key = VNCharacterUtils.removeAccent(edtSearch.getText().toString().trim());
+            String key = VNCharacterUtils.removeAccent(edtSearch.getText().toString().trim()).toLowerCase();
             listSearch.clear();
 
             reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -508,9 +508,8 @@ public class SearchItemActivity extends AppCompatActivity implements View.OnClic
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                         String nameBook = dataSnapshot.child("name").getValue(String.class);
-
-                        if (VNCharacterUtils.removeAccent(nameBook.toLowerCase()).substring(0, key.length()).contains(key.toLowerCase())) {
-                            String str = nameBook.contains("-") ? nameBook.substring(0, nameBook.indexOf(" - ")).toLowerCase() : nameBook.toLowerCase();
+                        if (VNCharacterUtils.removeAccent(nameBook.toLowerCase()).contains(key)) {
+                            String str = nameBook.contains("-") ? nameBook.substring(0, nameBook.indexOf("-")).trim().toLowerCase() : nameBook.toLowerCase();
                             boolean contain = false;
 
                             for (String name : listSearch)

@@ -272,7 +272,7 @@ public class ShopDetailActivity extends AppCompatActivity implements View.OnClic
 
     public void updateFollowed(){
         if (check){
-            reference.child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("list_shopFollow").child(String.valueOf(Common.currentUser.getList_shopFollow().size() - 1)).setValue(publisher.getId());
+            database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("list_shopFollow").child(String.valueOf(Common.currentUser.getList_shopFollow().size() - 1)).setValue(publisher.getId());
             return;
         }
         database.getReference("user").child(mode[Common.modeLogin - 1]).child(Common.currentUser.getId()).child("list_shopFollow").addListenerForSingleValueEvent(new ValueEventListener() {

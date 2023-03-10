@@ -349,4 +349,7 @@
     <string name="format_size">%s cm</string>
     <string name="removed_product_by_id">Đã xóa sản phẩm có id: %s</string>
     <string name="product_is_upcoming">Sản phẩm sắp được ra mắt</string>
+    <string name="facebook_app_id">630015428788820</string>
+    <string name="fb_login_protocol_scheme">fb630015428788820</string>
+    <string name="facebook_client_token">668c5a956161d24890e3a25c2a0eb3c0</string>
 </resources>
