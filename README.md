@@ -1,6 +1,7 @@
 # My_Books
 
 APK file into app/release/app-release.apk
+[Demo](https://drive.google.com/file/d/1pIW21OqCa54Z5kFQ2HthusYf_xPkNPvw/view)
 
 ## Project Overview
 Đây là đồ án môn Lập trình Java tại trường và được thực hiện từ khâu thiết kế đến hoàn thiện về code bởi 1 người nên có phần không thể hoàn thiện nhiều, do thời gian cho 1 môn khá gấp rút.
