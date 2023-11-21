@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <import type="com.space.mycoffee.utils.UiState" />
+
+        <variable
+            name="viewModel"
+            type="com.space.mycoffee.view_model.manager.product.ProductViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:paddingTop="10dp"
+            android:visibility='@{viewModel.stateUpload == UiState.Loading ? View.GONE : View.VISIBLE}'
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button_close"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/reduced_price"
+                android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_add_save"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_button_continue_appear"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout12"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    tools:ignore="UselessParent">
+
+                    <ImageView
+                        android:id="@+id/iv_item_review_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_shimmer"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/iv_select_photo"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center"
+                        android:visibility='@{viewModel.coffeeSelected.image.size() > 0 ? View.GONE : View.VISIBLE}'
+                        android:background="@drawable/pic_add_photo"
+                        tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_see_more_picture"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_gravity="bottom"
+                        android:weightSum="10"
+                        tools:ignore="RtlHardcoded">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"/>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:gravity="end"
+                            android:layout_weight="9">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rec_list_review_products"
+                                android:layout_width="wrap_content"
+                                android:layout_height="80dp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_open_see_more"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_gravity="bottom|right"
+                        android:visibility="gone"
+                        android:background="@drawable/custom_avatar"
+                        android:backgroundTint="@color/background_position"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_see_more_open"
+                        tools:ignore="RtlHardcoded" />
+
+                    <ImageView
+                        android:id="@+id/ib_edit_review_product"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="10dp"
+                        android:background="@drawable/bg_transparent_ripple_red"
+                        android:layout_marginEnd="10dp"
+                        android:visibility='@{viewModel.coffeeSelected.image.size() > 0 ? View.VISIBLE : View.GONE}'
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ic_more_options"
+                        android:layout_gravity="top|right"
+                        tools:ignore="ContentDescription,ImageContrastCheck,RtlHardcoded,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingHorizontal="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name_product"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/edt_enter_product_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text='@{viewModel.coffeeSelected.name}'
+                        android:inputType="textPersonName"
+                        tools:ignore="Autofill,LabelFor,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="DisableBaselineAlignment">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/id"
+                                android:textColor="@color/black"/>
+
+                            <TextView
+                                android:id="@+id/tv_enter_product_id"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text='@{viewModel.coffeeSelected.id}'
+                                android:layout_marginStart="10dp"
+                                android:textColor="@color/text_hint"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/amount"
+                                android:textColor="@color/black"/>
+
+                            <EditText
+                                android:id="@+id/edt_enter_product_amount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text='@{"" + viewModel.coffeeSelected.amount}'
+                                android:inputType="numberDecimal"
+                                android:textColor="@color/black"
+                                tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:ignore="DisableBaselineAlignment">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/price"
+                                android:textColor="@color/black"/>
+
+                            <EditText
+                                android:id="@+id/edt_enter_product_price"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text='@{"" + viewModel.coffeeSelected.originalPrice}'
+                                android:layout_marginEnd="20dp"
+                                android:inputType="numberDecimal"
+                                tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/discount"
+                                android:textColor="@color/black"/>
+
+                            <EditText
+                                android:id="@+id/edt_enter_product_discount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:hint="0"
+                                android:text='@{"" + viewModel.coffeeSelected.discount}'
+                                android:inputType="numberDecimal"
+                                tools:ignore="Autofill,LabelFor,TouchTargetSizeCheck" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:visibility="gone"
+                        tools:ignore="DisableBaselineAlignment">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/textView22"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/date_of_sell"
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_enter_product_date_of_sell"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:text="@string/unselected"
+                                android:textColor="@color/text_hint"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/textView22"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextContrastCheck" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/textView23"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time_of_sell"
+                                android:textColor="@color/black"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_enter_product_time_of_sell"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:text="@string/unselected"
+                                android:textColor="@color/text_hint"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/textView22"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="TextContrastCheck" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/cb_show_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked='@{!viewModel.coffeeSelected.hide}'
+                        android:text="@string/show_product"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/describe"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_enter_describe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textMultiLine"
+                            android:gravity="top"
+                            android:text='@{viewModel.coffeeSelected.describe}'
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:scrollHorizontally="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <FrameLayout
+            android:id="@+id/layout_loading_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background"
+            android:alpha="0.5"
+            android:visibility='@{viewModel.stateUpload == UiState.Loading ? View.VISIBLE : View.GONE}'>
+
+            <ProgressBar
+                android:layout_gravity="center"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout7"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/reduced_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/store_manager"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf">
+
+                <TextView
+                    android:id="@+id/tv_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/product"
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/bg_transparent_ripple"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_product"
+                    app:drawableEndCompat="@drawable/ic_down"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_option_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@color/text_hint"/>
+
+                    <TextView
+                        android:id="@+id/tv_option_add_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/add_string"
+                        android:paddingHorizontal="10dp"
+                        android:drawablePadding="10dp"
+                        android:background="@drawable/bg_transparent_ripple"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_add"
+                        app:drawableEndCompat="@drawable/ic_next"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@color/text_hint"/>
+
+                    <TextView
+                        android:id="@+id/tv_option_all_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/all_product"
+                        android:paddingHorizontal="10dp"
+                        android:drawablePadding="10dp"
+                        android:background="@drawable/bg_transparent_ripple"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_notepad"
+                        app:drawableEndCompat="@drawable/ic_next"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:background="@color/text_hint"/>
+
+                <TextView
+                    android:id="@+id/tv_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/orders"
+                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/bg_transparent_ripple"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/ic_notepad"
+                    app:drawableEndCompat="@drawable/ic_down"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_option_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@color/text_hint"/>
+
+                    <TextView
+                        android:id="@+id/tv_option_order_waiting"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/waiting"
+                        android:drawablePadding="15dp"
+                        android:paddingHorizontal="10dp"
+                        android:background="@drawable/bg_transparent_ripple"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_waiting"
+                        app:drawableEndCompat="@drawable/ic_next"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@color/text_hint"/>
+
+                    <TextView
+                        android:id="@+id/tv_option_order_shipping"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/wait_for_shipping"
+                        android:drawablePadding="10dp"
+                        android:background="@drawable/bg_transparent_ripple"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        android:paddingHorizontal="10dp"
+                        app:drawableStartCompat="@drawable/ic_shipping"
+                        app:drawableEndCompat="@drawable/ic_next"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@color/text_hint"/>
+
+                    <TextView
+                        android:id="@+id/tv_option_order_cancel"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/order_cancel"
+                        android:drawablePadding="10dp"
+                        android:paddingHorizontal="10dp"
+                        android:background="@drawable/bg_transparent_ripple"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_remove"
+                        app:drawableEndCompat="@drawable/ic_next"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@color/text_hint"/>
+
+                    <TextView
+                        android:id="@+id/tv_option_all_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/all_request"
+                        android:drawablePadding="15dp"
+                        android:paddingHorizontal="10dp"
+                        android:background="@drawable/bg_transparent_ripple"
+                        android:gravity="center_vertical"
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_notepad"
+                        app:drawableEndCompat="@drawable/ic_next"/>
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin='20dp'
+                    android:background="@drawable/custom_button_close"
+                    android:text="@string/logout"
+                    android:textSize="16sp"
+                    android:textColor="@color/reduced_price"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.space.mycoffee.view_model.address.AddressViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout7"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/reduced_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/ib_exit_chose_address"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_transparent_ripple"
+                android:src="@drawable/ic_close"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ship_location"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7"
+            android:baselineAligned="false">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_cities"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_transparent_ripple_red"
+                    android:text='@{viewModel.cityLocation == null ? @string/provinces_and_cities : viewModel.cityLocation.name_with_type}'
+                    android:textSize="13sp"
+                    android:enabled='@{viewModel.tabCode > 0 ? true : false}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="TextContrastCheck,TextContrastCheck" />
+
+                <View
+                    android:id="@+id/view_cities"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:visibility='@{viewModel.tabCode == 0 ? View.VISIBLE : View.INVISIBLE}'
+                    android:background="@color/reduced_price"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_cities"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_districts"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_transparent_ripple_red"
+                    android:text='@{viewModel.districtsLocation == null ? @string/districts : viewModel.districtsLocation.name_with_type}'
+                    android:textSize="13sp"
+                    android:enabled='@{viewModel.tabCode > 1 ? true : false}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_districts"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/reduced_price"
+                    android:visibility='@{viewModel.tabCode == 2 ? View.VISIBLE : View.INVISIBLE}'
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_districts"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_precinct"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_transparent_ripple_red"
+                    android:text='@{viewModel.precinctLocation == null ? @string/precinct : viewModel.precinctLocation.name_with_type}'
+                    android:textSize="13sp"
+                    android:enabled='@{viewModel.tabCode > 2 ? true : false}'
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/view_precinct"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/reduced_price"
+                    android:visibility='@{viewModel.tabCode == 3 ? View.VISIBLE : View.INVISIBLE}'
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_precinct"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragment_list_location"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manger_nav"
+    app:startDestination="@id/homeManagerFragment">
+
+    <fragment
+        android:id="@+id/homeManagerFragment"
+        android:name="com.space.mycoffee.view.manager.home.HomeManagerFragment"
+        android:label="HomeManagerFragment"
+        tools:layout="@layout/fragment_home_manager">
+
+        <action
+            android:id="@+id/action_homeManagerFragment_to_productManagerFragment"
+            app:destination="@id/productManagerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeManagerFragment_to_editProductFragment"
+            app:destination="@id/editProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_homeManagerFragment_to_orderManagerFragment"
+            app:destination="@id/orderManagerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productManagerFragment"
+        android:name="com.space.mycoffee.view.manager.product.ProductManagerFragment"
+        android:label="ProductManagerFragment"
+        tools:layout="@layout/fragment_product_manager">
+        <action
+            android:id="@+id/action_productManagerFragment_to_editProductFragment"
+            app:destination="@id/editProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProductFragment"
+        android:name="com.space.mycoffee.view.manager.product.EditProductFragment"
+        android:label="EditProductFragment"
+        tools:layout="@layout/fragment_edit_product"/>
+
+    <fragment
+        android:id="@+id/orderManagerFragment"
+        android:name="com.space.mycoffee.view.manager.order.OrderManagerFragment"
+        android:label="OrderManagerFragment"
+        tools:layout="@layout/fragment_order_manager">
+
+        <action
+            android:id="@+id/action_orderManagerFragment_to_orderDetailFragment2"
+            app:destination="@id/orderDetailFragment2"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailFragment2"
+        android:name="com.space.mycoffee.view.manager.order.OrderDetailFragment2"
+        android:label="OrderDetailFragment2"
+        tools:layout="@layout/fragment_order_detail"/>
+</navigation>

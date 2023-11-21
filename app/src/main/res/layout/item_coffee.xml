@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="coffee"
+            type="com.space.mycoffee.model.CoffeeItem" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="5dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cs_item_coffee"
+            android:background="@drawable/bg_item_white_ripple"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_item_review"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo"
+                app:imageUrl='@{coffee.image.get(0)}'
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text='@{coffee.name}'
+                android:textColor="@color/black"
+                android:lines="2"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_item_review" />
+
+            <TextView
+                android:id="@+id/tv_original_price"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                app:textNum='@{coffee.originalPrice}'
+                android:textColor='@{coffee.discount > 0 ? @color/text_hint : @color/original_price}'
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
+
+            <TextView
+                android:id="@+id/tv_reduced_price"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                app:textNum='@{coffee.reducedPrice}'
+                android:visibility='@{coffee.discount > 0 ? View.VISIBLE : View.GONE}'
+                android:textColor="@color/reduced_price"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
+
+            <TextView
+                android:id="@+id/tv_discount"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility='@{coffee.discount > 0 ? View.VISIBLE : View.GONE}'
+                android:text='@{String.format(@string/book_discount, coffee.discount)}'
+                android:background="@drawable/custom_dot_notifications"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_out_of_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="@string/out_of_stock"
+                android:textColor="@color/white"
+                android:paddingHorizontal="10dp"
+                android:textSize="13sp"
+                android:visibility='@{coffee.amount == 0 ? View.VISIBLE : View.GONE}'
+                tools:ignore="TextContrastCheck"
+                android:background="@drawable/custom_out_of_stock_cell"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

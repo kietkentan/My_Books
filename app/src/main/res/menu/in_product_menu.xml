@@ -6,6 +6,6 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/m_remove_product"
-        android:title="@string/remove"
+        android:title="@string/hide"
         app:showAsAction="never"/>
 </menu>

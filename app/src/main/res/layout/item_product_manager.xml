@@ -1,130 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_product_manager"
+    <data>
+        <import type="com.space.mycoffee.utils.Extensions" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="detail"
+            type="com.space.mycoffee.model.CoffeeDetail" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:padding="20dp">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_review_item"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/img_none_cart"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_product_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_transparent_ripple"
+            android:padding="20dp">
 
-        <ImageButton
-            android:id="@+id/ib_edit_product"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@color/white"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_more_options"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/text_hint"
-            tools:ignore="ContentDescription,ImageContrastCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            <ImageView
+                android:id="@+id/iv_review_item"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="centerInside"
+                app:imageUrl='@{detail.image.get(0)}'
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/tv_name_product_item"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:text="@string/app_name"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/ib_edit_product"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/iv_review_item"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/tv_out_of_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:text="@string/hide"
+                android:textColor="@color/white"
+                android:paddingHorizontal="10dp"
+                android:textSize="13sp"
+                android:visibility='@{detail.hide ? View.VISIBLE : View.GONE}'
+                tools:ignore="TextContrastCheck"
+                android:background="@drawable/custom_out_of_stock_cell"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <LinearLayout
-            android:id="@+id/linearLayout13"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_review_item"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
-            tools:ignore="DisableBaselineAlignment">
+            <ImageButton
+                android:id="@+id/ib_edit_product"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="5dp"
+                android:background="@drawable/bg_transparent_ripple"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_more_options"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_hint"
+                tools:ignore="ContentDescription,ImageContrastCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/tv_name_product_item"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="20dp"
+                android:text='@{detail.name}'
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toStartOf="@+id/ib_edit_product"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/iv_review_item"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
+                android:id="@+id/linearLayout13"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="20dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_review_item"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name_product_item"
+                tools:ignore="DisableBaselineAlignment">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/id"
-                    android:textColor="@color/black" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/tv_id_product"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/id"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tv_id_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text='@{detail.id}'
+                        android:layout_marginStart="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/amount"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tv_amount_product"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text='@{String.format(@string/num, detail.amount)}' />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_height="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_review_item"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout13">
 
                 <TextView
+                    android:id="@+id/tv_price_product_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/amount"
+                    android:layout_marginStart="20dp"
+                    android:text='@{String.format(@string/book_price, Extensions.convertNumberToStringComma(detail.originalPrice))}'
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/tv_amount_product"
+                    android:id="@+id/tv_discount_product_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="" />
+                    android:visibility='@{detail.discount > 0 ? View.VISIBLE : View.GONE}'
+                    android:text='@{String.format(@string/book_discount, detail.discount)}'
+                    android:textColor="@color/black"/>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_review_item"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout13">
-
-            <TextView
-                android:id="@+id/tv_price_product_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="@string/book_price"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/tv_discount_product_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/book_discount"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_product_manager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="RtlSymmetry">
-
-        <include layout="@layout/layout_shimmer_item_product_managerr" />
-    </com.facebook.shimmer.ShimmerFrameLayout>
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <import type="com.space.mycoffee.utils.UiState" />
+
+        <variable
+            name="viewModel"
+            type="com.space.mycoffee.view_model.sign_in.SignInViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/ib_exit_sign_up_email"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="3dp"
+            android:background="@drawable/bg_transparent_ripple"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck"
+            app:tint="@color/black" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="18dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ib_exit_sign_up_email">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="@string/secure_verification"
+                    android:textStyle="bold|normal"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_account_using_email"
+                    android:textColor="@color/background_out_of_stock"
+                    android:textSize="15sp"
+                    tools:ignore="TextContrastCheck" />
+
+                <EditText
+                    android:id="@+id/edt_enter_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/enter_your_number_phone"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:paddingBottom="15dp"
+                    android:textColorHint="@color/text_hint"
+                    android:textSize="20sp"
+                    tools:ignore="TextFields,TextContrastCheck" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_continue_sign_up_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="@string/continue_login"
+                        android:textAllCaps="false"
+                        android:visibility='@{viewModel.stateUsingUser == UiState.Loading ? View.GONE : View.VISIBLE}'
+                        android:background='@{viewModel.accountPhone == null || viewModel.accountPhone.length() &lt;= 9 ? @drawable/custom_button_continue_hidden : @drawable/custom_button_continue_appear}'
+                        android:enabled='@{viewModel.accountPhone == null || viewModel.accountPhone.length() &lt;= 9 ? false : true}'
+                        android:textColor='@{viewModel.accountPhone == null || viewModel.accountPhone.length() &lt;= 9 ? @color/text_hint : @color/white}'
+                        tools:ignore="TextContrastCheck"
+                        android:textSize="20sp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressbar_send_verification_otp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:visibility='@{viewModel.stateUsingUser == UiState.Loading ? View.VISIBLE : View.GONE}'/>
+                </FrameLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "993767881397",
-    "firebase_url": "https://androideatit-82da8-default-rtdb.firebaseio.com",
-    "project_id": "androideatit-82da8",
-    "storage_bucket": "androideatit-82da8.appspot.com"
+    "project_number": "347309408620",
+    "firebase_url": "https://my-coffee-fe33d-default-rtdb.firebaseio.com",
+    "project_id": "my-coffee-fe33d",
+    "storage_bucket": "my-coffee-fe33d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:993767881397:android:635a43bd4dc49419a25cfc",
+        "mobilesdk_app_id": "1:347309408620:android:db65d6f736b9148a3bf349",
         "android_client_info": {
-          "package_name": "com.khtn.mybooks"
+          "package_name": "com.space.mycoffee"
         }
       },
       "oauth_client": [
         {
-          "client_id": "993767881397-st1fp7q2iqogufhjcfugkcag0j89o3ob.apps.googleusercontent.com",
+          "client_id": "347309408620-du0uo8r7uq1j6ljktoeth3434j56pq74.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.khtn.mybooks",
-            "certificate_hash": "6001bde646ce0490e080d20d5d2ce3e4c235fb1e"
+            "package_name": "com.space.mycoffee",
+            "certificate_hash": "c64e9e168b9030852256f613eacfde3950327eb7"
           }
         },
         {
-          "client_id": "993767881397-ov1dqaj6hs7i6rr3ib85i5lsh8cs7hu5.apps.googleusercontent.com",
+          "client_id": "347309408620-bajm1i49c1rb6be9ef02quqv7atctji2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC-ZjwFPDjaO42NKc4-nHMGDXkCOXIcq6E"
+          "current_key": "AIzaSyAvtiuGgo12J6skPPsD967yN55ZFpOtJyQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "993767881397-ov1dqaj6hs7i6rr3ib85i5lsh8cs7hu5.apps.googleusercontent.com",
+              "client_id": "347309408620-bajm1i49c1rb6be9ef02quqv7atctji2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

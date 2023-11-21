@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/view_string_item"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@color/white"
-    tools:ignore="MissingDefaultResource">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="text"
+            type="String" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="50dp"
+        android:background="@color/white">
 
         <LinearLayout
+            android:id="@+id/view_string_item"
             android:layout_width="match_parent"
-            android:layout_height="49.7dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_transparent_ripple"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_string_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
-                android:drawablePadding="10dp"
-                android:paddingStart="20dp"
-                app:drawableStartCompat="@drawable/ic_history"
-                tools:ignore="RtlSymmetry" />
-
-            <ImageButton
-                android:id="@+id/ib_remove_string_search"
-                android:layout_width="49.7dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="49.7dp"
-                android:background="@color/white"
-                android:src="@drawable/ic_close"
-                app:tint="@color/text_hint"
-                tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
-        </LinearLayout>
+                android:orientation="horizontal">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.3dp"
-            android:background="@color/text_hint"/>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_string_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@{text}"
+                    android:drawablePadding="10dp"
+                    android:paddingStart="20dp"
+                    app:drawableStartCompat="@drawable/ic_history"
+                    tools:ignore="RtlSymmetry" />
+
+                <ImageButton
+                    android:id="@+id/ib_remove_string_search"
+                    android:layout_width="49.7dp"
+                    android:layout_height="49.7dp"
+                    android:background="@drawable/bg_transparent_ripple"
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/text_hint"
+                    tools:ignore="ContentDescription,SpeakableTextPresentCheck,ImageContrastCheck" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.3dp"
+                android:background="@color/text_hint"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
