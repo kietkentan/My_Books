@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -102,8 +103,7 @@ public class SignInViewModel extends ViewModel {
         if (_isUsingPhone.getValue()) {
             _isEnableSignIn.postValue(text.length() > 9);
             setAccountPhone(text);
-        }
-        else {
+        } else {
             _isEnableSignIn.postValue(!text.isEmpty());
             setAccountMail(text);
         }
@@ -295,11 +295,14 @@ public class SignInViewModel extends ViewModel {
         if (strPass == null || strPass.isEmpty()) return;
         _stateLogin.postValue(UiState.Loading);
         reference.child(AppSingleton.mode[0])
+                .orderByChild(isPhone ? Constants.PHONE : Constants.EMAIL)
+                .equalTo(strAcc)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                            if (dataSnapshot.child(isPhone ? Constants.PHONE : Constants.EMAIL).getValue(String.class).equals(strAcc)) {
+                        if (snapshot.exists()) {
+                            Log.i("TAG_U", "onDataChange: " + snapshot);
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 User user = dataSnapshot.getValue(User.class);
                                 if (Objects.requireNonNull(user).getPassword().equals(strPass)) {
                                     AppSingleton.signIn(user, context, 1);
@@ -308,7 +311,9 @@ public class SignInViewModel extends ViewModel {
                                     Extensions.toast(context, R.string.incorrect_password);
                                     _stateLogin.postValue(null);
                                 }
+                                break;
                             }
+                        }
                     }
 
                     @Override

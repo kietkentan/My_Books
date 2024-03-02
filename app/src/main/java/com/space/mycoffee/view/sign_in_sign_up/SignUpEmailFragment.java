@@ -88,7 +88,7 @@ public class SignUpEmailFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(SignInViewModel.class);
         binding.setViewModel(viewModel);
 
-        String act = getArguments().getString(Constants.PHONE);
+        String act = getArguments() == null ? null : getArguments().getString(Constants.PHONE);
         if (act != null && !act.isEmpty()) {
             viewModel.setAccountPhone(act);
             viewModel.setIsPhone(true);

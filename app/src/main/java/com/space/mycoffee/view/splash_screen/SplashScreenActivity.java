@@ -120,7 +120,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     public void startHome() {
         handler.postDelayed(() -> {
-            Intent intent = new Intent(this, AppSingleton.currentUser.isAdmin() ? ManagerActivity.class : MainActivity.class);
+            Intent intent = new Intent(this, AppSingleton.currentUser == null || !AppSingleton.currentUser.isAdmin() ? MainActivity.class : ManagerActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.alpha_appear_100, R.anim.alpha_hidden_100);
             finish();
