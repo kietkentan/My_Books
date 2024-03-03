@@ -34,7 +34,6 @@ Ban đầu đồ án nhận được chỉ ở mức mua/bán sản phẩm và t
 - ...
 
 ## Chi tiết và demo sản phẩm
-Xem chi tiết [tại đây](https://drive.google.com/drive/folders/1-ZP5qOwSLOpukuozpf2u-3raR4Pqkysa?usp=sharing)
 ![Màn hình chính](https://firebasestorage.googleapis.com/v0/b/androideatit-82da8.appspot.com/o/review%2FScreen_Main.png?alt=media&token=e93b1498-0f91-4615-9240-3f585b615ad4)
 ![Chi tiết sản phẩm](https://firebasestorage.googleapis.com/v0/b/androideatit-82da8.appspot.com/o/review%2FScreen_Product_Detail_1.png?alt=media&token=452aaa56-202e-472d-bdda-32671790eb6a)
 ![Giỏ hàng](https://firebasestorage.googleapis.com/v0/b/androideatit-82da8.appspot.com/o/review%2FScreen_Cart.png?alt=media&token=5e198d26-28cb-446f-a8c6-561eae2f4809)
